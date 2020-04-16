@@ -1,0 +1,173 @@
+# -----------------------------------------------------
+# NexT数据目录
+# https://theme-next.org/docs/theme-settings/index.html
+# -----------------------------------------------------
+
+custom_file_path:
+  head: source/_data/module/head.swig
+  # header: source/_data/header.swig
+  # sidebar: source/_data/sidebar.swig
+  # postMeta: source/_data/post-meta.swig
+  # postBodyEnd: source/_data/post-body-end.swig
+  # footer: source/_data/footer.swig
+  # bodyEnd: source/_data/body-end.swig
+  # variable: source/_data/css/variables.styl
+  # mixin: source/_data/mixins.styl
+  style: source/_data/styl/custom.styl
+
+# -----------------------------------------------------
+# 主题基本设置
+# -----------------------------------------------------
+
+# Muse, Mist, Pisces, Gemini
+scheme: Pisces
+
+favicon:
+  small: /images/favicon-16x16.png
+  medium: /images/favicon-32x32.png
+  apple_touch_icon: /images/apple-touch-icon.png
+  safari_pinned_tab: /images/safari-pinned-tab.svg
+
+menu:
+  home: / || fa fa-home
+  tags: /tags/ || fa fa-tags
+  categories: /categories/ || fa fa-th
+  archives: /archives/ || fa fa-archive
+  commonweal: /404/ || fa fa-heartbeat
+
+footer:
+  since: 2019
+
+# 本地搜索
+local_search:
+  enable: true
+
+# Github 关注
+github_banner:
+  enable: true
+  permalink: https://github.com/qLzhu
+  title: Follow me on GitHub
+
+back2top:
+  enable: true
+  sidebar: false      #在三条杠的侧边栏内显示回到顶部
+  scrollpercent: true #是否显示百分比
+
+# -----------------------------------------------------
+# 右侧概览模块
+# -----------------------------------------------------
+
+# 头像
+avatar:
+  url: /images/avatar.jpg
+  rounded: true
+  rotated: false
+
+# 链接
+# https://fa5.dashgame.com/#/%E5%9B%BE%E6%A0%87
+social:
+  GitHub: https://github.com/qLzhu || fab fa-github
+  E-Mail: mailto:qinlzhu@outlook.com || fa fa-envelope
+  WeChat: /wechat || fab fa-weixin
+
+social_icons:
+  icons_only: true
+
+# 常用网站链接
+links_settings:
+  icon: fa fa-link
+  title: 常用网站链接
+  layout: inline
+
+links:
+  MDN: https://developer.mozilla.org/zh-CN/
+  JueJin: https://juejin.im/
+  Caniuse: https://caniuse.com/
+  CodePen: https://codepen.io/popular/pens/
+  Favivon: https://realfavicongenerator.net/
+  Sass: https://sass.bootcss.com/
+  FeTools: https://github.com/MichealWayne/fe-tools
+  TravisCI: https://travis-ci.com/
+
+# -----------------------------------------------------
+# 文章界面
+# -----------------------------------------------------
+
+# 元数据
+post_meta:
+  item_text: true     #是否显示对应的文字
+  created_at: true    #是否显示 创建于
+  updated_at:         #是否显示 更新于
+    enabled: false
+    another_day: true #更新日期显示规则，只有更新日期与创建日期不同时，才会显示
+  categories: true    #是否显示分类信息
+
+# 文字对齐
+text_align:
+  desktop: left
+
+# 页面内的版权信息
+creative_commons:
+  license: by-nc-sa
+  sidebar: false
+  post: true
+  language: deed.zh
+
+# 代码块设置
+# normal | night | night eighties | night blue | night bright | solarized | solarized dark | galactic
+# style: default | flat | mac
+codeblock:
+  highlight_theme: normal
+  copy_button:
+    enable: true
+    show_result: true
+    style:
+
+# -----------------------------------------------------
+# 标签插件
+# See: https://theme-next.org/docs/tag-plugins/
+# -----------------------------------------------------
+note:
+  # simple(Default) | modern | flat | disabled
+  style: modern
+  icons: true
+  light_bg_offset: 0
+
+# -----------------------------------------------------
+# 第三方插件
+# -----------------------------------------------------
+
+# 项目徽标
+# https://shields.io/
+# https://zhuanlan.zhihu.com/p/85370228
+# https://shen.bioinit.com/topic/tech/2019-08-21-github-badge/
+# https://lpd-ios.github.io/2017/05/03/GitHub-Badge-Introduction/
+
+# 字数统计及其阅读时间
+symbols_count_time:
+  separated_meta: false
+  item_text_post: true
+  item_text_total: false
+  awl: 2
+  wpm: 300
+
+# 访问量统计
+busuanzi_count:
+  enable: true
+  total_visitors: false
+  total_visitors_icon: user
+  total_views: false
+  total_views_icon: eye
+  post_views: true
+  post_views_icon: eye
+
+# Github issues 评论设置
+gitalk:
+  enable: true
+  github_id: 'qlzhu'
+  repo: blog-comments
+  client_id: ad50278e20047a600e1e
+  client_secret: 4fda32088322cc0152567a86cd419d499d8d2c3e
+  admin_user: 'qlzhu'
+  distraction_free_mode: false
+  language: zh-CN
