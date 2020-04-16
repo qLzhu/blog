@@ -19,7 +19,7 @@ comments: false
                  0 0 2px rgba(0, 0, 0, 0.8);
   }
 
-  .output::before { content: "> ";}
+  .output::before { content: "* ";}
   .links{text-decoration: none;}
   .links::before {content: "[";}
   .links::after  {content: "]";}

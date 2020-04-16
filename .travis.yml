@@ -32,7 +32,7 @@ after_script:
 
 branches:
   only:
-    - source                   # 只监测 source 分支
+    - master                   # 只监测 source 分支
 
 env:                           # 设置全局变量
   global:                      # 注意此处的链接必须是 http 的链接，ssh 的会报错
