@@ -14,6 +14,7 @@ date: 2020-04-17 17:06:27
 ## hosts
 
 hosts（the static table lookup for host name 主机名查询静态表）用于补充或取代网络中DNS的功能。它储存的是计算机网络中各节点信息，负责将主机名映射到相应的IP地址，合理利用可提高域名的解析速度。**在以前通过该技术可以实现FQ目的，现在已不再适用，因为自2018年8月24号起，长城开始启用基于SNI检测和TCP连接重置等手段进行了封锁**
+<!-- more -->
 
 ## lantern
 
@@ -21,9 +22,9 @@ hosts（the static table lookup for host name 主机名查询静态表）用于�
 
 ## shadowsocks
 
-Shadowsocks是一种基于socks5协议的代理工具，分为客户端Clients和服务端Servers两部分，客户端Clients是运行在你电脑或者手机上的软件，服务端Servers是运行在海外服务器上的程序，搭建该服务需要先买台VM主机，我这里使用的是[vultr](https://www.vultr.com/)的服务器，系统采用的是 Ubuntu 19.10 x 64 版本
+Shadowsocks是一种基于socks5协议的代理工具。搭建该服务需要先买台境外的服务器，我这里使用的是[vultr](https://www.vultr.com/)<span class="text-gray">（搬瓦工也是可以。搬瓦工是按月或者年扣费，不过经常会推出活动；而vultr是按小时进行扣费。两者都支持微信和支付宝付款）</span>的，搭建的镜像系统是 Ubuntu 19.10 x 64<span class="text-gray">（搭建镜像时尽量选择离你比较近的位置，同时记得要开启IP6协议哦）</span>，地点选择的是日本
 
-线上服务器搭建好后，在本地使用终端通过SSH命令，登陆到Vultr的云主机服务器上
+线上镜像服务搭建好后，在本地使用终端通过SSH命令，登陆到Vultr的云主机服务器上
 ```bash
 ssh root@Vultr-OS-IP
 ```
@@ -97,3 +98,75 @@ vim /usr/local/lib/python2.7/dist-packages/shadowsocks/crypto/openssl.py
 ```
 
 现在再使用 `ssserver -c /etc/shadowsocks.json -d start` 命令开启Shadowsocks服务即可完成！
+
+### 客户端下载
+
+现在服务器端已经配置完毕，要想FQ还需要配置下客户端。Shadowsocks客户端的设置及其使用非常简单。在客户端中“添加服务器”，正确填写服务器的地址、端口、密码和加密方式，然后就可以连接服务端了
+
+- [Mac](https://github.com/shadowsocks/ShadowsocksX-NG/releases)
+- [window](https://github.com/shadowsocks/shadowsocks-windows/releases)
+- [Android](https://github.com/shadowsocks/shadowsocks-android/releases)
+- iPhone <span class="text-gray">（版本的客户端是 Shadowrocket 需要国外的 Apple ID 才可下载，并且该软件是收费的）</span>
+
+## Outline
+
+Outline 是 Jigsaw 团队开发的，而 Jigsaw 又是谷歌母公司 alphabet 旗下的，开源口号好像是为全球媒体工作者提供帮助什么的，具体的没记清楚。反正跟 shadowscoks 是同类型的工具，都是用来帮助我们科学上网的。软件核心部分依赖的还是 shadowscoks，只不过在此基础上重新包装开发而已。选择它的目地，主要是在国内各应用商城内 Outline App 依然可下载。使用 Outline 服务需要服务端和客户端两个软件配合使用，即
+
+- 服务端：Outline Manager
+- 客户端：Outline
+
+第一步跟配置Shadowsocks一样，都是先在Vultr搭建服务器，然后使用ssh再登陆上去
+
+### 部署 Docker 容器
+
+登陆成功后在终端分别执行下述命令
+
+```bash
+apt update
+apt install apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+apt update
+apt-cache policy docker-ce
+apt install docker-ce
+```
+
+完成后用`systemctl status docker`命令检测，如出现以下类似界面，说明 Docker 部署已成功
+
+```bash
+docker.service - Docker Application Container Engine
+   Loaded: loaded (/lib/systemd/system/docker.service; enabled; vendor preset: enabled)
+   Active: active (running) since Thu 2018-07-05 15:08:39 UTC; 2min 55s ago
+     Docs: https://docs.docker.com
+ Main PID: 10096 (dockerd)
+    Tasks: 16
+   CGroup: /system.slice/docker.service
+           ├─10096 /usr/bin/dockerd -H fd://
+           └─10113 docker-containerd --config /var/run/docker/containerd/containerd.toml
+```
+
+### 配置 Outline Manager
+
+到 [Outline](https://getoutline.org/en/home) 官网选择系统相对应的版本，分别下载下 outline Manager 和 Outline。完成后先打开 Outline Manager 服务端软件，进入软件后点击界面右下脚的“**随时随地安装 outline**”选项，然后**复制第一段提示你安装 shadowsocks 服务的代码，粘贴到服务器内进行安装**，即下述代码
+
+```bash
+bash -c "$(wget -qO- https://raw.githubusercontent.com/Jigsaw-Code/outline-server/master/src/server_manager/install_scripts/install_server.sh)"
+```
+
+安装完成后服务器终端提示信息内，会给出以”apiUrl”开头的一段字符串，复制该字符串粘贴到 Outline Manager 内（就是你复制服务器端安装shadowsocks的那块）
+
+```
+{"apiUrl":"https://***.28.*1.**9:***69/*********mfPAusF9w",
+"certSha256":"FFFA7***************5B61976F57B4B1E12BB9***19772F6"}
+```
+
+### 配置 outline
+
+完成 Outline Manager 服务端的配置后，进入该服务的管理界面，在该界面内选择“添加新密钥”，然后把新创建的密钥共享给 outline App 使用。注意使用的主要是以 ss 开头的字符串哦！操作还有迷糊的地方，可点击该文章 [“Outline 的部署和使用”](https://oracleblog.org/its-my-life/how-to-deploy-outline-by-jigsaw/) 看图文进行操作
+
+## 使用总结
+
+长城防火墙封锁比较严重时或者不想付费的使用lantern，不严重使用shadowsocks或者outline。shadowsocks配置稍复杂些，严查期间封锁shadowsocks也要比outline严重
+
+同时要提醒大家的是：
+<p style="color: #f2777a;text-align: center;">科学上网别信谣、别传谣、别造谣、别看不该看的东西、让我们做个守法的好公民！</p>
