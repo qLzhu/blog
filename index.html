@@ -215,7 +215,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-04-17 17:06:27 / 修改时间：13:10:09" itemprop="dateCreated datePublished" datetime="2020-04-17T17:06:27+00:00">2020-04-17</time>
+              <time title="创建时间：2020-04-17 17:06:27 / 修改时间：13:17:54" itemprop="dateCreated datePublished" datetime="2020-04-17T17:06:27+00:00">2020-04-17</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -254,56 +254,14 @@
       
           <p>国内的国情确定了我们可浏览的网站，由于我们是开发者需要翻看很多国外技术网站，查看这些技术网站就需要到科学的技术。这里我们就介绍下 hosts、<a href="https://github.com/getlantern/lantern" target="_blank" rel="noopener">lantern</a>、<a href="https://shadowsocks.org/en/index.html" target="_blank" rel="noopener">shadowsocks</a>、<a href="https://getoutline.org/en/home" target="_blank" rel="noopener">outline</a> 的搭建和使用</p>
 <h2 id="hosts"><a href="#hosts" class="headerlink" title="hosts"></a>hosts</h2><p>hosts（the static table lookup for host name 主机名查询静态表）用于补充或取代网络中DNS的功能。它储存的是计算机网络中各节点信息，负责将主机名映射到相应的IP地址，合理利用可提高域名的解析速度。<strong>在以前通过该技术可以实现FQ目的，现在已不再适用，因为自2018年8月24号起，长城开始启用基于SNI检测和TCP连接重置等手段进行了封锁</strong></p>
-<h2 id="lantern"><a href="#lantern" class="headerlink" title="lantern"></a>lantern</h2><p><a href="https://github.com/getlantern/lantern" target="_blank" rel="noopener">lantern（蓝灯）</a>免费的全平台兼容的FQ软件，每月500M，每月月初自动重置</p>
-<h2 id="shadowsocks"><a href="#shadowsocks" class="headerlink" title="shadowsocks"></a>shadowsocks</h2><p>Shadowsocks是一种基于socks5协议的代理工具。搭建该服务需要先买台境外的服务器，我这里使用的是<a href="https://www.vultr.com/" target="_blank" rel="noopener">vultr</a><span class="text-gray">（搬瓦工也是可以。搬瓦工是按月或者年扣费，不过经常会推出活动；而vultr是按小时进行扣费。两者都支持微信和支付宝付款）</span>的，搭建的镜像系统是 Ubuntu 19.10 x 64<span class="text-gray">（搭建镜像时尽量选择离你比较近的位置，同时记得要开启IP6协议哦）</span>，地点选择的是日本</p>
-<p>线上镜像服务搭建好后，在本地使用终端通过SSH命令，登陆到Vultr的云主机服务器上</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh root@Vultr-OS-IP</span><br></pre></td></tr></table></figure>
-
-<h3 id="安装组件"><a href="#安装组件" class="headerlink" title="安装组件"></a>安装组件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apt-get update</span><br><span class="line">apt-get install python-pip</span><br><span class="line">pip install shadowsocks</span><br></pre></td></tr></table></figure>
-
-<h3 id="安装谷歌BBR加速器"><a href="#安装谷歌BBR加速器" class="headerlink" title="安装谷歌BBR加速器"></a>安装谷歌BBR加速器</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh </span><br><span class="line">chmod +x bbr.sh &amp;&amp; ./bbr.sh</span><br></pre></td></tr></table></figure>
-
-<h3 id="创建Shadowsocks服务配置文件"><a href="#创建Shadowsocks服务配置文件" class="headerlink" title="创建Shadowsocks服务配置文件"></a>创建Shadowsocks服务配置文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 路径和名称可随意定义</span></span><br><span class="line">vim /etc/shadowsocks.json</span><br></pre></td></tr></table></figure>
-
-<p>在shadowsocks.json文件内添加如下内容<span class="text-gray">（回车后英文状态下按 <code>i</code> 键进入编辑模式，编辑后按 <code>esc</code> 退出编辑模式， 输入 <code>:wq</code> 保存退出vim）</span></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;server&quot;:&quot;VPS IP&quot;,</span><br><span class="line">  &quot;local_address&quot;:&quot;127.0.0.1&quot;,</span><br><span class="line">  &quot;local_port&quot;:1080,</span><br><span class="line">  &quot;port_password&quot;:&#123;</span><br><span class="line">    &quot;9**0&quot;:&quot;ss**&quot;,</span><br><span class="line">    &quot;9**1&quot;:&quot;ss*1&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;timeout&quot;:300,</span><br><span class="line">  &quot;method&quot;:&quot;aes-256-cfb&quot;,</span><br><span class="line">  &quot;fast_open&quot;: true</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>server：换成你服务器的IP<br>port_password：多用户使用时开放的端口及其密码<br>method：加密协议<br>fast_open：是否开启加速器</p>
-<h3 id="开启Shadowsocks服务"><a href="#开启Shadowsocks服务" class="headerlink" title="开启Shadowsocks服务"></a>开启Shadowsocks服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ssserver -c /etc/shadowsocks.json -d start</span><br><span class="line"></span><br><span class="line"><span class="comment"># 停止命令</span></span><br><span class="line"><span class="comment"># ssserver -c /etc/shadowsocks.json -d stop</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 调试时使用以下命令可实时预览请求信息</span></span><br><span class="line"><span class="comment"># ssserver -c /etc/shadowsocks.json</span></span><br></pre></td></tr></table></figure>
-
-<p>此时启动会报 <code>undefined symbol: EVP_CIPHER_CTX_cleanup</code> 错误，该问题主要openssl.py版本升级后造成的。只需要把openssl.py文件内的 <code>CIPHER_CTX_cleanup</code> 改成 <code>CIPHER_CTX_reset</code> 就可解决</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 如果终端里的 openssl.py 路径跟这里不一致</span></span><br><span class="line"><span class="comment"># 请改成终端错误信息内的路径</span></span><br><span class="line">vim /usr/<span class="built_in">local</span>/lib/python2.7/dist-packages/shadowsocks/crypto/openssl.py</span><br><span class="line"></span><br><span class="line"><span class="comment"># 进入文件后，直接按 shift 输入如下指令</span></span><br><span class="line">:%s/cleanup/reset/</span><br><span class="line">:x</span><br></pre></td></tr></table></figure>
-
-<p>现在再使用 <code>ssserver -c /etc/shadowsocks.json -d start</code> 命令开启Shadowsocks服务即可完成！</p>
-<h3 id="客户端下载"><a href="#客户端下载" class="headerlink" title="客户端下载"></a>客户端下载</h3><p>现在服务器端已经配置完毕，要想FQ还需要配置下客户端。Shadowsocks客户端的设置及其使用非常简单。在客户端中“添加服务器”，正确填写服务器的地址、端口、密码和加密方式，然后就可以连接服务端了</p>
-<ul>
-<li><a href="https://github.com/shadowsocks/ShadowsocksX-NG/releases" target="_blank" rel="noopener">Mac</a></li>
-<li><a href="https://github.com/shadowsocks/shadowsocks-windows/releases" target="_blank" rel="noopener">window</a></li>
-<li><a href="https://github.com/shadowsocks/shadowsocks-android/releases" target="_blank" rel="noopener">Android</a></li>
-<li>iPhone <span class="text-gray">（版本的客户端是 Shadowrocket 需要国外的 Apple ID 才可下载，并且该软件是收费的）</span></li>
-</ul>
-<h2 id="Outline"><a href="#Outline" class="headerlink" title="Outline"></a>Outline</h2><p>Outline 是 Jigsaw 团队开发的，而 Jigsaw 又是谷歌母公司 alphabet 旗下的，开源口号好像是为全球媒体工作者提供帮助什么的，具体的没记清楚。反正跟 shadowscoks 是同类型的工具，都是用来帮助我们科学上网的。软件核心部分依赖的还是 shadowscoks，只不过在此基础上重新包装开发而已。选择它的目地，主要是在国内各应用商城内 Outline App 依然可下载。使用 Outline 服务需要服务端和客户端两个软件配合使用，即</p>
-<ul>
-<li>服务端：Outline Manager</li>
-<li>客户端：Outline</li>
-</ul>
-<p>第一步跟配置Shadowsocks一样，都是先在Vultr搭建服务器，然后使用ssh再登陆上去</p>
-<h3 id="部署-Docker-容器"><a href="#部署-Docker-容器" class="headerlink" title="部署 Docker 容器"></a>部署 Docker 容器</h3><p>登陆成功后在终端分别执行下述命令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">apt update</span><br><span class="line">apt install apt-transport-https ca-certificates curl software-properties-common</span><br><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</span><br><span class="line">add-apt-repository <span class="string">"deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"</span></span><br><span class="line">apt update</span><br><span class="line">apt-cache policy docker-ce</span><br><span class="line">apt install docker-ce</span><br></pre></td></tr></table></figure>
-
-<p>完成后用<code>systemctl status docker</code>命令检测，如出现以下类似界面，说明 Docker 部署已成功</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker.service - Docker Application Container Engine</span><br><span class="line">   Loaded: loaded (/lib/systemd/system/docker.service; enabled; vendor preset: enabled)</span><br><span class="line">   Active: active (running) since Thu 2018-07-05 15:08:39 UTC; 2min 55s ago</span><br><span class="line">     Docs: https://docs.docker.com</span><br><span class="line"> Main PID: 10096 (dockerd)</span><br><span class="line">    Tasks: 16</span><br><span class="line">   CGroup: /system.slice/docker.service</span><br><span class="line">           ├─10096 /usr/bin/dockerd -H fd://</span><br><span class="line">           └─10113 docker-containerd --config /var/run/docker/containerd/containerd.toml</span><br></pre></td></tr></table></figure>
-
-<h3 id="配置-Outline-Manager"><a href="#配置-Outline-Manager" class="headerlink" title="配置 Outline Manager"></a>配置 Outline Manager</h3><p>到 <a href="https://getoutline.org/en/home" target="_blank" rel="noopener">Outline</a> 官网选择系统相对应的版本，分别下载下 outline Manager 和 Outline。完成后先打开 Outline Manager 服务端软件，进入软件后点击界面右下脚的“<strong>随时随地安装 outline</strong>”选项，然后<strong>复制第一段提示你安装 shadowsocks 服务的代码，粘贴到服务器内进行安装</strong>，即下述代码</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -c <span class="string">"<span class="variable">$(wget -qO- https://raw.githubusercontent.com/Jigsaw-Code/outline-server/master/src/server_manager/install_scripts/install_server.sh)</span>"</span></span><br></pre></td></tr></table></figure>
-
-<p>安装完成后服务器终端提示信息内，会给出以”apiUrl”开头的一段字符串，复制该字符串粘贴到 Outline Manager 内（就是你复制服务器端安装shadowsocks的那块）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;apiUrl&quot;:&quot;https:&#x2F;&#x2F;***.28.*1.**9:***69&#x2F;*********mfPAusF9w&quot;,</span><br><span class="line">&quot;certSha256&quot;:&quot;FFFA7***************5B61976F57B4B1E12BB9***19772F6&quot;&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="配置-outline"><a href="#配置-outline" class="headerlink" title="配置 outline"></a>配置 outline</h3><p>完成 Outline Manager 服务端的配置后，进入该服务的管理界面，在该界面内选择“添加新密钥”，然后把新创建的密钥共享给 outline App 使用。注意使用的主要是以 ss 开头的字符串哦！操作还有迷糊的地方，可点击该文章 <a href="https://oracleblog.org/its-my-life/how-to-deploy-outline-by-jigsaw/" target="_blank" rel="noopener">“Outline 的部署和使用”</a> 看图文进行操作</p>
-<h2 id="使用总结"><a href="#使用总结" class="headerlink" title="使用总结"></a>使用总结</h2><p>长城防火墙封锁比较严重时或者不想付费的使用lantern，不严重使用shadowsocks或者outline。shadowsocks配置稍复杂些，严查期间封锁shadowsocks也要比outline严重</p>
-<p>同时要提醒大家的是：</p>
-<p style="color: #f2777a;text-align: center;">科学上网别信谣、别传谣、别造谣、别看不该看的东西、让我们做个守法的好公民！</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/blog/64387/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -347,7 +305,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-04-17 15:30:44 / 修改时间：13:10:09" itemprop="dateCreated datePublished" datetime="2020-04-17T15:30:44+00:00">2020-04-17</time>
+              <time title="创建时间：2020-04-17 15:30:44 / 修改时间：13:17:54" itemprop="dateCreated datePublished" datetime="2020-04-17T15:30:44+00:00">2020-04-17</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -437,7 +395,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-04-17 14:09:00 / 修改时间：13:10:09" itemprop="dateCreated datePublished" datetime="2020-04-17T14:09:00+00:00">2020-04-17</time>
+              <time title="创建时间：2020-04-17 14:09:00 / 修改时间：13:17:54" itemprop="dateCreated datePublished" datetime="2020-04-17T14:09:00+00:00">2020-04-17</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -523,7 +481,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-04-17 13:32:37 / 修改时间：13:10:09" itemprop="dateCreated datePublished" datetime="2020-04-17T13:32:37+00:00">2020-04-17</time>
+              <time title="创建时间：2020-04-17 13:32:37 / 修改时间：13:17:54" itemprop="dateCreated datePublished" datetime="2020-04-17T13:32:37+00:00">2020-04-17</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -616,7 +574,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-17 13:10:09" itemprop="dateModified" datetime="2020-04-17T13:10:09+00:00">2020-04-17</time>
+                <time title="修改时间：2020-04-17 13:17:54" itemprop="dateModified" datetime="2020-04-17T13:17:54+00:00">2020-04-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -712,7 +670,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-17 13:10:09" itemprop="dateModified" datetime="2020-04-17T13:10:09+00:00">2020-04-17</time>
+                <time title="修改时间：2020-04-17 13:17:54" itemprop="dateModified" datetime="2020-04-17T13:17:54+00:00">2020-04-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -808,7 +766,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-17 13:10:09" itemprop="dateModified" datetime="2020-04-17T13:10:09+00:00">2020-04-17</time>
+                <time title="修改时间：2020-04-17 13:17:54" itemprop="dateModified" datetime="2020-04-17T13:17:54+00:00">2020-04-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -907,7 +865,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-17 13:10:09" itemprop="dateModified" datetime="2020-04-17T13:10:09+00:00">2020-04-17</time>
+                <time title="修改时间：2020-04-17 13:17:54" itemprop="dateModified" datetime="2020-04-17T13:17:54+00:00">2020-04-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
