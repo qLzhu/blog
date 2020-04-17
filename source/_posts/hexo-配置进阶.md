@@ -16,11 +16,11 @@ tags:
 - [NexT 数据目录官方说明](https://github.com/theme-next/hexo-theme-next/blob/master/docs/zh-CN/DATA-FILES.md)
 - [Hexo-NexT 版本更新记录](https://tding.top/archives/2bd6d82.html)
 - [NexT 7.3 数据目录及自定义 CSS 的启用方式](https://www.imczw.com/post/tech/next_data_file.html)
-<!-- More -->
+<!-- more -->
 
 ## 语法转义
 
-特殊符号 &#123;&#123;&#125;&#125; 在 Hexo 内是有特殊含义的语法，在文章中你不能直接使用，需要转义字符来代替
+特殊符号 &#123;&#123;&#125;&#125; 在 Hexo 内是有特殊含义的语法，在文章中你不能直接使用，需要[转义字符](https://www.sojson.com/unicode.html)来代替
 
 ``` bash
 ! &#33;         — 惊叹号 Exclamation mark
@@ -28,7 +28,7 @@ tags:
 # &#35;         — 数字标志 Number sign
 $ &#36;         — 美元标志 Dollar sign
 % &#37;         — 百分号 Percent sign
-& &#38; &amp;   — Ampersand
+& &#38; &amp;   — And/Ampersand
 ‘ &#39;         — 单引号 Apostrophe
 ( &#40;         — 小括号左边部分 Left parenthesis
 ) &#41;         — 小括号右边部分 Right parenthesis
@@ -39,10 +39,11 @@ $ &#36;         — 美元标志 Dollar sign
 - &#45; &minus; — 减号
 > &#62; &gt;    — 大于号 Greater than
 ? &#63;         — 问号 Question mark
-@ &#64;         — Commercial at
+@ &#64;         — At
 [ &#91;         — 中括号左边部分 Left square bracket
 \ &#92;         — 反斜杠 Reverse solidus (backslash)
 ] &#93;         — 中括号右边部分 Right square bracket
+` &#96;         - 重音号 backquote/grave accent
 { &#123;        — 大括号左边部分 Left curly brace
 | &#124;        — 竖线Vertical bar
 } &#125;        — 大括号右边部分 Right curly brace
@@ -84,7 +85,7 @@ skip_render: README.md
 
 ## 置入本地图片
 
-Markdown 置入图片的语法是 `![img-title](img-url)`，但该语法没办法置入本地图片！这时需要使用到 [hexo-asset-image](https://github.com/xcodebuild/hexo-asset-image) 插件
+Markdown 置入图片的语法是 `![img-title](img-url)`，但该语法没办法置入本地图片！这时需要使用到 [hexo-asset-image](https://github.com/xcodebuild/hexo-asset-image) 插件。<span style="color: #999">注意：1.0.0 版本插入图片时，文章内部的图片可正常显示，在首页时图片显示异常，建议继续使用 hexo 的 {% asset_img name.png 描述 %} 标签</span>
 
 ```bash
 npm install hexo-asset-image
@@ -98,6 +99,22 @@ npm install hexo-asset-image
 # 把图片导入到该文件夹后，你就可以按照正常的 Markdown 语法置入图片了
 post_asset_folder: true
 ```
+
+## 插入代码文件
+
+插入代码文件需要先在 hexo 的 `code_dir` 模块处配置路径，这里以插入 `source/_data/includecode` 文件夹内的代码文件为例：`code_dir: _data/includecode/`
+
+```swig
+{% include_code css lang:css example.css %}
+{% include_code css lang:css from:2 to:3 example.css %}
+```
+
+{% include_code css lang:css example.css %}
+{% include_code css lang:css from:2 to:3 example.css %}
+
+其它标签请参考：
+  - https://hexo.io/zh-cn/docs/tag-plugins
+  - https://theme-next.org/docs/tag-plugins/
 
 ## 文章置顶
 
