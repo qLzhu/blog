@@ -1,0 +1,37 @@
+language: node_js              # 指定环境及其node_js版本
+node_js: 
+  - lts/*
+
+cache:                         # 缓存设置，有利于提高下次构建的效率
+  npm: false
+  directories:
+    - node_modules
+
+#notifications:                # 设置部署成功和失败时自动给你发送邮件
+  #email:                      # https://docs.travis-ci.com/user/notifications
+    #recipients:
+      #- vensing@foxmail.com
+    #on_success: never
+    #on_failure: never
+
+install:                       # 安装阶段
+  - npm install hexo-cli -g
+  - npm install
+
+script:                        # 执行构建阶段
+  - hexo clean                 # hexo 的清理命令
+  - hexo generate              # hexo 的生成（构建）命令，即最核心的生成静态文件过程
+
+# GitHub Pages Deployment
+deploy:                        # 部署阶段
+  provider: pages              # 约定 pages 为 GitHub Pages 服务，必须且不可更改
+  #name: "yourname"            # 提交者
+  #email: "yourname@email.com" # 提交者邮箱
+  skip-cleanup: true           # 必须跳过清理，否则过程中生成的文件（要发布的静态资源）会被清理
+  github-token: $Trcl_Token    # Travis CI 设置 token 名称
+  keep-history: true           # 设置为 false 时，使用 `git push --force` 命令覆盖历史记录
+  on:
+    branch: master             # 仅监听 master 分支的变化，才执行构建
+  target-branch: gh-pages      # 用于存放静态资源的分支
+  local-dir: public            # `hexo generate` 命令生成的静态资源所在路径
+  #fqdn:                       # 自定义域名

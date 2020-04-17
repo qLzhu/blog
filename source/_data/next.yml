@@ -68,7 +68,6 @@ avatar:
 social:
   GitHub: https://github.com/qLzhu || fab fa-github
   E-Mail: mailto:qinlzhu@outlook.com || fa fa-envelope
-  WeChat: /wechat || fab fa-weixin
 
 social_icons:
   icons_only: true
@@ -117,7 +116,7 @@ creative_commons:
 # normal | night | night eighties | night blue | night bright | solarized | solarized dark | galactic
 # style: default | flat | mac
 codeblock:
-  highlight_theme: normal
+  highlight_theme: night eighties
   copy_button:
     enable: true
     show_result: true
