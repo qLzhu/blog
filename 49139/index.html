@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/blog/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"qlzhu.github.io","root":"/blog/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="本博客采用的是 NexT 主题，以下配置结合 hexo 和 NexT 两方面混合讲解。说明：NexT 7.3 配置文件及其目录也发生了很多变化，并且支持了 Pjax。使得我们可以通过启动数据目录来管理配置，升级新的 release 版本更加平滑  NexT 数据目录官方说明 Hexo-NexT 版本更新记录 NexT 7.3 数据目录及自定义 CSS 的启用方式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo 配置进阶">
+<meta property="og:url" content="https://qlzhu.github.io/blog/49139/index.html">
+<meta property="og:site_name" content="NoiiApple">
+<meta property="og:description" content="本博客采用的是 NexT 主题，以下配置结合 hexo 和 NexT 两方面混合讲解。说明：NexT 7.3 配置文件及其目录也发生了很多变化，并且支持了 Pjax。使得我们可以通过启动数据目录来管理配置，升级新的 release 版本更加平滑  NexT 数据目录官方说明 Hexo-NexT 版本更新记录 NexT 7.3 数据目录及自定义 CSS 的启用方式">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-15T23:37:21.000Z">
+<meta property="article:modified_time" content="2020-04-17T11:15:59.540Z">
+<meta property="article:author" content="qinlzhu">
+<meta property="article:tag" content="NexT">
+<meta property="article:tag" content="hexo">
+<meta property="article:tag" content="hexo-abbrlink">
+<meta property="article:tag" content="hexo-generator-searchdb">
+<meta property="article:tag" content="hexo-symbols-count-time">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://qlzhu.github.io/blog/49139/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+  <title>Hexo 配置进阶 | NoiiApple</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/blog/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">NoiiApple</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>全部文章</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/blog/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>404界面</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/qLzhu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://qlzhu.github.io/blog/49139/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/avatar.jpg">
+      <meta itemprop="name" content="qinlzhu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NoiiApple">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Hexo 配置进阶
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-15 23:37:21" itemprop="dateCreated datePublished" datetime="2020-04-15T23:37:21+00:00">2020-04-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-17 11:15:59" itemprop="dateModified" datetime="2020-04-17T11:15:59+00:00">2020-04-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/hexo/" itemprop="url" rel="index"><span itemprop="name">hexo</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>9 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本博客采用的是 NexT 主题，以下配置结合 hexo 和 NexT 两方面混合讲解。说明：NexT 7.3 配置文件及其目录也发生了很多变化，并且支持了 Pjax。使得我们可以通过启动数据目录来管理配置，升级新的 release 版本更加平滑</p>
+<ul>
+<li><a href="https://github.com/theme-next/hexo-theme-next/blob/master/docs/zh-CN/DATA-FILES.md" target="_blank" rel="noopener">NexT 数据目录官方说明</a></li>
+<li><a href="https://tding.top/archives/2bd6d82.html" target="_blank" rel="noopener">Hexo-NexT 版本更新记录</a></li>
+<li><a href="https://www.imczw.com/post/tech/next_data_file.html" target="_blank" rel="noopener">NexT 7.3 数据目录及自定义 CSS 的启用方式</a><a id="more"></a>
+
+</li>
+</ul>
+<h2 id="语法转义"><a href="#语法转义" class="headerlink" title="语法转义"></a>语法转义</h2><p>特殊符号 &#123;&#123;&#125;&#125; 在 Hexo 内是有特殊含义的语法，在文章中你不能直接使用，需要<a href="https://www.sojson.com/unicode.html" target="_blank" rel="noopener">转义字符</a>来代替</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">! &amp;<span class="comment">#33;         — 惊叹号 Exclamation mark</span></span><br><span class="line">” &amp;<span class="comment">#34; &amp;quot;  — 双引号 Quotation mark</span></span><br><span class="line"><span class="comment"># &amp;#35;         — 数字标志 Number sign</span></span><br><span class="line">$ &amp;<span class="comment">#36;         — 美元标志 Dollar sign</span></span><br><span class="line">% &amp;<span class="comment">#37;         — 百分号 Percent sign</span></span><br><span class="line">&amp; &amp;<span class="comment">#38; &amp;amp;   — And/Ampersand</span></span><br><span class="line">‘ &amp;<span class="comment">#39;         — 单引号 Apostrophe</span></span><br><span class="line">( &amp;<span class="comment">#40;         — 小括号左边部分 Left parenthesis</span></span><br><span class="line">) &amp;<span class="comment">#41;         — 小括号右边部分 Right parenthesis</span></span><br><span class="line">* &amp;<span class="comment">#42;         — 星号 Asterisk</span></span><br><span class="line">+ &amp;<span class="comment">#43;         — 加号 Plus sign</span></span><br><span class="line">&lt; &amp;<span class="comment">#60; &amp;lt;    — 小于号 Less than</span></span><br><span class="line">= &amp;<span class="comment">#61;         — 等于符号 Equals sign</span></span><br><span class="line">- &amp;<span class="comment">#45; &amp;minus; — 减号</span></span><br><span class="line">&gt; &amp;<span class="comment">#62; &amp;gt;    — 大于号 Greater than</span></span><br><span class="line">? &amp;<span class="comment">#63;         — 问号 Question mark</span></span><br><span class="line">@ &amp;<span class="comment">#64;         — At</span></span><br><span class="line">[ &amp;<span class="comment">#91;         — 中括号左边部分 Left square bracket</span></span><br><span class="line">\ &amp;<span class="comment">#92;         — 反斜杠 Reverse solidus (backslash)</span></span><br><span class="line">] &amp;<span class="comment">#93;         — 中括号右边部分 Right square bracket</span></span><br><span class="line">` &amp;<span class="comment">#96;         - 重音号 backquote/grave accent</span></span><br><span class="line">&#123; &amp;<span class="comment">#123;        — 大括号左边部分 Left curly brace</span></span><br><span class="line">| &amp;<span class="comment">#124;        — 竖线Vertical bar</span></span><br><span class="line">&#125; &amp;<span class="comment">#125;        — 大括号右边部分 Right curly brace</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="新建页面"><a href="#新建页面" class="headerlink" title="新建页面"></a>新建页面</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yml"><figcaption><span>配置 source/_data/next.tml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ---------------------------------------------------------------</span></span><br><span class="line"><span class="comment"># Menu Settings</span></span><br><span class="line"><span class="comment"># ---------------------------------------------------------------</span></span><br><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># 开启 tags 和 categories 需要在 source/**/index.md 内设置 type 属性</span></span><br><span class="line">  <span class="comment"># 自定义的页面或类似 about 的页面无须设置</span></span><br><span class="line">  <span class="comment"># 格式：名称：/名称/ || FontAwesome 5+图标</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-tags</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="自动刷新界面"><a href="#自动刷新界面" class="headerlink" title="自动刷新界面"></a>自动刷新界面</h2><p>在写博客时，我们往往需要手动刷新页面才会看到变化，操作很机械且耗时间。使用 <a href="https://github.com/hexojs/hexo-browsersync" target="_blank" rel="noopener">hexo-browsersync</a> 可解决，缺点是网络链接不稳定或者没网的情况下，需要等待四五分钟才会刷新，有时也会出现界面空白现象！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-browsersync</span><br></pre></td></tr></table></figure>
+
+<h2 id="忽略README文件"><a href="#忽略README文件" class="headerlink" title="忽略README文件"></a>忽略README文件</h2><figure class="highlight yml"><figcaption><span>配置 hexo _config.yml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># skip_render 属性可以跳过指定文件的渲染，同时它还支持表达式来匹配路径</span></span><br><span class="line"><span class="attr">skip_render:</span> <span class="string">README.md</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="置入本地图片"><a href="#置入本地图片" class="headerlink" title="置入本地图片"></a>置入本地图片</h2><p>Markdown 置入图片的语法是 <code>![img-title](img-url)</code>，但该语法没办法置入本地图片！这时需要使用到 <a href="https://github.com/xcodebuild/hexo-asset-image" target="_blank" rel="noopener">hexo-asset-image</a> 插件。<span style="color: #999">注意：1.0.0 版本插入图片时，文章内部的图片可正常显示，在首页时图片显示异常，建议继续使用 hexo 的  标签</span></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-asset-image</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yml"><figcaption><span>配置 hexo _config.yml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># hexo 置入图片的标签插件语法：&#123;% asset_img name.png 描述 %&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启资源文件管理功能</span></span><br><span class="line"><span class="comment"># 当我们再通过 hexo new [layout] &lt;title&gt; 命令创建新文章时，Hexo 就会自动创建一个跟文章同名的资源文件夹</span></span><br><span class="line"><span class="comment"># 把图片导入到该文件夹后，你就可以按照正常的 Markdown 语法置入图片了</span></span><br><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="插入代码文件"><a href="#插入代码文件" class="headerlink" title="插入代码文件"></a>插入代码文件</h2><p>插入代码文件需要先在 hexo 的 <code>code_dir</code> 模块处配置路径，这里以插入 <code>source/_data/includecode</code> 文件夹内的代码文件为例：<code>code_dir: _data/includecode/</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;% include_code css lang:css example.css %&#125;</span><br><span class="line">&#123;% include_code css lang:css from:2 to:3 example.css %&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><figcaption><span>css</span><a href="/blog/_data/includecode/example.css">view raw</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.terminal</span> {</span><br><span class="line">	<span class="attribute">text-shadow</span>: <span class="number">0</span> <span class="number">0</span> <span class="number">1px</span> <span class="built_in">rgba</span>(<span class="number">51</span>, <span class="number">0</span>, <span class="number">10</span>, <span class="number">0.4</span>),</span><br><span class="line">               <span class="number">0</span> <span class="number">0</span> <span class="number">2px</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.8</span>);</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><figcaption><span>css</span><a href="/blog/_data/includecode/example.css">view raw</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">text-shadow</span>: 0 0 1<span class="selector-tag">px</span> <span class="selector-tag">rgba</span>(51, 0, 10, 0<span class="selector-class">.4</span>),</span><br><span class="line">               0 0 2<span class="selector-tag">px</span> <span class="selector-tag">rgba</span>(0, 0, 0, 0<span class="selector-class">.8</span>);</span><br></pre></td></tr></table></figure>
+
+<p>其它标签请参考：</p>
+<ul>
+<li><a href="https://hexo.io/zh-cn/docs/tag-plugins" target="_blank" rel="noopener">https://hexo.io/zh-cn/docs/tag-plugins</a></li>
+<li><a href="https://theme-next.org/docs/tag-plugins/" target="_blank" rel="noopener">https://theme-next.org/docs/tag-plugins/</a></li>
+</ul>
+<h2 id="文章置顶"><a href="#文章置顶" class="headerlink" title="文章置顶"></a>文章置顶</h2><h3 id="手动实现"><a href="#手动实现" class="headerlink" title="手动实现"></a>手动实现</h3><p>主要运用到的是 JS 内的 sort 方法。按照如下所示，把方法添加到 <code>node_modules/hexo-generator-index/lib/generator.js</code> 内重启即可</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">posts.data = posts.data.sort(<span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(a.top &amp;&amp; b.top) &#123;</span><br><span class="line">    <span class="keyword">return</span> (a.top == b.top) ? b.date - a.date : b.top - a.top</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span>(a.top &amp;&amp; !b.top) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span>(!a.top &amp;&amp; b.top) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">return</span> b.date - a.date;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="插件实现"><a href="#插件实现" class="headerlink" title="插件实现"></a>插件实现</h3><p>插件实现需要先卸载 <code>hexo-generator-index</code>，然后再安装 <a href=""><code>hexo-generator-index-pin-top</code></a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall hexo-generator-index</span><br><span class="line">npm install hexo-generator-index-pin-top</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置-Front-matter"><a href="#设置-Front-matter" class="headerlink" title="设置 Front-matter"></a>设置 Front-matter</h3><p>上述两种方法任选则其一进行修改即可，修改完成后还需要在你需要置顶的文章内，设置 <code>Front-matter</code> 的属性值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 置顶单一文章，设置 top: true 即可</span><br><span class="line"># 置顶多篇文章，需要设置 top 的值为数值类型，值越大，文章越靠前</span><br><span class="line">top: 1</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置图标"><a href="#设置图标" class="headerlink" title="设置图标"></a>设置图标</h3><p>置顶的文章如果没有设置图标的话，看着会有点怪，所以这里也设置下。打开 <code>/themes/next/layout/_macro/</code> 目录下的 <code>post.swig</code> 文件，在 <code>&lt;div class=&quot;post-meta&quot;&gt;</code> 的第一个 <code>&lt;span class=&quot;post-time&quot;&gt;</code> 标签下，添加下述代码即可</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;% <span class="keyword">if</span> post.top %&#125;</span><br><span class="line">  &lt;span style=<span class="string">"color: #555"</span>&gt;</span><br><span class="line">    &lt;i <span class="class"><span class="keyword">class</span></span>=<span class="string">"fa fa-thumb-tack"</span>&gt;&lt;<span class="regexp">/i&gt;</span></span><br><span class="line"><span class="regexp">    &lt;span&gt;置顶&lt;/</span>span&gt;</span><br><span class="line">  &lt;<span class="regexp">/span&gt;</span></span><br><span class="line"><span class="regexp">  &lt;span class="post-meta-divider"&gt;|&lt;/</span>span&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="本地搜索"><a href="#本地搜索" class="headerlink" title="本地搜索"></a>本地搜索</h2><figure class="highlight bash"><figcaption><span>hexo-generator-searchdb</span><a href="https://github.com/theme-next/hexo-generator-searchdb" target="_blank" rel="noopener">link</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-searchdb</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yml"><figcaption><span>配置 hexo _config.yml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">search:</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">search.xml</span>           <span class="comment"># 索引文件的路径，相对于站点根目录</span></span><br><span class="line">  <span class="attr">field:</span> <span class="string">post</span>                <span class="comment"># 搜索范围，默认是 post，还可以选择 page、all，设置成 all 表示搜索所有页面</span></span><br><span class="line">  <span class="attr">format:</span> <span class="string">html</span></span><br><span class="line">  <span class="attr">limit:</span> <span class="number">10000</span>               <span class="comment"># 限制搜索的条目数</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yml"><figcaption><span>配置 source/_data/next.yml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">local_search:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="字数统计及阅读时长"><a href="#字数统计及阅读时长" class="headerlink" title="字数统计及阅读时长"></a>字数统计及阅读时长</h2><figure class="highlight bash"><figcaption><span>hexo-symbols-count-time</span><a href="https://github.com/theme-next/hexo-symbols-count-time" target="_blank" rel="noopener">link</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-symbols-count-time</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yml"><figcaption><span>配置 hexo _config.yml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">symbols_count_time:</span></span><br><span class="line">  <span class="attr">symbols:</span> <span class="literal">true</span>              <span class="comment"># 文章字数</span></span><br><span class="line">  <span class="attr">time:</span> <span class="literal">true</span>                 <span class="comment"># 阅读时长</span></span><br><span class="line">  <span class="attr">total_symbols:</span> <span class="literal">true</span>        <span class="comment"># 所有文章总字数</span></span><br><span class="line">  <span class="attr">total_time:</span> <span class="literal">true</span>           <span class="comment"># 所有文章阅读中时长</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yml"><figcaption><span>配置 source/_data/next.yml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">symbols_count_time:</span></span><br><span class="line">  <span class="attr">separated_meta:</span> <span class="literal">true</span>       <span class="comment"># 在 meta 区域是否换行显示</span></span><br><span class="line">  <span class="attr">item_text_post:</span> <span class="literal">true</span>       <span class="comment"># 在文章内部是否显示</span></span><br><span class="line">  <span class="attr">item_text_total:</span> <span class="literal">false</span>     <span class="comment"># 博客页面底部是否显示</span></span><br><span class="line">  <span class="attr">awl:</span> <span class="number">2</span>                     <span class="comment"># 中文推荐，中文～1.5</span></span><br><span class="line">  <span class="attr">wpm:</span> <span class="number">300</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="访问量统计"><a href="#访问量统计" class="headerlink" title="访问量统计"></a>访问量统计</h2><figure class="highlight yml"><figcaption><span>配置 source/_data/next.yml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 本地预览时显示的数量会比较大，不用管</span></span><br><span class="line"><span class="attr">busuanzi_count:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span>               <span class="comment"># 是否开启</span></span><br><span class="line">  <span class="attr">total_visitors:</span> <span class="literal">false</span>      <span class="comment"># 页面底部是否显示访问人数总数</span></span><br><span class="line">  <span class="attr">total_visitors_icon:</span> <span class="string">user</span>  <span class="comment"># FontAwesome 图标设置</span></span><br><span class="line">  <span class="attr">total_views:</span> <span class="literal">false</span>         <span class="comment"># 页面底部是否显示访问总量</span></span><br><span class="line">  <span class="attr">total_views_icon:</span> <span class="string">eye</span></span><br><span class="line">  <span class="attr">post_views:</span> <span class="literal">true</span>           <span class="comment"># 文章内部是否显示</span></span><br><span class="line">  <span class="attr">post_views_icon:</span> <span class="string">eye</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="配置固定链接"><a href="#配置固定链接" class="headerlink" title="配置固定链接"></a>配置固定链接</h2><figure class="highlight bash"><figcaption><span>hexo-abbrlink</span><a href="https://github.com/rozbo/hexo-abbrlink" target="_blank" rel="noopener">link</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-abbrlink</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yml"><figcaption><span>配置 hexo _config.yml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">permalink:</span> <span class="string">:abbrlink/</span></span><br><span class="line"><span class="attr">permalink_defaults:</span></span><br><span class="line">  <span class="attr">abbrlink:</span></span><br><span class="line">  <span class="attr">alg:</span> <span class="string">crc32</span>                 <span class="comment"># 算法：crc16(default) and crc32</span></span><br><span class="line">  <span class="attr">rep:</span> <span class="string">dec</span>                   <span class="comment"># 进制：dec(default) and hex</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="文章加密"><a href="#文章加密" class="headerlink" title="文章加密"></a>文章加密</h2><figure class="highlight bash"><figcaption><span>hexo-blog-encrypt</span><a href="https://github.com/MikeCoder/hexo-blog-encrypt" target="_blank" rel="noopener">link</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-blog-encrypt</span><br></pre></td></tr></table></figure>
+
+<p>在文章顶部 Front-matter 处设置参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: ****</span><br><span class="line">...</span><br><span class="line">password: ****</span><br><span class="line">abstract: 文章已加密，查看请联系博主！</span><br><span class="line">message: 请输入密码</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<h2 id="添加Gitalk留言板"><a href="#添加Gitalk留言板" class="headerlink" title="添加Gitalk留言板"></a>添加Gitalk留言板</h2><p>1.在 <a href="https://github.com/" target="_blank" rel="noopener"><code>Github</code></a> 上建个空白仓库专门用来存放留言，注意必须仓库是公开的<br>2.在 <code>Setting &gt; Developer setting &gt; OAuth Apps &gt; New OAuth App</code> 处，配置 Github OAuth 第三方验证</p>
+<blockquote>
+<p>1.Application name 项目名称随意，只要你看到名称知道它是干什么的就可以<br>2.Application description 项目描述<br>3.Homepage URL 和 Authorization callback URL 要填写博客的地址，例如：<a href="https://qlzhu.github.io/blog/">https://qlzhu.github.io/blog/</a></p>
+</blockquote>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">gitalk:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># 注意 github_id 和 admin_user 是你账户的名称</span></span><br><span class="line">  <span class="comment"># 如果更改过账户名的话，要用第一次注册时使用的名称</span></span><br><span class="line">  <span class="attr">github_id:</span> <span class="string">'**'</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># 刚才注册的空白库名称</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">blog-comments</span></span><br><span class="line">    </span><br><span class="line">  <span class="comment"># 配置 Github OAuth 第三方验证给出的字符串</span></span><br><span class="line">  <span class="attr">client_id:</span> <span class="string">a***047*60**e</span></span><br><span class="line">  <span class="attr">client_secret:</span> <span class="string">4f***2c**a8*cd4**d8*</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">admin_user:</span> <span class="string">'**'</span></span><br><span class="line">  <span class="attr">distraction_free_mode:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">language:</span> <span class="string">zh-CN</span></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>qinlzhu
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://qlzhu.github.io/blog/49139/" title="Hexo 配置进阶">https://qlzhu.github.io/blog/49139/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blog/tags/NexT/" rel="tag"># NexT</a>
+              <a href="/blog/tags/hexo/" rel="tag"># hexo</a>
+              <a href="/blog/tags/hexo-abbrlink/" rel="tag"># hexo-abbrlink</a>
+              <a href="/blog/tags/hexo-generator-searchdb/" rel="tag"># hexo-generator-searchdb</a>
+              <a href="/blog/tags/hexo-symbols-count-time/" rel="tag"># hexo-symbols-count-time</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/51941/" rel="prev" title="部署博客到 Github Pages">
+      <i class="fa fa-chevron-left"></i> 部署博客到 Github Pages
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/blog/46430/" rel="next" title="git子模块添加hexo-theme-next">
+      git子模块添加hexo-theme-next <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#语法转义"><span class="nav-number">1.</span> <span class="nav-text">语法转义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新建页面"><span class="nav-number">2.</span> <span class="nav-text">新建页面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自动刷新界面"><span class="nav-number">3.</span> <span class="nav-text">自动刷新界面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#忽略README文件"><span class="nav-number">4.</span> <span class="nav-text">忽略README文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#置入本地图片"><span class="nav-number">5.</span> <span class="nav-text">置入本地图片</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入代码文件"><span class="nav-number">6.</span> <span class="nav-text">插入代码文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文章置顶"><span class="nav-number">7.</span> <span class="nav-text">文章置顶</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#手动实现"><span class="nav-number">7.1.</span> <span class="nav-text">手动实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插件实现"><span class="nav-number">7.2.</span> <span class="nav-text">插件实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置-Front-matter"><span class="nav-number">7.3.</span> <span class="nav-text">设置 Front-matter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置图标"><span class="nav-number">7.4.</span> <span class="nav-text">设置图标</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本地搜索"><span class="nav-number">8.</span> <span class="nav-text">本地搜索</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字数统计及阅读时长"><span class="nav-number">9.</span> <span class="nav-text">字数统计及阅读时长</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问量统计"><span class="nav-number">10.</span> <span class="nav-text">访问量统计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置固定链接"><span class="nav-number">11.</span> <span class="nav-text">配置固定链接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文章加密"><span class="nav-number">12.</span> <span class="nav-text">文章加密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加Gitalk留言板"><span class="nav-number">13.</span> <span class="nav-text">添加Gitalk留言板</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qinlzhu"
+      src="/blog/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qinlzhu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/blog/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/blog/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/qLzhu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;qLzhu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qinlzhu@outlook.com" title="E-Mail → mailto:qinlzhu@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      常用网站链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://developer.mozilla.org/zh-CN/" title="https:&#x2F;&#x2F;developer.mozilla.org&#x2F;zh-CN&#x2F;" rel="noopener" target="_blank">MDN</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://juejin.im/" title="https:&#x2F;&#x2F;juejin.im&#x2F;" rel="noopener" target="_blank">JueJin</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://caniuse.com/" title="https:&#x2F;&#x2F;caniuse.com&#x2F;" rel="noopener" target="_blank">Caniuse</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://codepen.io/popular/pens/" title="https:&#x2F;&#x2F;codepen.io&#x2F;popular&#x2F;pens&#x2F;" rel="noopener" target="_blank">CodePen</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://realfavicongenerator.net/" title="https:&#x2F;&#x2F;realfavicongenerator.net&#x2F;" rel="noopener" target="_blank">Favivon</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sass.bootcss.com/" title="https:&#x2F;&#x2F;sass.bootcss.com&#x2F;" rel="noopener" target="_blank">Sass</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://github.com/MichealWayne/fe-tools" title="https:&#x2F;&#x2F;github.com&#x2F;MichealWayne&#x2F;fe-tools" rel="noopener" target="_blank">FeTools</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://travis-ci.com/" title="https:&#x2F;&#x2F;travis-ci.com&#x2F;" rel="noopener" target="_blank">TravisCI</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qinlzhu</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">15k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">25 分钟</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/blog/js/utils.js"></script>
+
+<script src="/blog/js/motion.js"></script>
+
+
+<script src="/blog/js/schemes/pisces.js"></script>
+
+
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/blog/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'ad50278e20047a600e1e',
+      clientSecret: '4fda32088322cc0152567a86cd419d499d8d2c3e',
+      repo        : 'blog-comments',
+      owner       : 'qlzhu',
+      admin       : ['qlzhu'],
+      id          : 'be0ff79add6f4ea41c6b5fd5f4f9040e',
+        language: 'zh-CN',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>git子模块添加hexo-theme-next</title>
+    <url>/blog/46430/</url>
+    <content><![CDATA[<p>博客重构 <code>git add</code> 添加到暂存区时报如下错误</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ git add .</span><br><span class="line"></span><br><span class="line">warning: adding embedded git repository: themes&#x2F;next</span><br><span class="line">hint: You&#39;ve added another git repository inside your current repository.</span><br><span class="line">hint: Clones of the outer repository will not contain the contents of</span><br><span class="line">hint: the embedded repository and will not know how to obtain it.</span><br><span class="line">hint: If you meant to add a submodule, use:</span><br><span class="line">hint: </span><br><span class="line">hint:   git submodule add &lt;url&gt; themes&#x2F;next</span><br><span class="line">hint: </span><br><span class="line">hint: If you added this path by mistake, you can remove it from the</span><br><span class="line">hint: index with:</span><br><span class="line">hint: </span><br><span class="line">hint:   git rm --cached themes&#x2F;next</span><br><span class="line">hint: </span><br><span class="line">hint: See &quot;git help submodule&quot; for more information.</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<p>这是因为 git 检测到 themes/next 目录是来自另一个 git 项目，不能直接作为本项目的文件进行上传</p>
+<p>解决办法如下：</p>
+<ol>
+<li>删除 themes/next/.git 目录</li>
+<li>把 hexo-theme-next 添加到 git 子模块</li>
+</ol>
+<p>我们采用第二种方式进行解决。先使用 <code>git rm -r --cached themes/next</code> 清除下暂存区和储存区中的 NexT 记录</p>
+<p>再使用 <code>git submodule</code> 命令把 hexo-theme-next 添加到 git 子模块</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git submodule add https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;hexo-theme-next themes&#x2F;next</span><br></pre></td></tr></table></figure>
+
+<p>执行后，git 会在根目录下生成一个 <code>.gitmodules</code> 文件。运行 <code>cat .gitmodules</code>，我们应该看到这样的东西</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[submodule &quot;themes&#x2F;next&quot;]</span><br><span class="line">  path &#x3D; themes&#x2F;next</span><br><span class="line">  url &#x3D; https:&#x2F;&#x2F;github.com&#x2F;theme-next&#x2F;hexo-theme-next</span><br></pre></td></tr></table></figure>
+
+<p>至此再添加或者提交的话，就没问题啦</p>
+<p>如果你想把 hexo-theme-next 添加到 git 子模块，单独提交一个 commit 的话，可先把 themes/next 排除</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git add .</span><br><span class="line">git reset -- themes&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p>注意：以后更新 hexo-theme-next 子模块的话，需要使用 <code>git submodule update</code> 命令</p>
+<h2 id="阅读拓展"><a href="#阅读拓展" class="headerlink" title="阅读拓展"></a>阅读拓展</h2><ul>
+<li><a href="https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E5%AD%90%E6%A8%A1%E5%9D%97" target="_blank" rel="noopener">Git工具-子模块</a></li>
+<li><a href="https://www.charlesjoe.com.cn/category/20190525-hexo-autodeploy-two.html" target="_blank" rel="noopener">Hexo文章发布环境的自动部署02-Hexo配置</a></li>
+<li><a href="http://blog.zedyeung.com/2018/08/05/How-to-migrate-and-synchronize-Hexo-and-theme-next-with-git-submodules/" target="_blank" rel="noopener">如何使用Git子模块迁移和同步Hexo和theme-next</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>NexT</tag>
+        <tag>git submodule add &lt;url&gt; themes/next</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Travis CI 自动化部署静态博客</title>
+    <url>/blog/65246/</url>
+    <content><![CDATA[<h2 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h2><p>登陆 <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a> 创建一个空的开源项目 trcl（<span style="color: #999;">项目名称随意，初次测试 Travis CI 最好跟着本文逐步操作，了解后再自己测试</span>）</p>
+<img src="/blog/65246/New_Repository.png" class="" title="Github上新建项目">
+<a id="more"></a>
+
+<p>项目新建后，再使用如下命令初始化本地项目（<span style="color: #999;">不能直接 <code>Git Clone</code> 到本地再初始化，因为 <code>hexo init</code> 的必须是空白项目</span>）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir trcl &amp;&amp; <span class="built_in">cd</span> <span class="variable">$_</span></span><br><span class="line">hexo init &amp;&amp; git init</span><br></pre></td></tr></table></figure>
+
+<p>和远程 origin（<span style="color: #999;">克隆版本库的时候，所使用的远程主机自动被Git命名为origin</span> ）建立链接关系</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git remote add origin git@github.com:***/trcl.git</span><br></pre></td></tr></table></figure>
+
+<p>landscape 主题更改为 NexT 主题，并提交到远程仓库</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next</span><br><span class="line">rm -rf themes/landscape/</span><br><span class="line"><span class="comment"># NexT主题设置为Git子模块命令</span></span><br><span class="line">git submodule add https://github.com/theme-next/hexo-theme-next themes/next</span><br><span class="line"></span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">"docs:init blog"</span></span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+
+<p>新建 gh-pages 分支并提交，以此用来部署静态网站</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git branch gh-pages</span><br><span class="line">git push -u origin gh-pages</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置-Hexo-config-yml"><a href="#配置-Hexo-config-yml" class="headerlink" title="配置 Hexo _config.yml"></a>配置 Hexo _config.yml</h2><p>把 gh-pages 分支同步到远程分支后，Github 会直接把该分支作为默认的静态网站进行部署。网址格式会按照这个格式进行生成 <code>https://username.github.io/trcl</code>，把 username 更换成你 Github 的用户名填写到下面（<span style="color: #999">也可以到 Github 上 Settings -&gt; GitHub Pages 处查看</span>）</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># URL</span></span><br><span class="line"><span class="comment">## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">https://yourname.github.io/trcl</span></span><br><span class="line"><span class="attr">root:</span> <span class="string">/trcl/</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="设置-Tokens"><a href="#设置-Tokens" class="headerlink" title="设置 Tokens"></a>设置 Tokens</h2><p>在 Github 上 Settings -&gt; Developer settings -&gt; Personal access tokens -&gt; Generate new token 处创建一个新的 token，该 token 只开启一个 repo 权限即可</p>
+<blockquote>
+<p><code>Note</code> 的名称随意，自己看到知道是什么token就没问题</p>
+</blockquote>
+<img src="/blog/65246/Set_Github_Tokens.png" class="" title="设置 token">
+
+<p>设置好后，滚动到界面最下方，点击 Generate token 按钮进行创建。注意：创建完的 token 只有第一次可见，之后再访问皆无法再见（<span style="color: #999">只能看见 token 的名称</span>），想查看只能重新再创建，因此要保存好这个值</p>
+<img src="/blog/65246/Token_hash.png" class="" title="token 值">
+
+<h2 id="配置-Travis-CI"><a href="#配置-Travis-CI" class="headerlink" title="配置 Travis CI"></a>配置 Travis CI</h2><p>登陆或注册 <a href="https://travis-ci.com/" target="_blank" rel="noopener">Travis CI</a> 需要使用 GitHub 账户，成功后应该是如下界面。到该界面后选择以下任意一个按钮点击（<span style="color: #999">+或者Activate all repositories using github apps</span>），进行 GitHub 项目的选择进行部署 Travis CI</p>
+<img src="/blog/65246/Travis_CI_Sign_In.png" class="" title="注册Travis CI">
+<img src="/blog/65246/Select_Trcl.png" class="" title="部署Travis CI">
+
+<p>Travis CI 部署到我们 trcl 项目后，我们还需要在 Travis CI 里把上一步创建的 token 值，配置到项目内</p>
+<img src="/blog/65246/Select_Trcl_Successful.png" class="" title="设置token">
+<img src="/blog/65246/Set_Trcl_Token.png" class="" title="添加token界面">
+
+<div class="note ">
+            <p>说明：<br>“NAME” 名称随便定义<br>“VALUE” 填写上一步创建的 token 值<br>“BRANCH” 选择要监测的分支<br>“DISPLAY VALUE IN BUILD LOG” 是 token 值是否显示在日记的意思，不用开启</p>
+          </div>
+
+<h2 id="设置-travis-yml"><a href="#设置-travis-yml" class="headerlink" title="设置 .travis.yml"></a>设置 .travis.yml</h2><p>上述步骤全部完成后，我们就需要设置 Travis CI 的配置文件 .travis.yml 啦</p>
+<figure class="highlight yml"><figcaption><span>.travis.yml</span><a href="/blog/_data/includecode/travis.yml">view raw</a></figcaption><table><tr><td class="code"><pre><span class="line"><span class="attr">language:</span> <span class="string">node_js</span>              <span class="comment"># 指定环境及其node_js版本</span></span><br><span class="line"><span class="attr">node_js:</span> </span><br><span class="line">  <span class="bullet">-</span> <span class="string">lts/*</span></span><br><span class="line"></span><br><span class="line"><span class="attr">cache:</span>                         <span class="comment"># 缓存设置，有利于提高下次构建的效率</span></span><br><span class="line">  <span class="attr">npm:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">directories:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">node_modules</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#notifications:                # 设置部署成功和失败时自动给你发送邮件</span></span><br><span class="line">  <span class="comment">#email:                      # https://docs.travis-ci.com/user/notifications</span></span><br><span class="line">    <span class="comment">#recipients:</span></span><br><span class="line">      <span class="comment">#- vensing@foxmail.com</span></span><br><span class="line">    <span class="comment">#on_success: never</span></span><br><span class="line">    <span class="comment">#on_failure: never</span></span><br><span class="line"></span><br><span class="line"><span class="attr">install:</span>                       <span class="comment"># 安装阶段</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">npm</span> <span class="string">install</span> <span class="string">hexo-cli</span> <span class="string">-g</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">npm</span> <span class="string">install</span></span><br><span class="line"></span><br><span class="line"><span class="attr">script:</span>                        <span class="comment"># 执行构建阶段</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">hexo</span> <span class="string">clean</span>                 <span class="comment"># hexo 的清理命令</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">hexo</span> <span class="string">generate</span>              <span class="comment"># hexo 的生成（构建）命令，即最核心的生成静态文件过程</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># GitHub Pages Deployment</span></span><br><span class="line"><span class="attr">deploy:</span>                        <span class="comment"># 部署阶段</span></span><br><span class="line">  <span class="attr">provider:</span> <span class="string">pages</span>              <span class="comment"># 约定 pages 为 GitHub Pages 服务，必须且不可更改</span></span><br><span class="line">  <span class="comment">#name: "yourname"            # 提交者</span></span><br><span class="line">  <span class="comment">#email: "yourname@email.com" # 提交者邮箱</span></span><br><span class="line">  <span class="attr">skip-cleanup:</span> <span class="literal">true</span>           <span class="comment"># 必须跳过清理，否则过程中生成的文件（要发布的静态资源）会被清理</span></span><br><span class="line">  <span class="attr">github-token:</span> <span class="string">$Trcl_Token</span>    <span class="comment"># Travis CI 设置 token 名称</span></span><br><span class="line">  <span class="attr">keep-history:</span> <span class="literal">true</span>           <span class="comment"># 设置为 false 时，使用 `git push --force` 命令覆盖历史记录</span></span><br><span class="line">  <span class="attr">on:</span></span><br><span class="line">    <span class="attr">branch:</span> <span class="string">master</span>             <span class="comment"># 仅监听 master 分支的变化，才执行构建</span></span><br><span class="line">  <span class="attr">target-branch:</span> <span class="string">gh-pages</span>      <span class="comment"># 用于存放静态资源的分支</span></span><br><span class="line">  <span class="attr">local-dir:</span> <span class="string">public</span>            <span class="comment"># `hexo generate` 命令生成的静态资源所在路径</span></span><br><span class="line">  <span class="comment">#fqdn:                       # 自定义域名</span></span><br></pre></td></tr></table></figure>
+
+<p>按照如上配置设置完成后，分别执行下<code>git add</code>、<code>git commit</code> 和 <code>git push</code> 提交下</p>
+<p>此时你再回到 Travis CI 应该可以看到构建成功的界面或者正在构建的界面（<span style="color: #999">如果构建失败，解决问题后重新提交 commit，再点击 Restart build 重新执行即可</span>）</p>
+<img src="/blog/65246/Travis_CI_Current.png" class="" title="构建成功界面">
+
+<p>另外点击 build passing 图标，还能够获得其链接，可以将它贴在其他地方，随时监控博客的 build 状态</p>
+<h2 id="删除-Travis-CI-项目"><a href="#删除-Travis-CI-项目" class="headerlink" title="删除 Travis CI 项目"></a>删除 Travis CI 项目</h2><img src="/blog/65246/Delete.png" class="" title="Travis CI 项目管理界面">
+<img src="/blog/65246/Delete_item.png" class="" title="删除界面">
+
+<ul>
+<li>单个项目时，直接在 Github 上删除仓库即可</li>
+<li>多个项目时，按照上述步骤删除部署 Travis CI 的项目</li>
+</ul>
+<h2 id="阅读拓展"><a href="#阅读拓展" class="headerlink" title="阅读拓展"></a>阅读拓展</h2><ul>
+<li><a href="https://hexo.io/zh-cn/index.html" target="_blank" rel="noopener">Hexo 官网</a></li>
+<li><a href="https://travis-ci.com/" target="_blank" rel="noopener">Travis CI 官网</a></li>
+<li><a href="https://docs.travis-ci.com/user/deployment/pages/" target="_blank" rel="noopener">GitHub Pages Deployment</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2017/12/travis_ci_tutorial.html" target="_blank" rel="noopener">阮一峰：持续集成服务 Travis CI 教程</a></li>
+<li><a href="https://g2ex.top/2019/06/28/hexo-with-travis-ci/" target="_blank" rel="noopener">G2ex：使用 Travis 自动化部署 Hexo Blog</a></li>
+<li><a href="https://notes.iissnan.com/2016/publishing-github-pages-with-travis-ci/" target="_blank" rel="noopener">iissnan：使用 Travis CI 自动更新 GitHub Pages</a></li>
+<li><a href="https://blog.i1hao.com/2018/09/01/hexo-and-githubpages-best-practices/" target="_blank" rel="noopener">Hexo + GitHub Pages + Travis CI 自动化部署静态博客</a></li>
+<li><a href="http://claude-ray.com/2019/08/01/travis-npm-cache/" target="_blank" rel="noopener">警惕 Travis CI 的 npm 缓存</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>Travis CI</tag>
+        <tag>github pages</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>部署博客到 Github Pages</title>
+    <url>/blog/51941/</url>
+    <content><![CDATA[<p><a href="https://github.com/" target="_blank" rel="noopener">GitHub</a> 是通过 Git 进行版本控制的软件源代码托管服务平台，它有很多人性化的功能可以帮助我们管理和追踪代码，把博客部署到 Github 上，最主要的原因就是用它的 <a href="https://pages.github.com/" target="_blank" rel="noopener">Github Pages</a> 服务，它可以为我们提供免费的静态网站托管服务，用起来方便而且功能强大，不仅没有空间限制，还可以绑定自己的域名</p>
+<p>这里我们不讲如何通过 Github 创建静态网站，只讲如何把本地博客部署到 GitHub 上！</p>
+<a id="more"></a>
+
+<p>部署环境及其账户：</p>
+<ul>
+<li><a href="https://github.com/" target="_blank" rel="noopener">注册好的 Github 账户</a></li>
+<li><a href="http://nodejs.cn/download/" target="_blank" rel="noopener">Node.js</a></li>
+<li><a href="https://git-scm.com/downloads" target="_blank" rel="noopener">Git</a></li>
+<li><a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">Hexo</a></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 全局安装 hexo</span></span><br><span class="line">npm install hexo-cli -g</span><br><span class="line"></span><br><span class="line"><span class="comment"># 打开 Terminal 使用命令，在本地创建一个博客目录并进到该目录下</span></span><br><span class="line">mkdir blog &amp;&amp; <span class="built_in">cd</span> <span class="variable">$_</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Hexo 和 git 初始化该目录</span></span><br><span class="line">hexo init &amp;&amp; git init</span><br><span class="line"></span><br><span class="line"><span class="comment"># 链接远程仓库（ssh）</span></span><br><span class="line"><span class="comment"># 需要先创建个空白的公开仓库，注意创建时不要选择自动创建 README.md 和 license 等文件</span></span><br><span class="line">git remote add origin git@github.com:xxx/blog.git</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装部署到 Github 上时所使用的插件</span></span><br><span class="line">npm install hexo-deployer-git --save</span><br><span class="line"></span><br><span class="line"><span class="comment"># 提交</span></span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">"xxx"</span></span><br><span class="line">git push -u origin master</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建 gh-pages 分支</span></span><br><span class="line"><span class="comment"># master 分支用作保存源码使用，而 gh-page 则是部署静态代码使用</span></span><br><span class="line"><span class="comment"># 提交后 Github 会默认 gh-pages 为静态网站分支，无须再开启，默认链接是 https://username.github.io/blog</span></span><br><span class="line">git branch gh-pages</span><br><span class="line">git push -u origin gh-pages</span><br></pre></td></tr></table></figure>
+
+<p>配置 hexo 的 _config.yml 文件</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="comment"># 自定义提交信息，可不配置</span></span><br><span class="line">  <span class="attr">message:</span> <span class="string">博客更新时间&#123;&#123;</span> <span class="string">now('YYYY-MM-DD</span> <span class="string">HH:mm:ss')</span> <span class="string">&#125;&#125;</span></span><br><span class="line">  <span class="comment"># Github 的 ssh 地址及其要部署到哪个分支</span></span><br><span class="line">  <span class="attr">repo:</span></span><br><span class="line">    <span class="attr">github:</span> <span class="string">git@github.com:xxx/blog.git,gh-pages</span></span><br></pre></td></tr></table></figure>
+
+<p>配置完成后，随便书写点内容，执行 <code>hexo g -d</code>，再去 Github 上的仓库内看看 gh-pages 分支是不是已经变成静态内容了</p>
+<p><strong>原理：</strong>执行 <code>hexo g -d</code> 操作时会在本地生成 <code>public</code> 静态代码和 <code>.deploy_git</code> 文件夹。<code>.deploy_git</code> 和 <code>public</code> 的内容几乎一致，但 <code>.deploy_git</code> 多了 GitHub 所需的仓库信息与提交信息。<strong>全部解析完后 hexo 会把 <code>.deploy_git</code> 文件夹内的全部内容推送到 GitHub 仓库中，再由 Github Pages 服务完成静态网站的解析</strong></p>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>github pages</tag>
+        <tag>hexo-deployer-git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo 配置进阶</title>
+    <url>/blog/49139/</url>
+    <content><![CDATA[<p>本博客采用的是 NexT 主题，以下配置结合 hexo 和 NexT 两方面混合讲解。说明：NexT 7.3 配置文件及其目录也发生了很多变化，并且支持了 Pjax。使得我们可以通过启动数据目录来管理配置，升级新的 release 版本更加平滑</p>
+<ul>
+<li><a href="https://github.com/theme-next/hexo-theme-next/blob/master/docs/zh-CN/DATA-FILES.md" target="_blank" rel="noopener">NexT 数据目录官方说明</a></li>
+<li><a href="https://tding.top/archives/2bd6d82.html" target="_blank" rel="noopener">Hexo-NexT 版本更新记录</a></li>
+<li><a href="https://www.imczw.com/post/tech/next_data_file.html" target="_blank" rel="noopener">NexT 7.3 数据目录及自定义 CSS 的启用方式</a><a id="more"></a>
+
+</li>
+</ul>
+<h2 id="语法转义"><a href="#语法转义" class="headerlink" title="语法转义"></a>语法转义</h2><p>特殊符号 &#123;&#123;&#125;&#125; 在 Hexo 内是有特殊含义的语法，在文章中你不能直接使用，需要<a href="https://www.sojson.com/unicode.html" target="_blank" rel="noopener">转义字符</a>来代替</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">! &amp;<span class="comment">#33;         — 惊叹号 Exclamation mark</span></span><br><span class="line">” &amp;<span class="comment">#34; &amp;quot;  — 双引号 Quotation mark</span></span><br><span class="line"><span class="comment"># &amp;#35;         — 数字标志 Number sign</span></span><br><span class="line">$ &amp;<span class="comment">#36;         — 美元标志 Dollar sign</span></span><br><span class="line">% &amp;<span class="comment">#37;         — 百分号 Percent sign</span></span><br><span class="line">&amp; &amp;<span class="comment">#38; &amp;amp;   — And/Ampersand</span></span><br><span class="line">‘ &amp;<span class="comment">#39;         — 单引号 Apostrophe</span></span><br><span class="line">( &amp;<span class="comment">#40;         — 小括号左边部分 Left parenthesis</span></span><br><span class="line">) &amp;<span class="comment">#41;         — 小括号右边部分 Right parenthesis</span></span><br><span class="line">* &amp;<span class="comment">#42;         — 星号 Asterisk</span></span><br><span class="line">+ &amp;<span class="comment">#43;         — 加号 Plus sign</span></span><br><span class="line">&lt; &amp;<span class="comment">#60; &amp;lt;    — 小于号 Less than</span></span><br><span class="line">= &amp;<span class="comment">#61;         — 等于符号 Equals sign</span></span><br><span class="line">- &amp;<span class="comment">#45; &amp;minus; — 减号</span></span><br><span class="line">&gt; &amp;<span class="comment">#62; &amp;gt;    — 大于号 Greater than</span></span><br><span class="line">? &amp;<span class="comment">#63;         — 问号 Question mark</span></span><br><span class="line">@ &amp;<span class="comment">#64;         — At</span></span><br><span class="line">[ &amp;<span class="comment">#91;         — 中括号左边部分 Left square bracket</span></span><br><span class="line">\ &amp;<span class="comment">#92;         — 反斜杠 Reverse solidus (backslash)</span></span><br><span class="line">] &amp;<span class="comment">#93;         — 中括号右边部分 Right square bracket</span></span><br><span class="line">` &amp;<span class="comment">#96;         - 重音号 backquote/grave accent</span></span><br><span class="line">&#123; &amp;<span class="comment">#123;        — 大括号左边部分 Left curly brace</span></span><br><span class="line">| &amp;<span class="comment">#124;        — 竖线Vertical bar</span></span><br><span class="line">&#125; &amp;<span class="comment">#125;        — 大括号右边部分 Right curly brace</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="新建页面"><a href="#新建页面" class="headerlink" title="新建页面"></a>新建页面</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yml"><figcaption><span>配置 source/_data/next.tml</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment"># ---------------------------------------------------------------</span></span><br><span class="line"><span class="comment"># Menu Settings</span></span><br><span class="line"><span class="comment"># ---------------------------------------------------------------</span></span><br><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># 开启 tags 和 categories 需要在 source/**/index.md 内设置 type 属性</span></span><br><span class="line">  <span class="comment"># 自定义的页面或类似 about 的页面无须设置</span></span><br><span class="line">  <span class="comment"># 格式：名称：/名称/ || FontAwesome 5+图标</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-tags</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="自动刷新界面"><a href="#自动刷新界面" class="headerlink" title="自动刷新界面"></a>自动刷新界面</h2><p>在写博客时，我们往往需要手动刷新页面才会看到变化，操作很机械且耗时间。使用 <a href="https://github.com/hexojs/hexo-browsersync" target="_blank" rel="noopener">hexo-browsersync</a> 可解决，缺点是网络链接不稳定或者没网的情况下，需要等待四五分钟才会刷新，有时也会出现界面空白现象！</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm install hexo-browsersync</span><br></pre></td></tr></table></figure>
+
+<h2 id="忽略README文件"><a href="#忽略README文件" class="headerlink" title="忽略README文件"></a>忽略README文件</h2><figure class="highlight yml"><figcaption><span>配置 hexo _config.yml</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment"># skip_render 属性可以跳过指定文件的渲染，同时它还支持表达式来匹配路径</span></span><br><span class="line"><span class="attr">skip_render:</span> <span class="string">README.md</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="置入本地图片"><a href="#置入本地图片" class="headerlink" title="置入本地图片"></a>置入本地图片</h2><p>Markdown 置入图片的语法是 <code>![img-title](img-url)</code>，但该语法没办法置入本地图片！这时需要使用到 <a href="https://github.com/xcodebuild/hexo-asset-image" target="_blank" rel="noopener">hexo-asset-image</a> 插件。<span style="color: #999">注意：1.0.0 版本插入图片时，文章内部的图片可正常显示，在首页时图片显示异常，建议继续使用 hexo 的  标签</span></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-asset-image</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yml"><figcaption><span>配置 hexo _config.yml</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment"># hexo 置入图片的标签插件语法：&#123;% asset_img name.png 描述 %&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启资源文件管理功能</span></span><br><span class="line"><span class="comment"># 当我们再通过 hexo new [layout] &lt;title&gt; 命令创建新文章时，Hexo 就会自动创建一个跟文章同名的资源文件夹</span></span><br><span class="line"><span class="comment"># 把图片导入到该文件夹后，你就可以按照正常的 Markdown 语法置入图片了</span></span><br><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="插入代码文件"><a href="#插入代码文件" class="headerlink" title="插入代码文件"></a>插入代码文件</h2><p>插入代码文件需要先在 hexo 的 <code>code_dir</code> 模块处配置路径，这里以插入 <code>source/_data/includecode</code> 文件夹内的代码文件为例：<code>code_dir: _data/includecode/</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% include_code css lang:css example.css %&#125;</span><br><span class="line">&#123;% include_code css lang:css from:2 to:3 example.css %&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><figcaption><span>css</span><a href="/blog/_data/includecode/example.css">view raw</a></figcaption><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.terminal</span> {</span><br><span class="line">	<span class="attribute">text-shadow</span>: <span class="number">0</span> <span class="number">0</span> <span class="number">1px</span> <span class="built_in">rgba</span>(<span class="number">51</span>, <span class="number">0</span>, <span class="number">10</span>, <span class="number">0.4</span>),</span><br><span class="line">               <span class="number">0</span> <span class="number">0</span> <span class="number">2px</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.8</span>);</span><br><span class="line">}</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><figcaption><span>css</span><a href="/blog/_data/includecode/example.css">view raw</a></figcaption><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">text-shadow</span>: 0 0 1<span class="selector-tag">px</span> <span class="selector-tag">rgba</span>(51, 0, 10, 0<span class="selector-class">.4</span>),</span><br><span class="line">               0 0 2<span class="selector-tag">px</span> <span class="selector-tag">rgba</span>(0, 0, 0, 0<span class="selector-class">.8</span>);</span><br></pre></td></tr></table></figure>
+
+<p>其它标签请参考：</p>
+<ul>
+<li><a href="https://hexo.io/zh-cn/docs/tag-plugins" target="_blank" rel="noopener">https://hexo.io/zh-cn/docs/tag-plugins</a></li>
+<li><a href="https://theme-next.org/docs/tag-plugins/" target="_blank" rel="noopener">https://theme-next.org/docs/tag-plugins/</a></li>
+</ul>
+<h2 id="文章置顶"><a href="#文章置顶" class="headerlink" title="文章置顶"></a>文章置顶</h2><h3 id="手动实现"><a href="#手动实现" class="headerlink" title="手动实现"></a>手动实现</h3><p>主要运用到的是 JS 内的 sort 方法。按照如下所示，把方法添加到 <code>node_modules/hexo-generator-index/lib/generator.js</code> 内重启即可</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">posts.data = posts.data.sort(<span class="function"><span class="keyword">function</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(a.top &amp;&amp; b.top) &#123;</span><br><span class="line">    <span class="keyword">return</span> (a.top == b.top) ? b.date - a.date : b.top - a.top</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span>(a.top &amp;&amp; !b.top) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span>(!a.top &amp;&amp; b.top) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">return</span> b.date - a.date;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="插件实现"><a href="#插件实现" class="headerlink" title="插件实现"></a>插件实现</h3><p>插件实现需要先卸载 <code>hexo-generator-index</code>，然后再安装 <a href=""><code>hexo-generator-index-pin-top</code></a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm uninstall hexo-generator-index</span><br><span class="line">npm install hexo-generator-index-pin-top</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置-Front-matter"><a href="#设置-Front-matter" class="headerlink" title="设置 Front-matter"></a>设置 Front-matter</h3><p>上述两种方法任选则其一进行修改即可，修改完成后还需要在你需要置顶的文章内，设置 <code>Front-matter</code> 的属性值</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 置顶单一文章，设置 top: true 即可</span><br><span class="line"># 置顶多篇文章，需要设置 top 的值为数值类型，值越大，文章越靠前</span><br><span class="line">top: 1</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置图标"><a href="#设置图标" class="headerlink" title="设置图标"></a>设置图标</h3><p>置顶的文章如果没有设置图标的话，看着会有点怪，所以这里也设置下。打开 <code>/themes/next/layout/_macro/</code> 目录下的 <code>post.swig</code> 文件，在 <code>&lt;div class=&quot;post-meta&quot;&gt;</code> 的第一个 <code>&lt;span class=&quot;post-time&quot;&gt;</code> 标签下，添加下述代码即可</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&#123;% <span class="keyword">if</span> post.top %&#125;</span><br><span class="line">  &lt;span style=<span class="string">"color: #555"</span>&gt;</span><br><span class="line">    &lt;i <span class="class"><span class="keyword">class</span></span>=<span class="string">"fa fa-thumb-tack"</span>&gt;&lt;<span class="regexp">/i&gt;</span></span><br><span class="line"><span class="regexp">    &lt;span&gt;置顶&lt;/</span>span&gt;</span><br><span class="line">  &lt;<span class="regexp">/span&gt;</span></span><br><span class="line"><span class="regexp">  &lt;span class="post-meta-divider"&gt;|&lt;/</span>span&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="本地搜索"><a href="#本地搜索" class="headerlink" title="本地搜索"></a>本地搜索</h2><figure class="highlight bash"><figcaption><span>hexo-generator-searchdb</span><a href="https://github.com/theme-next/hexo-generator-searchdb" target="_blank" rel="noopener">link</a></figcaption><table><tr><td class="code"><pre><span class="line">npm install hexo-generator-searchdb</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yml"><figcaption><span>配置 hexo _config.yml</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="attr">search:</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">search.xml</span>           <span class="comment"># 索引文件的路径，相对于站点根目录</span></span><br><span class="line">  <span class="attr">field:</span> <span class="string">post</span>                <span class="comment"># 搜索范围，默认是 post，还可以选择 page、all，设置成 all 表示搜索所有页面</span></span><br><span class="line">  <span class="attr">format:</span> <span class="string">html</span></span><br><span class="line">  <span class="attr">limit:</span> <span class="number">10000</span>               <span class="comment"># 限制搜索的条目数</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yml"><figcaption><span>配置 source/_data/next.yml</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="attr">local_search:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="字数统计及阅读时长"><a href="#字数统计及阅读时长" class="headerlink" title="字数统计及阅读时长"></a>字数统计及阅读时长</h2><figure class="highlight bash"><figcaption><span>hexo-symbols-count-time</span><a href="https://github.com/theme-next/hexo-symbols-count-time" target="_blank" rel="noopener">link</a></figcaption><table><tr><td class="code"><pre><span class="line">npm install hexo-symbols-count-time</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yml"><figcaption><span>配置 hexo _config.yml</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="attr">symbols_count_time:</span></span><br><span class="line">  <span class="attr">symbols:</span> <span class="literal">true</span>              <span class="comment"># 文章字数</span></span><br><span class="line">  <span class="attr">time:</span> <span class="literal">true</span>                 <span class="comment"># 阅读时长</span></span><br><span class="line">  <span class="attr">total_symbols:</span> <span class="literal">true</span>        <span class="comment"># 所有文章总字数</span></span><br><span class="line">  <span class="attr">total_time:</span> <span class="literal">true</span>           <span class="comment"># 所有文章阅读中时长</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yml"><figcaption><span>配置 source/_data/next.yml</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="attr">symbols_count_time:</span></span><br><span class="line">  <span class="attr">separated_meta:</span> <span class="literal">true</span>       <span class="comment"># 在 meta 区域是否换行显示</span></span><br><span class="line">  <span class="attr">item_text_post:</span> <span class="literal">true</span>       <span class="comment"># 在文章内部是否显示</span></span><br><span class="line">  <span class="attr">item_text_total:</span> <span class="literal">false</span>     <span class="comment"># 博客页面底部是否显示</span></span><br><span class="line">  <span class="attr">awl:</span> <span class="number">2</span>                     <span class="comment"># 中文推荐，中文～1.5</span></span><br><span class="line">  <span class="attr">wpm:</span> <span class="number">300</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="访问量统计"><a href="#访问量统计" class="headerlink" title="访问量统计"></a>访问量统计</h2><figure class="highlight yml"><figcaption><span>配置 source/_data/next.yml</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment"># 本地预览时显示的数量会比较大，不用管</span></span><br><span class="line"><span class="attr">busuanzi_count:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span>               <span class="comment"># 是否开启</span></span><br><span class="line">  <span class="attr">total_visitors:</span> <span class="literal">false</span>      <span class="comment"># 页面底部是否显示访问人数总数</span></span><br><span class="line">  <span class="attr">total_visitors_icon:</span> <span class="string">user</span>  <span class="comment"># FontAwesome 图标设置</span></span><br><span class="line">  <span class="attr">total_views:</span> <span class="literal">false</span>         <span class="comment"># 页面底部是否显示访问总量</span></span><br><span class="line">  <span class="attr">total_views_icon:</span> <span class="string">eye</span></span><br><span class="line">  <span class="attr">post_views:</span> <span class="literal">true</span>           <span class="comment"># 文章内部是否显示</span></span><br><span class="line">  <span class="attr">post_views_icon:</span> <span class="string">eye</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="配置固定链接"><a href="#配置固定链接" class="headerlink" title="配置固定链接"></a>配置固定链接</h2><figure class="highlight bash"><figcaption><span>hexo-abbrlink</span><a href="https://github.com/rozbo/hexo-abbrlink" target="_blank" rel="noopener">link</a></figcaption><table><tr><td class="code"><pre><span class="line">npm install hexo-abbrlink</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yml"><figcaption><span>配置 hexo _config.yml</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="attr">permalink:</span> <span class="string">:abbrlink/</span></span><br><span class="line"><span class="attr">permalink_defaults:</span></span><br><span class="line">  <span class="attr">abbrlink:</span></span><br><span class="line">  <span class="attr">alg:</span> <span class="string">crc32</span>                 <span class="comment"># 算法：crc16(default) and crc32</span></span><br><span class="line">  <span class="attr">rep:</span> <span class="string">dec</span>                   <span class="comment"># 进制：dec(default) and hex</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="文章加密"><a href="#文章加密" class="headerlink" title="文章加密"></a>文章加密</h2><figure class="highlight bash"><figcaption><span>hexo-blog-encrypt</span><a href="https://github.com/MikeCoder/hexo-blog-encrypt" target="_blank" rel="noopener">link</a></figcaption><table><tr><td class="code"><pre><span class="line">npm install hexo-blog-encrypt</span><br></pre></td></tr></table></figure>
+
+<p>在文章顶部 Front-matter 处设置参数</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: ****</span><br><span class="line">...</span><br><span class="line">password: ****</span><br><span class="line">abstract: 文章已加密，查看请联系博主！</span><br><span class="line">message: 请输入密码</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<h2 id="添加Gitalk留言板"><a href="#添加Gitalk留言板" class="headerlink" title="添加Gitalk留言板"></a>添加Gitalk留言板</h2><p>1.在 <a href="https://github.com/" target="_blank" rel="noopener"><code>Github</code></a> 上建个空白仓库专门用来存放留言，注意必须仓库是公开的<br>2.在 <code>Setting &gt; Developer setting &gt; OAuth Apps &gt; New OAuth App</code> 处，配置 Github OAuth 第三方验证</p>
+<blockquote>
+<p>1.Application name 项目名称随意，只要你看到名称知道它是干什么的就可以<br>2.Application description 项目描述<br>3.Homepage URL 和 Authorization callback URL 要填写博客的地址，例如：<a href="https://qlzhu.github.io/blog/">https://qlzhu.github.io/blog/</a></p>
+</blockquote>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">gitalk:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># 注意 github_id 和 admin_user 是你账户的名称</span></span><br><span class="line">  <span class="comment"># 如果更改过账户名的话，要用第一次注册时使用的名称</span></span><br><span class="line">  <span class="attr">github_id:</span> <span class="string">'**'</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># 刚才注册的空白库名称</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">blog-comments</span></span><br><span class="line">    </span><br><span class="line">  <span class="comment"># 配置 Github OAuth 第三方验证给出的字符串</span></span><br><span class="line">  <span class="attr">client_id:</span> <span class="string">a***047*60**e</span></span><br><span class="line">  <span class="attr">client_secret:</span> <span class="string">4f***2c**a8*cd4**d8*</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">admin_user:</span> <span class="string">'**'</span></span><br><span class="line">  <span class="attr">distraction_free_mode:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">language:</span> <span class="string">zh-CN</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>NexT</tag>
+        <tag>hexo</tag>
+        <tag>hexo-abbrlink</tag>
+        <tag>hexo-generator-searchdb</tag>
+        <tag>hexo-symbols-count-time</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SSH Connection closed</title>
+    <url>/blog/11331/</url>
+    <content><![CDATA[<p>Mac终端连接远程服务器时，报 <code>Connection closed by 207.***.8*.** port 22</code> 错误！原因是服务器账户的密码换了，链接时匹配本地的 ECDSA，未匹配正确，所以服务器拒绝建立连接</p>
+<p>ssh-keygen 命令删除指定密钥，再重新连接输入密码即可解决</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 注意把 YourName 换成你的电脑的用户名</span></span><br><span class="line"><span class="comment"># 服务的 207.***.8*.** IP 也需要换成你的</span></span><br><span class="line">ssh-keygen -f <span class="string">"/users/YourName/.ssh/known_hosts"</span> -R 207.***.8*.**</span><br></pre></td></tr></table></figure>
+
+<p>当然你还可以手动删除 <code>known_hosts</code> 文件内的密钥，在你的根目录下找到 <code>.ssh/known_hosts</code>（<span style="color: #999">显示隐藏文件快捷键Command + shift + .</span>） ，删除 <code>207.***.8*.**</code> 开头的一行，然后保存退出！</p>
+]]></content>
+      <categories>
+        <category>mac</category>
+      </categories>
+      <tags>
+        <tag>ssh</tag>
+        <tag>ssh Connection closed</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Mac 卸载 App 残留、Node 和 NPM</title>
+    <url>/blog/21969/</url>
+    <content><![CDATA[<p>Mac上我们不借助第三方应用删除App的话，通常是直接移除到垃圾篓，或者按住<code>⌥option</code>删除<span class="text-gray">（App Store 下载的 App）</span>，时间长了系统会帮我们自动清理一些App残留。但是有些文件系统是不删除的，这时我们可以借助<code>mdfind</code>命令进行查询下跟App有关的文件，例如我们删除CleanMyMac</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mdfind -name CleanMyMac</span><br><span class="line"></span><br><span class="line"><span class="comment"># /Applications/CleanMyMac X.app</span></span><br><span class="line"><span class="comment"># /Library/LaunchDaemons/com.macpaw.zh.CleanMyMac4.Agent.plist</span></span><br><span class="line"><span class="comment"># /Library/LaunchDaemons/com.macpaw.CleanMyMac4.Agent.plist</span></span><br><span class="line"><span class="comment"># ...</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 命令删除时注意要转义下空格</span></span><br><span class="line">rm -rf /Applications/CleanMyMac\ X.app</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h2 id="Install-nvm"><a href="#Install-nvm" class="headerlink" title="Install nvm"></a>Install nvm</h2><p><a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node</a>版本比较不好管理，我们可以借助<a href="https://github.com/nvm-sh/nvm" target="_blank" rel="noopener">nvm</a>进行管理Node。通过<a href="https://brew.sh/index_zh-cn" target="_blank" rel="noopener">HomeBrew</a>安装nvm，然后再通过nvm安装Node，这样一级管理一级，方便卸载和安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 已安装HomeBrew的请跳过</span></span><br><span class="line">/bin/bash -c <span class="string">"<span class="variable">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)</span>"</span></span><br><span class="line"></span><br><span class="line">brew install nvm</span><br></pre></td></tr></table></figure>
+
+<p>安装完成后还不能直接使用，因为通过HomeBrew安装的nvm缺少<code>nvm.sh</code>脚本文件，执行时总会报<code>command not found: nvm</code>错误，所以需要额外设置下</p>
+<div class="tabs" id="nvm"><ul class="nav-tabs"><li class="tab active"><a href="#nvm-1">bash</a></li><li class="tab"><a href="#nvm-2">zsh</a></li></ul><div class="tab-content"><div class="tab-pane active" id="nvm-1"><p>  Mac系统默认的Shell解释器是Bash，如果你未更换的话，请在<code>~/.bash_profile</code>内添加如下配置。确实不知道用<code>echo $SHELL</code>命令查看下<br>  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> NVM_DIR=<span class="string">"<span class="variable">$HOME</span>/.nvm"</span></span><br><span class="line">[ -s <span class="string">"<span class="variable">$NVM_DIR</span>/nvm.sh"</span> ] &amp;&amp; . <span class="string">"<span class="variable">$NVM_DIR</span>/nvm.sh"</span>  <span class="comment"># This loads nvm</span></span><br><span class="line">[ -s <span class="string">"<span class="variable">$NVM_DIR</span>/bash_completion"</span> ] &amp;&amp; . <span class="string">"<span class="variable">$NVM_DIR</span>/bash_completion"</span>  <span class="comment"># This loads nvm bash_completion</span></span><br></pre></td></tr></table></figure></p></div><div class="tab-pane" id="nvm-2"><p>  编辑<code>~/.zshrc</code>文件<br>  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> NVM_DIR=~/.nvm</span><br><span class="line"><span class="built_in">source</span> $(brew --prefix nvm)/nvm.sh</span><br></pre></td></tr></table></figure></p></div></div></div>
+
+<p>配置完成后，<code>source</code>命令重启下相应的配置文件</p>
+<h2 id="Install-Node"><a href="#Install-Node" class="headerlink" title="Install Node"></a>Install Node</h2><p>上述步骤都设置好后，我们就可以使用nvm安装Node了</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nvm install stable       <span class="comment">#安装最新的稳定版本</span></span><br><span class="line">nvm <span class="built_in">alias</span> default stable <span class="comment">#将此版本设置为默认版本</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="nvm-basic-commands"><a href="#nvm-basic-commands" class="headerlink" title="nvm basic commands"></a>nvm basic commands</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nvm --<span class="built_in">help</span>                  显示命令行帮助信息</span><br><span class="line">nvm --version               打印输出已安装的nvm版本号</span><br><span class="line"></span><br><span class="line">nvm ls-remote               列出远程仓库内所有可安装的版本</span><br><span class="line">nvm install &lt;version&gt;       安装指定的版本</span><br><span class="line">nvm reinstall-packages      重新安装当前版本的Node</span><br><span class="line">nvm ls                      列出所有安装的Node版本</span><br><span class="line">nvm uninstall &lt;version&gt;     卸载指定的版本</span><br><span class="line"></span><br><span class="line">nvm current                 显示当前的Node版本</span><br><span class="line">nvm use &lt;version&gt;           切换指定版本</span><br><span class="line"></span><br><span class="line">nvm <span class="built_in">alias</span> &lt;name&gt; &lt;version&gt;  给不同的版本号添加别名</span><br><span class="line">nvm <span class="built_in">unalias</span> &lt;name&gt;          删除已定义的别名</span><br><span class="line">nvm <span class="built_in">alias</span> default &lt;version&gt; 设置默认 node 版本</span><br><span class="line"><span class="comment"># nvm 默认是不能删除被设定为 default 版本的 node</span></span><br><span class="line"><span class="comment"># 特别是只安装了一个 node 的时候，这个时候我们需要先解除当前版本绑定，然后再使用 nvm uninstall 删除</span></span><br><span class="line">nvm deactivate              解除当前版本绑定</span><br><span class="line"></span><br><span class="line">nvm cache dir               显示nvm的缓存目录</span><br><span class="line">nvm cache clear             清楚nvm的缓存目录</span><br><span class="line"></span><br><span class="line"><span class="comment"># 阅读拓展</span></span><br><span class="line"><span class="comment"># https://github.com/nvm-sh/nvm</span></span><br><span class="line"><span class="comment"># http://www.srcmini.com/1433.html</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Uninstall-Node-PKG"><a href="#Uninstall-Node-PKG" class="headerlink" title="Uninstall Node PKG"></a>Uninstall Node PKG</h2><p>卸载从官网下载的安装，使用如下命令。如果未正常卸载的使用<code>which</code>命令查看下，安装的位置是不是自己更改了</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo rm -rf /usr/<span class="built_in">local</span>/&#123;bin/&#123;node,npm&#125;,lib/node_modules/npm,lib/node,share/man/*/node.*&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>mac</category>
+      </categories>
+      <tags>
+        <tag>node</tag>
+        <tag>npm</tag>
+        <tag>mdfind</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>xcode-select --install</title>
+    <url>/blog/35871/</url>
+    <content><![CDATA[<p>如果你是程序猿并且使用的是 Mac 的话，肯定避免不了要安装 Xcode，因为它内置了很多开发必须的环境，在最新的版本中 Xcode 默认不再集成 <code>Xcode command line tools</code>。如果你不是一名 iOS 或 OS X 开发者，可以跳过 XCode（软件太大了近10G）直接安装 <code>Xcode command line tools</code> 了</p>
+<p>Install 命令</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">xcode-select --install</span><br></pre></td></tr></table></figure>
+
+<p>如果 Install 不了，可直接到 <a href="https://developer.apple.com/download/more/" target="_blank" rel="noopener"><code>Developer Apple</code></a> 内下载相应的包</p>
+<p>如果你想了解 <code>Xcode command line tools</code> 包含多少可用的命令，可以到 <code>/Library/Developer/CommandLineTools/</code> 查看，另外如果你想卸载的话直接删除该目录即可</p>
+]]></content>
+      <categories>
+        <category>mac</category>
+      </categories>
+      <tags>
+        <tag>mac</tag>
+        <tag>mac-xcode-select --install</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>科学上网</title>
+    <url>/blog/64387/</url>
+    <content><![CDATA[<p>国内的国情确定了我们可浏览的网站，由于我们是开发者需要翻看很多国外技术网站，查看这些技术网站就需要到科学的技术。这里我们就介绍下 hosts、<a href="https://github.com/getlantern/lantern" target="_blank" rel="noopener">lantern</a>、<a href="https://shadowsocks.org/en/index.html" target="_blank" rel="noopener">shadowsocks</a>、<a href="https://getoutline.org/en/home" target="_blank" rel="noopener">outline</a> 的搭建和使用</p>
+<h2 id="hosts"><a href="#hosts" class="headerlink" title="hosts"></a>hosts</h2><p>hosts（the static table lookup for host name 主机名查询静态表）用于补充或取代网络中DNS的功能。它储存的是计算机网络中各节点信息，负责将主机名映射到相应的IP地址，合理利用可提高域名的解析速度。<strong>在以前通过该技术可以实现FQ目的，现在已不再适用，因为自2018年8月24号起，长城开始启用基于SNI检测和TCP连接重置等手段进行了封锁</strong></p>
+<h2 id="lantern"><a href="#lantern" class="headerlink" title="lantern"></a>lantern</h2><p><a href="https://github.com/getlantern/lantern" target="_blank" rel="noopener">lantern（蓝灯）</a>免费的全平台兼容的FQ软件，每月500M，每月月初自动重置</p>
+<h2 id="shadowsocks"><a href="#shadowsocks" class="headerlink" title="shadowsocks"></a>shadowsocks</h2><p>Shadowsocks是一种基于socks5协议的代理工具，分为客户端Clients和服务端Servers两部分，客户端Clients是运行在你电脑或者手机上的软件，服务端Servers是运行在海外服务器上的程序，搭建该服务需要先买台VM主机，我这里使用的是<a href="https://www.vultr.com/" target="_blank" rel="noopener">vultr</a>的服务器，系统采用的是 Ubuntu 19.10 x 64 版本</p>
+<p>线上服务器搭建好后，在本地使用终端通过SSH命令，登陆到Vultr的云主机服务器上</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh root@Vultr-OS-IP</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装组件"><a href="#安装组件" class="headerlink" title="安装组件"></a>安装组件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-get update</span><br><span class="line">apt-get install python-pip</span><br><span class="line">pip install shadowsocks</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装谷歌BBR加速器"><a href="#安装谷歌BBR加速器" class="headerlink" title="安装谷歌BBR加速器"></a>安装谷歌BBR加速器</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh </span><br><span class="line">chmod +x bbr.sh &amp;&amp; ./bbr.sh</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建Shadowsocks服务配置文件"><a href="#创建Shadowsocks服务配置文件" class="headerlink" title="创建Shadowsocks服务配置文件"></a>创建Shadowsocks服务配置文件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 路径和名称可随意定义</span></span><br><span class="line">vim /etc/shadowsocks.json</span><br></pre></td></tr></table></figure>
+
+<p>在shadowsocks.json文件内添加如下内容<span class="text-gray">（回车后英文状态下按 <code>i</code> 键进入编辑模式，编辑后按 <code>esc</code> 退出编辑模式， 输入 <code>:wq</code> 保存退出vim）</span></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;server&quot;:&quot;VPS IP&quot;,</span><br><span class="line">  &quot;local_address&quot;:&quot;127.0.0.1&quot;,</span><br><span class="line">  &quot;local_port&quot;:1080,</span><br><span class="line">  &quot;port_password&quot;:&#123;</span><br><span class="line">    &quot;9**0&quot;:&quot;ss**&quot;,</span><br><span class="line">    &quot;9**1&quot;:&quot;ss*1&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;timeout&quot;:300,</span><br><span class="line">  &quot;method&quot;:&quot;aes-256-cfb&quot;,</span><br><span class="line">  &quot;fast_open&quot;: true</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>server：换成你服务器的IP<br>port_password：多用户使用时开放的端口及其密码<br>method：加密协议<br>fast_open：是否开启加速器</p>
+<h3 id="开启Shadowsocks服务"><a href="#开启Shadowsocks服务" class="headerlink" title="开启Shadowsocks服务"></a>开启Shadowsocks服务</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssserver -c /etc/shadowsocks.json -d start</span><br><span class="line"></span><br><span class="line"><span class="comment"># 停止命令</span></span><br><span class="line"><span class="comment"># ssserver -c /etc/shadowsocks.json -d stop</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 调试时使用以下命令可实时预览请求信息</span></span><br><span class="line"><span class="comment"># ssserver -c /etc/shadowsocks.json</span></span><br></pre></td></tr></table></figure>
+
+<p>此时启动会报 <code>undefined symbol: EVP_CIPHER_CTX_cleanup</code> 错误，该问题主要openssl.py版本升级后造成的。只需要把openssl.py文件内的 <code>CIPHER_CTX_cleanup</code> 改成 <code>CIPHER_CTX_reset</code> 就可解决</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 如果终端里的 openssl.py 路径跟这里不一致</span></span><br><span class="line"><span class="comment"># 请改成终端错误信息内的路径</span></span><br><span class="line">vim /usr/<span class="built_in">local</span>/lib/python2.7/dist-packages/shadowsocks/crypto/openssl.py</span><br><span class="line"></span><br><span class="line"><span class="comment"># 进入文件后，直接按 shift 输入如下指令</span></span><br><span class="line">:%s/cleanup/reset/</span><br><span class="line">:x</span><br></pre></td></tr></table></figure>
+
+<p>现在再使用 <code>ssserver -c /etc/shadowsocks.json -d start</code> 命令开启Shadowsocks服务即可完成！</p>
+]]></content>
+      <categories>
+        <category>vpn</category>
+      </categories>
+      <tags>
+        <tag>vpn</tag>
+        <tag>shadowsocks</tag>
+        <tag>outline</tag>
+      </tags>
+  </entry>
+</search>
