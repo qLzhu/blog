@@ -281,3 +281,9 @@ gitalk:
   distraction_free_mode: false
   language: zh-CN
 ```
+
+## 更改server预览端口
+
+```bash
+hexo s -p 5000
+```
