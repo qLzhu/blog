@@ -1,5 +1,5 @@
 ---
-title: 科学上网
+title: 搭建 VPN 服务
 categories: vpn
 tags:
   - vpn
@@ -9,12 +9,42 @@ abbrlink: 64387
 date: 2020-04-17 17:06:27
 ---
 
-国内的国情确定了我们可浏览的网站，由于我们是开发者需要翻看很多国外技术网站，查看这些技术网站就需要到科学的技术。这里我们就介绍下 hosts、[lantern](https://github.com/getlantern/lantern)、[shadowsocks](https://shadowsocks.org/en/index.html)、[outline](https://getoutline.org/en/home) 的搭建和使用
+国内的国情确定了我们可浏览的网站，由于我们是开发者需要翻看很多国外技术网站，查看这些技术网站就需要到科学的技术。这里我们就介绍下 hosts、ssh、[lantern](https://github.com/getlantern/lantern)、[shadowsocks](https://shadowsocks.org/en/index.html)、[outline](https://getoutline.org/en/home) 的搭建和使用
 
 ## hosts
 
 hosts（the static table lookup for host name 主机名查询静态表）用于补充或取代网络中DNS的功能。它储存的是计算机网络中各节点信息，负责将主机名映射到相应的IP地址，合理利用可提高域名的解析速度。**在以前通过该技术可以实现FQ目的，现在已不再适用，因为自2018年8月24号起，长城开始启用基于SNI检测和TCP连接重置等手段进行了封锁**
 <!-- more -->
+
+## ssh
+
+使用ssh端口映射也可达到FQ的目的。ssh端口映射、shadowsocks和outline这三种方式，都需要你有台境外服务器！这里推荐两个服务器提供商 [vultr](https://www.vultr.com/) 和 [搬瓦工](https://bandwagonhost.com/)，它们都支持微信和支付宝付款，两者的区别在于：
+
+- [搬瓦工](https://bandwagonhost.com/)：按月或者年进行扣费；换IP需要缴纳多余的费用
+- [vultr](https://www.vultr.com/)：按小时进行扣费；换IP选择个地区重建个服务器镜像即可
+
+我自己就是使用的vultr，并且官网的UI设计的比较不错！我搭建的VPS服务器镜像地区是日本，系统是Ubuntu 19.10 x 64<span class="text-gray">（搭建镜像时尽量选择离你比较近的地区，同时记得要开启IP6协议哦）</span>。如何搭建VPS服务请参考https://www.stackcc.com/2019/07/25/vultrdas/ 和 https://github.com/Alvin9999/new-pac/wiki/%E8%87%AA%E5%BB%BAss%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%95%99%E7%A8%8B 太简单这里不赘述
+
+VPS服务搭建好后，输入如下指令回车，并输入VPS服务器的密码
+```bash
+ssh -D127.0.0.1:9000 root@remote_host
+```
+- -D 动态转发，远程主机通过SOCKS协议连接到你要访问的网站，有加密作用
+- 127.0.0.1:9000 是本地的IP和端口<span class="text-gray">（端口随便定义，一般选用 1024-65535 之间的并且尚未使用的端口号）</span>
+- root 远程主机用户名<span class="text-gray">（一般默认的都是这个，即我们刚搭建的VPS服务器镜像）</span>
+- remote_host 远程主机的IP地址
+
+连接成功后，我们打开 **“系统偏好设置 - 网络 - 当前正在使用的网络<span class="text-gray">（例如：WIFI）</span>- 高级<span class="text-gray">（右下角）</span>- 代理 - SOCKS代理 - SOCKS代理服务器处填写上127.0.0.1:9000<span class="text-gray">（端口写你自己定义的）</span> - 好 - 应用”**
+
+此时你再查看下自己的[IP地址](https://www.ip.cn/)是不是变成VPS服务的了！访问一些被墙的网站也访问通了！终端内退出服务器的话，ssh连接就会断开
+
+{% note %}
+想了解更多ssh转发知识请参考：
+https://www.ssh.com/ssh/
+https://man.linuxde.net/ssh
+https://www.ibm.com/developerworks/cn/linux/l-cn-sshforward/index.html
+https://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html
+{% endnote %}
 
 ## lantern
 
@@ -22,11 +52,16 @@ hosts（the static table lookup for host name 主机名查询静态表）用于�
 
 ## shadowsocks
 
-Shadowsocks是一种基于socks5协议的代理工具。搭建该服务需要先买台境外的服务器，我这里使用的是[vultr](https://www.vultr.com/)<span class="text-gray">（搬瓦工也是可以。搬瓦工是按月或者年扣费，不过经常会推出活动；而vultr是按小时进行扣费。两者都支持微信和支付宝付款）</span>的，搭建的镜像系统是 Ubuntu 19.10 x 64<span class="text-gray">（搭建镜像时尽量选择离你比较近的位置，同时记得要开启IP6协议哦）</span>，地点选择的是日本
+Shadowsocks是一种基于socks5协议的代理工具。客户端下载列表如下：
 
-线上镜像服务搭建好后，在本地使用终端通过SSH命令，登陆到Vultr的云主机服务器上
+- [Mac](https://github.com/shadowsocks/ShadowsocksX-NG/releases)
+- [window](https://github.com/shadowsocks/shadowsocks-windows/releases)
+- [Android](https://github.com/shadowsocks/shadowsocks-android/releases)
+- iPhone <span class="text-gray">（版本的客户端是 Shadowrocket 需要国外的 Apple ID 才可下载，并且该软件是收费的）</span>
+
+VPS服务搭建这里直接跳过，不懂的请[参考ssh端口映射](#ssh)的那一步。通过本地的终端ssh连接到远程服务器上
 ```bash
-ssh root@Vultr-OS-IP
+ssh root@remote_host
 ```
 
 ### 安装组件
@@ -55,7 +90,7 @@ vim /etc/shadowsocks.json
 
 ```
 {
-  "server":"VPS IP",
+  "server":"remote_host",
   "local_address":"127.0.0.1",
   "local_port":1080,
   "port_password":{
@@ -99,18 +134,13 @@ vim /usr/local/lib/python2.7/dist-packages/shadowsocks/crypto/openssl.py
 
 现在再使用 `ssserver -c /etc/shadowsocks.json -d start` 命令开启Shadowsocks服务即可完成！
 
-### 客户端下载
+### 客户端配置
 
-现在服务器端已经配置完毕，要想FQ还需要配置下客户端。Shadowsocks客户端的设置及其使用非常简单。在客户端中“添加服务器”，正确填写服务器的地址、端口、密码和加密方式，然后就可以连接服务端了
-
-- [Mac](https://github.com/shadowsocks/ShadowsocksX-NG/releases)
-- [window](https://github.com/shadowsocks/shadowsocks-windows/releases)
-- [Android](https://github.com/shadowsocks/shadowsocks-android/releases)
-- iPhone <span class="text-gray">（版本的客户端是 Shadowrocket 需要国外的 Apple ID 才可下载，并且该软件是收费的）</span>
+现在服务器端已经配置完毕，紧接着就是配置客户端。Shadowsocks客户端的设置及其使用非常简单。在客户端中“添加服务器”，正确填写服务器的地址、端口、密码和加密方式，然后就可以连接服务端了
 
 ## Outline
 
-Outline 是 Jigsaw 团队开发的，而 Jigsaw 又是谷歌母公司 alphabet 旗下的，开源口号好像是为全球媒体工作者提供帮助什么的，具体的没记清楚。反正跟 shadowscoks 是同类型的工具，都是用来帮助我们科学上网的。软件核心部分依赖的还是 shadowscoks，只不过在此基础上重新包装开发而已。选择它的目地，主要是在国内各应用商城内 Outline App 依然可下载。使用 Outline 服务需要服务端和客户端两个软件配合使用，即
+Outline 是 Jigsaw 团队开发的，而 Jigsaw 又是谷歌母公司 alphabet 旗下的，开源口号好像是为全球媒体工作者提供帮助什么的，具体的没记清楚。反正跟 shadowscoks 是同类型的工具，都是用来帮助我们科学上网的。软件核心部分依赖的还是 shadowscoks，只不过在此基础上重新包装开发而已。选择它的目地，主要是国内各应用商城内依然可下载 Outline App。使用 Outline 服务需要服务端和客户端两个软件配合使用，即
 
 - 服务端：Outline Manager
 - 客户端：Outline
@@ -166,7 +196,7 @@ bash -c "$(wget -qO- https://raw.githubusercontent.com/Jigsaw-Code/outline-serve
 
 ## 使用总结
 
-长城防火墙封锁比较严重时或者不想付费的使用lantern，不严重使用shadowsocks或者outline。shadowsocks配置稍复杂些，严查期间封锁shadowsocks也要比outline严重
+长城防火墙封锁比较严重时或者不想付费的使用lantern。不严重使用shadowsocks或者outline。shadowsocks配置稍复杂些，严查期间封锁shadowsocks也要比outline严重。短时间使用那就选ssh端口映射。
 
 同时要提醒大家的是：
 <p style="color: #f2777a;text-align: center;">科学上网别信谣、别传谣、别造谣、别看不该看的东西、让我们做个守法的好公民！</p>
