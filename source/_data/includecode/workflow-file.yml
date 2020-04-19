@@ -1,0 +1,45 @@
+
+# 更多参数详情，请查阅
+# https://help.github.com/cn/actions
+# https://p3terx.com/archives/github-actions-started-tutorial.html
+# http://www.ruanyifeng.com/blog/2019/09/getting-started-with-github-actions.html
+
+name: Github Action Build and Deploy  #Workflow 工作流名称，随便定义
+
+on:                                   #指定 work­flow 的触发条件，通常是某些事件
+  push:                               #push 提交事件触发
+    branches:                         #设置分支
+      - master
+
+jobs:                                 #任务
+  build:                              #job_id 叫 build
+    #name: Deploy webiste             #name 是 job_id 的说明可省略，省略后 name 的值会设置为 job_id 的值
+    runs-on: ubuntu-latest            #设置虚拟服务器环境（ubuntu最新版本）
+    steps:                            #任务要执行的步骤
+      - name: Pull Code               #Action 名称
+        uses: actions/checkout@v2     #使用 Action 库，actions/checkout 获取源码
+      - name: Install Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "10.x"        #设置要安装的 Node 版本
+      - name: NPM Install Packges     #设置 npm 要执行的步骤，当成本地操作就行
+        run: |
+          npm install hexo-cli -g
+          npm install
+          hexo clean
+          hexo generate
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          ACCESS_TOKEN: ${{ secrets.GH_ACTION_TEST_KEY }} #在 Settings/Secrets 内设置的 token 名称
+          BRANCH: gh-pages            #要部署到哪个分支
+          FOLDER: public              #从那个文件夹内复制静态文件
+          COMMIT_NAME: "Github Pages Deploy Action"
+
+  # 以下是 Jobs 的执行顺序说明
+  # 不要复制
+  jobs2:
+    needs: build
+  job3:
+    needs: [build, jobs2]
+  # 多个任务时，使用 needs 执行顺序，否则同时运行

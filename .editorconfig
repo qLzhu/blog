@@ -1,0 +1,12 @@
+# https://editorconfig.org/
+root = true                     #顶级配置文件
+
+[*]
+end_of_line = lf                #换行符类型
+insert_final_newline = true     #确保换行符结尾
+trim_trailing_whitespace = true #删除换行符之前的空格
+indent_style = space            #设定缩紧方式
+indent_size = 2                 #设定缩紧宽度
+
+[*.md]
+max_line_length = 80            #最大行宽
