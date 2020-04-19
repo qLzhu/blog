@@ -11,19 +11,19 @@ abbrlink: 65246
 
 ## 新建项目
 
-登陆 [GitHub](https://github.com/) 创建一个空的开源项目 trcl（<span style="color: #999;">项目名称随意，初次测试 Travis CI 最好跟着本文逐步操作，了解后再自己测试</span>）
+登陆 [GitHub](https://github.com/) 创建一个空的开源项目 trcl（<span class="text-gray">项目名称随意，初次测试 Travis CI 最好跟着本文逐步操作，了解后再自己测试</span>）
 
 {% asset_img New_Repository.png Github上新建项目 %}
 <!-- more -->
 
-项目新建后，再使用如下命令初始化本地项目（<span style="color: #999;">不能直接 `Git Clone` 到本地再初始化，因为 `hexo init` 的必须是空白项目</span>）
+项目新建后，再使用如下命令初始化本地项目（<span class="text-gray">不能直接 `Git Clone` 到本地再初始化，因为 `hexo init` 的必须是空白项目</span>）
 
 ```bash
 mkdir trcl && cd $_
 hexo init && git init
 ```
 
-和远程 origin（<span style="color: #999;">克隆版本库的时候，所使用的远程主机自动被Git命名为origin</span> ）建立链接关系
+和远程 origin（<span class="text-gray">克隆版本库的时候，所使用的远程主机自动被Git命名为origin</span> ）建立链接关系
 
 ```bash
 git remote add origin git@github.com:***/trcl.git
@@ -39,18 +39,18 @@ git submodule add https://github.com/theme-next/hexo-theme-next themes/next
 
 git add .
 git commit -m "docs:init blog"
-git push -u origin master
-```
 
-新建 gh-pages 分支并提交，以此用来部署静态网站
-```bash
+# 新建 gh-pages 分支用来部署静态网站
 git branch gh-pages
+
+# 提交
+git push -u origin master
 git push -u origin gh-pages
 ```
 
 ## 配置 Hexo _config.yml
 
-把 gh-pages 分支同步到远程分支后，Github 会直接把该分支作为默认的静态网站进行部署。网址格式会按照这个格式进行生成 `https://username.github.io/trcl`，把 username 更换成你 Github 的用户名填写到下面（<span style="color: #999">也可以到 Github 上 Settings -> GitHub Pages 处查看</span>）
+把 gh-pages 分支提交到远程仓库后，Github 会直接把该分支作为静态网站进行部署，无需额外设置。生产的二级网址格式是 `https://username.github.io/trcl`，把 username 更换成你 Github 的用户名填写到下面（<span class="text-gray">不知道用户名的请到 Github Settings -> GitHub Pages 处查看</span>）
 
 ```yml
 # URL
@@ -59,21 +59,22 @@ url: https://yourname.github.io/trcl
 root: /trcl/
 ```
 
-## 设置 Tokens
+## 设置 Token
 
-在 Github 上 Settings -> Developer settings -> Personal access tokens -> Generate new token 处创建一个新的 token，该 token 只开启一个 repo 权限即可
+在 Github 上 **Settings -> Developer settings -> Personal access tokens -> Generate new token** 处创建一个新的 token，该 token 只开启一个 repo 权限即可
 
 > `Note` 的名称随意，自己看到知道是什么token就没问题
+> 实在不知道如何创建token的请查阅 https://help.github.com/cn/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line
 
 {% asset_img Set_Github_Tokens.png 设置 token %}
 
-设置好后，滚动到界面最下方，点击 Generate token 按钮进行创建。注意：创建完的 token 只有第一次可见，之后再访问皆无法再见（<span style="color: #999">只能看见 token 的名称</span>），想查看只能重新再创建，因此要保存好这个值
+设置好后，滚动到界面最下方，点击 Generate token 按钮进行创建。注意：创建完的 token 只有第一次可见，之后再访问皆无法再见（<span class="text-gray">只能看见 token 的名称</span>），想查看只能重新再创建，因此要保存好这个值
 
 {% asset_img Token_hash.png token 值 %}
 
 ## 配置 Travis CI
 
-登陆或注册 [Travis CI](https://travis-ci.com/) 需要使用 GitHub 账户，成功后应该是如下界面。到该界面后选择以下任意一个按钮点击（<span style="color: #999">+或者Activate all repositories using github apps</span>），进行 GitHub 项目的选择进行部署 Travis CI
+登陆或注册 [Travis CI](https://travis-ci.com/) 需要使用 GitHub 账户，成功后应该是如下界面。到该界面后选择以下任意一个按钮点击（<span class="text-gray">+或者Activate all repositories using github apps</span>），进行 GitHub 项目的选择进行部署 Travis CI
 
 {% asset_img Travis_CI_Sign_In.png 注册Travis CI %}
 {% asset_img Select_Trcl.png 部署Travis CI %}
@@ -99,7 +100,7 @@ Travis CI 部署到我们 trcl 项目后，我们还需要在 Travis CI 里把�
 
 按照如上配置设置完成后，分别执行下`git add`、`git commit` 和 `git push` 提交下
 
-此时你再回到 Travis CI 应该可以看到构建成功的界面或者正在构建的界面（<span style="color: #999">如果构建失败，解决问题后重新提交 commit，再点击 Restart build 重新执行即可</span>）
+此时你再回到 Travis CI 应该可以看到构建成功的界面或者正在构建的界面（<span class="text-gray">如果构建失败，解决问题后重新提交 commit，再点击 Restart build 重新执行即可</span>）
 
 {% asset_img Travis_CI_Current.png 构建成功界面 %}
 
