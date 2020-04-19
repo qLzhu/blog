@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"qlzhu.github.io","root":"/blog/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="国内的国情确定了我们可浏览的网站，由于我们是开发者需要翻看很多国外技术网站，查看这些技术网站就需要到科学的技术。这里我们就介绍下 hosts、lantern、shadowsocks、outline 的搭建和使用 hostshosts（the static table lookup for host name 主机名查询静态表）用于补充或取代网络中DNS的功能。它储存的是计算机网络中各节点信息，负责">
+  <meta name="description" content="国内的国情确定了我们可浏览的网站，由于我们是开发者需要翻看很多国外技术网站，查看这些技术网站就需要到科学的技术。这里我们就介绍下 hosts、ssh、lantern、shadowsocks、outline 的搭建和使用 hostshosts（the static table lookup for host name 主机名查询静态表）用于补充或取代网络中DNS的功能。它储存的是计算机网络中各节点信">
 <meta property="og:type" content="article">
-<meta property="og:title" content="科学上网">
+<meta property="og:title" content="搭建 VPN 服务">
 <meta property="og:url" content="https://qlzhu.github.io/blog/64387/index.html">
 <meta property="og:site_name" content="NoiiApple">
-<meta property="og:description" content="国内的国情确定了我们可浏览的网站，由于我们是开发者需要翻看很多国外技术网站，查看这些技术网站就需要到科学的技术。这里我们就介绍下 hosts、lantern、shadowsocks、outline 的搭建和使用 hostshosts（the static table lookup for host name 主机名查询静态表）用于补充或取代网络中DNS的功能。它储存的是计算机网络中各节点信息，负责">
+<meta property="og:description" content="国内的国情确定了我们可浏览的网站，由于我们是开发者需要翻看很多国外技术网站，查看这些技术网站就需要到科学的技术。这里我们就介绍下 hosts、ssh、lantern、shadowsocks、outline 的搭建和使用 hostshosts（the static table lookup for host name 主机名查询静态表）用于补充或取代网络中DNS的功能。它储存的是计算机网络中各节点信">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-04-17T17:06:27.000Z">
-<meta property="article:modified_time" content="2020-04-17T13:17:54.060Z">
+<meta property="article:modified_time" content="2020-04-19T15:37:52.871Z">
 <meta property="article:author" content="qinlzhu">
 <meta property="article:tag" content="vpn">
 <meta property="article:tag" content="shadowsocks">
@@ -48,7 +48,7 @@
   };
 </script>
 <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
-  <title>科学上网 | NoiiApple</title>
+  <title>搭建 VPN 服务 | NoiiApple</title>
   
 
 
@@ -211,7 +211,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          科学上网
+          搭建 VPN 服务
         </h1>
 
         <div class="post-meta">
@@ -220,10 +220,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-04-17 17:06:27 / 修改时间：13:17:54" itemprop="dateCreated datePublished" datetime="2020-04-17T17:06:27+00:00">2020-04-17</time>
+              <time title="创建时间：2020-04-17 17:06:27" itemprop="dateCreated datePublished" datetime="2020-04-17T17:06:27+00:00">2020-04-17</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-19 15:37:52" itemprop="dateModified" datetime="2020-04-19T15:37:52+00:00">2020-04-19</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -247,14 +253,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4k</span>
+              <span>4.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>7 分钟</span>
+              <span>8 分钟</span>
             </span>
 
         </div>
@@ -266,14 +272,40 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>国内的国情确定了我们可浏览的网站，由于我们是开发者需要翻看很多国外技术网站，查看这些技术网站就需要到科学的技术。这里我们就介绍下 hosts、<a href="https://github.com/getlantern/lantern" target="_blank" rel="noopener">lantern</a>、<a href="https://shadowsocks.org/en/index.html" target="_blank" rel="noopener">shadowsocks</a>、<a href="https://getoutline.org/en/home" target="_blank" rel="noopener">outline</a> 的搭建和使用</p>
+        <p>国内的国情确定了我们可浏览的网站，由于我们是开发者需要翻看很多国外技术网站，查看这些技术网站就需要到科学的技术。这里我们就介绍下 hosts、ssh、<a href="https://github.com/getlantern/lantern" target="_blank" rel="noopener">lantern</a>、<a href="https://shadowsocks.org/en/index.html" target="_blank" rel="noopener">shadowsocks</a>、<a href="https://getoutline.org/en/home" target="_blank" rel="noopener">outline</a> 的搭建和使用</p>
 <h2 id="hosts"><a href="#hosts" class="headerlink" title="hosts"></a>hosts</h2><p>hosts（the static table lookup for host name 主机名查询静态表）用于补充或取代网络中DNS的功能。它储存的是计算机网络中各节点信息，负责将主机名映射到相应的IP地址，合理利用可提高域名的解析速度。<strong>在以前通过该技术可以实现FQ目的，现在已不再适用，因为自2018年8月24号起，长城开始启用基于SNI检测和TCP连接重置等手段进行了封锁</strong></p>
 <a id="more"></a>
 
+<h2 id="ssh"><a href="#ssh" class="headerlink" title="ssh"></a>ssh</h2><p>使用ssh端口映射也可达到FQ的目的。ssh端口映射、shadowsocks和outline这三种方式，都需要你有台境外服务器！这里推荐两个服务器提供商 <a href="https://www.vultr.com/" target="_blank" rel="noopener">vultr</a> 和 <a href="https://bandwagonhost.com/" target="_blank" rel="noopener">搬瓦工</a>，它们都支持微信和支付宝付款，两者的区别在于：</p>
+<ul>
+<li><a href="https://bandwagonhost.com/" target="_blank" rel="noopener">搬瓦工</a>：按月或者年进行扣费；换IP需要缴纳多余的费用</li>
+<li><a href="https://www.vultr.com/" target="_blank" rel="noopener">vultr</a>：按小时进行扣费；换IP选择个地区重建个服务器镜像即可</li>
+</ul>
+<p>我自己就是使用的vultr，并且官网的UI设计的比较不错！我搭建的VPS服务器镜像地区是日本，系统是Ubuntu 19.10 x 64<span class="text-gray">（搭建镜像时尽量选择离你比较近的地区，同时记得要开启IP6协议哦）</span>。如何搭建VPS服务请参考<a href="https://www.stackcc.com/2019/07/25/vultrdas/" target="_blank" rel="noopener">https://www.stackcc.com/2019/07/25/vultrdas/</a> 和 <a href="https://github.com/Alvin9999/new-pac/wiki/%E8%87%AA%E5%BB%BAss%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">https://github.com/Alvin9999/new-pac/wiki/%E8%87%AA%E5%BB%BAss%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%95%99%E7%A8%8B</a> 太简单这里不赘述</p>
+<p>VPS服务搭建好后，输入如下指令回车，并输入VPS服务器的密码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -D127.0.0.1:9000 root@remote_host</span><br></pre></td></tr></table></figure>
+<ul>
+<li>-D 动态转发，远程主机通过SOCKS协议连接到你要访问的网站，有加密作用</li>
+<li>127.0.0.1:9000 是本地的IP和端口<span class="text-gray">（端口随便定义，一般选用 1024-65535 之间的并且尚未使用的端口号）</span></li>
+<li>root 远程主机用户名<span class="text-gray">（一般默认的都是这个，即我们刚搭建的VPS服务器镜像）</span></li>
+<li>remote_host 远程主机的IP地址</li>
+</ul>
+<p>连接成功后，我们打开 <strong>“系统偏好设置 - 网络 - 当前正在使用的网络<span class="text-gray">（例如：WIFI）</span>- 高级<span class="text-gray">（右下角）</span>- 代理 - SOCKS代理 - SOCKS代理服务器处填写上127.0.0.1:9000<span class="text-gray">（端口写你自己定义的）</span> - 好 - 应用”</strong></p>
+<p>此时你再查看下自己的<a href="https://www.ip.cn/" target="_blank" rel="noopener">IP地址</a>是不是变成VPS服务的了！访问一些被墙的网站也访问通了！终端内退出服务器的话，ssh连接就会断开</p>
+<div class="note ">
+            <p>想了解更多ssh转发知识请参考：<br><a href="https://www.ssh.com/ssh/" target="_blank" rel="noopener">https://www.ssh.com/ssh/</a><br><a href="https://man.linuxde.net/ssh" target="_blank" rel="noopener">https://man.linuxde.net/ssh</a><br><a href="https://www.ibm.com/developerworks/cn/linux/l-cn-sshforward/index.html" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/linux/l-cn-sshforward/index.html</a><br><a href="https://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html" target="_blank" rel="noopener">https://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html</a></p>
+          </div>
+
 <h2 id="lantern"><a href="#lantern" class="headerlink" title="lantern"></a>lantern</h2><p><a href="https://github.com/getlantern/lantern" target="_blank" rel="noopener">lantern（蓝灯）</a>免费的全平台兼容的FQ软件，每月500M，每月月初自动重置</p>
-<h2 id="shadowsocks"><a href="#shadowsocks" class="headerlink" title="shadowsocks"></a>shadowsocks</h2><p>Shadowsocks是一种基于socks5协议的代理工具。搭建该服务需要先买台境外的服务器，我这里使用的是<a href="https://www.vultr.com/" target="_blank" rel="noopener">vultr</a><span class="text-gray">（搬瓦工也是可以。搬瓦工是按月或者年扣费，不过经常会推出活动；而vultr是按小时进行扣费。两者都支持微信和支付宝付款）</span>的，搭建的镜像系统是 Ubuntu 19.10 x 64<span class="text-gray">（搭建镜像时尽量选择离你比较近的位置，同时记得要开启IP6协议哦）</span>，地点选择的是日本</p>
-<p>线上镜像服务搭建好后，在本地使用终端通过SSH命令，登陆到Vultr的云主机服务器上</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh root@Vultr-OS-IP</span><br></pre></td></tr></table></figure>
+<h2 id="shadowsocks"><a href="#shadowsocks" class="headerlink" title="shadowsocks"></a>shadowsocks</h2><p>Shadowsocks是一种基于socks5协议的代理工具。客户端下载列表如下：</p>
+<ul>
+<li><a href="https://github.com/shadowsocks/ShadowsocksX-NG/releases" target="_blank" rel="noopener">Mac</a></li>
+<li><a href="https://github.com/shadowsocks/shadowsocks-windows/releases" target="_blank" rel="noopener">window</a></li>
+<li><a href="https://github.com/shadowsocks/shadowsocks-android/releases" target="_blank" rel="noopener">Android</a></li>
+<li>iPhone <span class="text-gray">（版本的客户端是 Shadowrocket 需要国外的 Apple ID 才可下载，并且该软件是收费的）</span></li>
+</ul>
+<p>VPS服务搭建这里直接跳过，不懂的请<a href="#ssh">参考ssh端口映射</a>的那一步。通过本地的终端ssh连接到远程服务器上</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh root@remote_host</span><br></pre></td></tr></table></figure>
 
 <h3 id="安装组件"><a href="#安装组件" class="headerlink" title="安装组件"></a>安装组件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apt-get update</span><br><span class="line">apt-get install python-pip</span><br><span class="line">pip install shadowsocks</span><br></pre></td></tr></table></figure>
 
@@ -282,7 +314,7 @@
 <h3 id="创建Shadowsocks服务配置文件"><a href="#创建Shadowsocks服务配置文件" class="headerlink" title="创建Shadowsocks服务配置文件"></a>创建Shadowsocks服务配置文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 路径和名称可随意定义</span></span><br><span class="line">vim /etc/shadowsocks.json</span><br></pre></td></tr></table></figure>
 
 <p>在shadowsocks.json文件内添加如下内容<span class="text-gray">（回车后英文状态下按 <code>i</code> 键进入编辑模式，编辑后按 <code>esc</code> 退出编辑模式， 输入 <code>:wq</code> 保存退出vim）</span></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;server&quot;:&quot;VPS IP&quot;,</span><br><span class="line">  &quot;local_address&quot;:&quot;127.0.0.1&quot;,</span><br><span class="line">  &quot;local_port&quot;:1080,</span><br><span class="line">  &quot;port_password&quot;:&#123;</span><br><span class="line">    &quot;9**0&quot;:&quot;ss**&quot;,</span><br><span class="line">    &quot;9**1&quot;:&quot;ss*1&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;timeout&quot;:300,</span><br><span class="line">  &quot;method&quot;:&quot;aes-256-cfb&quot;,</span><br><span class="line">  &quot;fast_open&quot;: true</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;server&quot;:&quot;remote_host&quot;,</span><br><span class="line">  &quot;local_address&quot;:&quot;127.0.0.1&quot;,</span><br><span class="line">  &quot;local_port&quot;:1080,</span><br><span class="line">  &quot;port_password&quot;:&#123;</span><br><span class="line">    &quot;9**0&quot;:&quot;ss**&quot;,</span><br><span class="line">    &quot;9**1&quot;:&quot;ss*1&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;timeout&quot;:300,</span><br><span class="line">  &quot;method&quot;:&quot;aes-256-cfb&quot;,</span><br><span class="line">  &quot;fast_open&quot;: true</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>server：换成你服务器的IP<br>port_password：多用户使用时开放的端口及其密码<br>method：加密协议<br>fast_open：是否开启加速器</p>
 <h3 id="开启Shadowsocks服务"><a href="#开启Shadowsocks服务" class="headerlink" title="开启Shadowsocks服务"></a>开启Shadowsocks服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ssserver -c /etc/shadowsocks.json -d start</span><br><span class="line"></span><br><span class="line"><span class="comment"># 停止命令</span></span><br><span class="line"><span class="comment"># ssserver -c /etc/shadowsocks.json -d stop</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 调试时使用以下命令可实时预览请求信息</span></span><br><span class="line"><span class="comment"># ssserver -c /etc/shadowsocks.json</span></span><br></pre></td></tr></table></figure>
@@ -291,14 +323,8 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 如果终端里的 openssl.py 路径跟这里不一致</span></span><br><span class="line"><span class="comment"># 请改成终端错误信息内的路径</span></span><br><span class="line">vim /usr/<span class="built_in">local</span>/lib/python2.7/dist-packages/shadowsocks/crypto/openssl.py</span><br><span class="line"></span><br><span class="line"><span class="comment"># 进入文件后，直接按 shift 输入如下指令</span></span><br><span class="line">:%s/cleanup/reset/</span><br><span class="line">:x</span><br></pre></td></tr></table></figure>
 
 <p>现在再使用 <code>ssserver -c /etc/shadowsocks.json -d start</code> 命令开启Shadowsocks服务即可完成！</p>
-<h3 id="客户端下载"><a href="#客户端下载" class="headerlink" title="客户端下载"></a>客户端下载</h3><p>现在服务器端已经配置完毕，要想FQ还需要配置下客户端。Shadowsocks客户端的设置及其使用非常简单。在客户端中“添加服务器”，正确填写服务器的地址、端口、密码和加密方式，然后就可以连接服务端了</p>
-<ul>
-<li><a href="https://github.com/shadowsocks/ShadowsocksX-NG/releases" target="_blank" rel="noopener">Mac</a></li>
-<li><a href="https://github.com/shadowsocks/shadowsocks-windows/releases" target="_blank" rel="noopener">window</a></li>
-<li><a href="https://github.com/shadowsocks/shadowsocks-android/releases" target="_blank" rel="noopener">Android</a></li>
-<li>iPhone <span class="text-gray">（版本的客户端是 Shadowrocket 需要国外的 Apple ID 才可下载，并且该软件是收费的）</span></li>
-</ul>
-<h2 id="Outline"><a href="#Outline" class="headerlink" title="Outline"></a>Outline</h2><p>Outline 是 Jigsaw 团队开发的，而 Jigsaw 又是谷歌母公司 alphabet 旗下的，开源口号好像是为全球媒体工作者提供帮助什么的，具体的没记清楚。反正跟 shadowscoks 是同类型的工具，都是用来帮助我们科学上网的。软件核心部分依赖的还是 shadowscoks，只不过在此基础上重新包装开发而已。选择它的目地，主要是在国内各应用商城内 Outline App 依然可下载。使用 Outline 服务需要服务端和客户端两个软件配合使用，即</p>
+<h3 id="客户端配置"><a href="#客户端配置" class="headerlink" title="客户端配置"></a>客户端配置</h3><p>现在服务器端已经配置完毕，紧接着就是配置客户端。Shadowsocks客户端的设置及其使用非常简单。在客户端中“添加服务器”，正确填写服务器的地址、端口、密码和加密方式，然后就可以连接服务端了</p>
+<h2 id="Outline"><a href="#Outline" class="headerlink" title="Outline"></a>Outline</h2><p>Outline 是 Jigsaw 团队开发的，而 Jigsaw 又是谷歌母公司 alphabet 旗下的，开源口号好像是为全球媒体工作者提供帮助什么的，具体的没记清楚。反正跟 shadowscoks 是同类型的工具，都是用来帮助我们科学上网的。软件核心部分依赖的还是 shadowscoks，只不过在此基础上重新包装开发而已。选择它的目地，主要是国内各应用商城内依然可下载 Outline App。使用 Outline 服务需要服务端和客户端两个软件配合使用，即</p>
 <ul>
 <li>服务端：Outline Manager</li>
 <li>客户端：Outline</li>
@@ -317,7 +343,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;apiUrl&quot;:&quot;https:&#x2F;&#x2F;***.28.*1.**9:***69&#x2F;*********mfPAusF9w&quot;,</span><br><span class="line">&quot;certSha256&quot;:&quot;FFFA7***************5B61976F57B4B1E12BB9***19772F6&quot;&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="配置-outline"><a href="#配置-outline" class="headerlink" title="配置 outline"></a>配置 outline</h3><p>完成 Outline Manager 服务端的配置后，进入该服务的管理界面，在该界面内选择“添加新密钥”，然后把新创建的密钥共享给 outline App 使用。注意使用的主要是以 ss 开头的字符串哦！操作还有迷糊的地方，可点击该文章 <a href="https://oracleblog.org/its-my-life/how-to-deploy-outline-by-jigsaw/" target="_blank" rel="noopener">“Outline 的部署和使用”</a> 看图文进行操作</p>
-<h2 id="使用总结"><a href="#使用总结" class="headerlink" title="使用总结"></a>使用总结</h2><p>长城防火墙封锁比较严重时或者不想付费的使用lantern，不严重使用shadowsocks或者outline。shadowsocks配置稍复杂些，严查期间封锁shadowsocks也要比outline严重</p>
+<h2 id="使用总结"><a href="#使用总结" class="headerlink" title="使用总结"></a>使用总结</h2><p>长城防火墙封锁比较严重时或者不想付费的使用lantern。不严重使用shadowsocks或者outline。shadowsocks配置稍复杂些，严查期间封锁shadowsocks也要比outline严重。短时间使用那就选ssh端口映射。</p>
 <p>同时要提醒大家的是：</p>
 <p style="color: #f2777a;text-align: center;">科学上网别信谣、别传谣、别造谣、别看不该看的东西、让我们做个守法的好公民！</p>
     </div>
@@ -334,7 +360,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://qlzhu.github.io/blog/64387/" title="科学上网">https://qlzhu.github.io/blog/64387/</a>
+    <a href="https://qlzhu.github.io/blog/64387/" title="搭建 VPN 服务">https://qlzhu.github.io/blog/64387/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -359,7 +385,10 @@
     <a href="/blog/21969/" rel="prev" title="Mac 卸载 App 残留、Node 和 NPM">
       <i class="fa fa-chevron-left"></i> Mac 卸载 App 残留、Node 和 NPM
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/blog/24678/" rel="next" title="About Terminal">
+      About Terminal <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -419,7 +448,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#hosts"><span class="nav-number">1.</span> <span class="nav-text">hosts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lantern"><span class="nav-number">2.</span> <span class="nav-text">lantern</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shadowsocks"><span class="nav-number">3.</span> <span class="nav-text">shadowsocks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装组件"><span class="nav-number">3.1.</span> <span class="nav-text">安装组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装谷歌BBR加速器"><span class="nav-number">3.2.</span> <span class="nav-text">安装谷歌BBR加速器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建Shadowsocks服务配置文件"><span class="nav-number">3.3.</span> <span class="nav-text">创建Shadowsocks服务配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开启Shadowsocks服务"><span class="nav-number">3.4.</span> <span class="nav-text">开启Shadowsocks服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端下载"><span class="nav-number">3.5.</span> <span class="nav-text">客户端下载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Outline"><span class="nav-number">4.</span> <span class="nav-text">Outline</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#部署-Docker-容器"><span class="nav-number">4.1.</span> <span class="nav-text">部署 Docker 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-Outline-Manager"><span class="nav-number">4.2.</span> <span class="nav-text">配置 Outline Manager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-outline"><span class="nav-number">4.3.</span> <span class="nav-text">配置 outline</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用总结"><span class="nav-number">5.</span> <span class="nav-text">使用总结</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#hosts"><span class="nav-number">1.</span> <span class="nav-text">hosts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ssh"><span class="nav-number">2.</span> <span class="nav-text">ssh</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lantern"><span class="nav-number">3.</span> <span class="nav-text">lantern</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shadowsocks"><span class="nav-number">4.</span> <span class="nav-text">shadowsocks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装组件"><span class="nav-number">4.1.</span> <span class="nav-text">安装组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装谷歌BBR加速器"><span class="nav-number">4.2.</span> <span class="nav-text">安装谷歌BBR加速器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建Shadowsocks服务配置文件"><span class="nav-number">4.3.</span> <span class="nav-text">创建Shadowsocks服务配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开启Shadowsocks服务"><span class="nav-number">4.4.</span> <span class="nav-text">开启Shadowsocks服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端配置"><span class="nav-number">4.5.</span> <span class="nav-text">客户端配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Outline"><span class="nav-number">5.</span> <span class="nav-text">Outline</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#部署-Docker-容器"><span class="nav-number">5.1.</span> <span class="nav-text">部署 Docker 容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-Outline-Manager"><span class="nav-number">5.2.</span> <span class="nav-text">配置 Outline Manager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-outline"><span class="nav-number">5.3.</span> <span class="nav-text">配置 outline</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用总结"><span class="nav-number">6.</span> <span class="nav-text">使用总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -435,20 +464,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/blog/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">15</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/blog/categories/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/blog/tags/">
           
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">32</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -473,6 +502,9 @@
         </li>
         <li class="links-of-blogroll-item">
           <a href="https://juejin.im/" title="https:&#x2F;&#x2F;juejin.im&#x2F;" rel="noopener" target="_blank">JueJin</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://stackoverflow.com/" title="https:&#x2F;&#x2F;stackoverflow.com&#x2F;" rel="noopener" target="_blank">stackoverflow</a>
         </li>
         <li class="links-of-blogroll-item">
           <a href="https://caniuse.com/" title="https:&#x2F;&#x2F;caniuse.com&#x2F;" rel="noopener" target="_blank">Caniuse</a>
@@ -523,12 +555,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">17k</span>
+    <span title="站点总字数">32k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">28 分钟</span>
+    <span title="站点阅读时长">53 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

@@ -1,6 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Github Actions CI 工作流程</title>
+    <url>/blog/40311/</url>
+    <content><![CDATA[<p><a href="https://help.github.com/cn/actions" target="_blank" rel="noopener">Github Actions</a> 是 Github 在2018年10月推出的持续集成 (Con­tin­u­ous in­te­gra­tion，简称 CI) 服务，2019年11月正式开放。Github Actions 提供了配置非常不错的虚拟服务器环境，基于它可以进行构建、测试、打包、部署项目。Github Actions 的另一个好处就是 Github 为它专门在市场开辟了专栏，如果你需要某个 Action 的话，完全没必要自己写复杂的脚本，直接引用它人的脚本即可<span class="text-gray">（推荐到 <a href="https://github.com/marketplace?type=actions" target="_blank" rel="noopener">Github市场</a>、<a href="https://github.com/actions" target="_blank" rel="noopener">Github官方Action脚本</a>、<a href="https://github.com/sdras/awesome-actions" target="_blank" rel="noopener">Awesome Actions</a> 内查找需要的Action）</span></p>
+<div class="note ">
+            <p>Github Actions术语：</p><ol><li>Workflow 工作流程 <span class="text-gray">（持续集成一次运行的整个流程）</span></li><li>Job 任务 <span class="text-gray">（1~N个Job组成Workflow）</span><br><span class="text-gray">注意部署的虚拟服务器系统，会影响到Jobs同时触发的个数。免费版部署macos系统最多能触发5个、其它系统则最多能触发20个。详情请查阅 <a href="https://help.github.com/cn/actions/reference/workflow-syntax-for-github-actions#usage-limits" target="_blank" rel="noopener">https://help.github.com/cn/actions/reference/workflow-syntax-for-github-actions#usage-limits</a></span></li><li>Step 步骤 <span class="text-gray">（1~N个Step组成Job）</span></li><li>Action 动作\命令 <span class="text-gray">（1~N个Action组成Step）</span></li><li>Workflow File 配置文件 yaml 格式，需要放置在项目根目录下 .github/workflow/ 内</li></ol>
+          </div>
+<a id="more"></a>
+
+<h2 id="部署hexo实践"><a href="#部署hexo实践" class="headerlink" title="部署hexo实践"></a>部署hexo实践</h2><h3 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h3><p>首先在 Github 上创建个 <a href="https://github.com/qLzhu/github-actions-test" target="_blank" rel="noopener">github-actions-test</a> 空白仓库，然后再在本地创建个同名的仓库，并跟远程仓库关联起来</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir github-actions-test &amp;&amp; <span class="built_in">cd</span> <span class="variable">$_</span></span><br><span class="line">hexo init &amp;&amp; git init</span><br><span class="line"></span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">"docs(new):initial"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立 gh-pages 静态网站分支</span></span><br><span class="line">git branch gh-pages</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关联远程仓库并提交</span></span><br><span class="line"><span class="comment"># 注意：要把 username 换成你的 GitHub 用户名</span></span><br><span class="line">git remote add origin git@github.com:username/github-actions-test.git</span><br><span class="line">git push -u origin master</span><br><span class="line">git push -u origin gh-pages</span><br></pre></td></tr></table></figure>
+
+<p>配置hexo _config.yml</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># URL</span></span><br><span class="line"><span class="comment">## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'</span></span><br><span class="line"><span class="comment"># username 换成你的 GitHub 用户名</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">https://username.github.io/github-actions-test</span></span><br><span class="line"><span class="attr">root:</span> <span class="string">/github-actions-test/</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Include / Exclude file(s)</span></span><br><span class="line"><span class="comment">## include:/exclude: options only apply to the 'source/' folder</span></span><br><span class="line"><span class="attr">include:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">.nojekyll</span></span><br></pre></td></tr></table></figure>
+
+<p>再在 source/ 目录下创建空白文件 .nojekyll</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="built_in">source</span>/</span><br><span class="line">touch .nojekyll</span><br></pre></td></tr></table></figure>
+
+<p>配置hexo _config.yml 和创建 .nojekyll 是为了绕过 GitHub Pages 上的Jekyll处理，不然 GitHub Pages 会报 <code>The tag fancybox on line 77 in themes/landscape/README.md is not a recognized Liquid tag.</code> 错误<br><a href="https://github.blog/2009-12-29-bypassing-jekyll-on-github-pages/" target="_blank" rel="noopener">https://github.blog/2009-12-29-bypassing-jekyll-on-github-pages/</a><br><a href="https://github.com/theme-next/hexo-theme-next/issues/410" target="_blank" rel="noopener">https://github.com/theme-next/hexo-theme-next/issues/410</a></p>
+<h3 id="设置-Token"><a href="#设置-Token" class="headerlink" title="设置 Token"></a>设置 Token</h3><p>在 Github 上 <strong>Settings -&gt; Developer settings -&gt; Personal access tokens -&gt; Generate new token</strong> 处创建一个新的 token，该 token 只开启一个 repo 权限即可</p>
+<blockquote>
+<p><code>Note</code> 的名称随意，自己看到知道是什么token就没问题<br>实在不知道如何创建token的请查阅 <a href="https://help.github.com/cn/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line" target="_blank" rel="noopener">https://help.github.com/cn/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line</a></p>
+</blockquote>
+<img src="/blog/40311/Set_Github_Tokens.png" class="" title="设置 token">
+
+<p>设置好后，滚动到界面最下方，点击 Generate token 按钮进行创建。注意：创建完的 token 只有第一次可见，之后再访问皆无法再见<span class="text-gray">（只能看见 token 的名称）</span>，想查看只能重新再创建，因此要保存好这个值</p>
+<img src="/blog/40311/Token_hash.png" class="" title="token 值">
+
+<h3 id="设置密钥"><a href="#设置密钥" class="headerlink" title="设置密钥"></a>设置密钥</h3><p>把刚才生成的 token 值保存到当前仓库的 <code>Settings/Secrets</code> 里面。Name 的名称随意，建议名称全部大写并加下划线的形式，Workflow File 配置文件内会用到该名称</p>
+<img src="/blog/40311/GH_ACTION_TEST_KEY.png" class="" title="token保存到当前项目">
+
+<h2 id="配置-Workflow-File"><a href="#配置-Workflow-File" class="headerlink" title="配置 Workflow File"></a>配置 Workflow File</h2><p>在项目的根目录下，创建 <code>.github/workflows/deploy.yml</code> 文件，并键入下述内容</p>
+<figure class="highlight yml"><figcaption><span>.github/workflows/deploy.yml</span><a href="/blog/_data/includecode/workflow-file.yml">view raw</a></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment"># 更多参数详情，请查阅</span></span><br><span class="line"><span class="comment"># https://help.github.com/cn/actions</span></span><br><span class="line"><span class="comment"># https://p3terx.com/archives/github-actions-started-tutorial.html</span></span><br><span class="line"><span class="comment"># http://www.ruanyifeng.com/blog/2019/09/getting-started-with-github-actions.html</span></span><br><span class="line"></span><br><span class="line"><span class="attr">name:</span> <span class="string">Github</span> <span class="string">Action</span> <span class="string">Build</span> <span class="string">and</span> <span class="string">Deploy</span>  <span class="comment">#Workflow 工作流名称，随便定义</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span>                                   <span class="comment">#指定 work­flow 的触发条件，通常是某些事件</span></span><br><span class="line">  <span class="attr">push:</span>                               <span class="comment">#push 提交事件触发</span></span><br><span class="line">    <span class="attr">branches:</span>                         <span class="comment">#设置分支</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">master</span></span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span>                                 <span class="comment">#任务</span></span><br><span class="line">  <span class="attr">build:</span>                              <span class="comment">#job_id 叫 build</span></span><br><span class="line">    <span class="comment">#name: Deploy webiste             #name 是 job_id 的说明可省略，省略后 name 的值会设置为 job_id 的值</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span>            <span class="comment">#设置虚拟服务器环境（ubuntu最新版本）</span></span><br><span class="line">    <span class="attr">steps:</span>                            <span class="comment">#任务要执行的步骤</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Pull</span> <span class="string">Code</span>               <span class="comment">#Action 名称</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">actions/checkout@v2</span>     <span class="comment">#使用 Action 库，actions/checkout 获取源码</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">Node</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">actions/setup-node@v1</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">node-version:</span> <span class="string">"10.x"</span>        <span class="comment">#设置要安装的 Node 版本</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">NPM</span> <span class="string">Install</span> <span class="string">Packges</span>     <span class="comment">#设置 npm 要执行的步骤，当成本地操作就行</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">          <span class="string">npm</span> <span class="string">install</span> <span class="string">hexo-cli</span> <span class="string">-g</span></span><br><span class="line">          <span class="string">npm</span> <span class="string">install</span></span><br><span class="line">          <span class="string">hexo</span> <span class="string">clean</span></span><br><span class="line">          <span class="string">hexo</span> <span class="string">generate</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Deploy</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">JamesIves/github-pages-deploy-action@releases/v3</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">ACCESS_TOKEN:</span> <span class="string">${{</span> <span class="string">secrets.GH_ACTION_TEST_KEY</span> <span class="string">}}</span> <span class="comment">#在 Settings/Secrets 内设置的 token 名称</span></span><br><span class="line">          <span class="attr">BRANCH:</span> <span class="string">gh-pages</span>            <span class="comment">#要部署到哪个分支</span></span><br><span class="line">          <span class="attr">FOLDER:</span> <span class="string">public</span>              <span class="comment">#从那个文件夹内复制静态文件</span></span><br><span class="line">          <span class="attr">COMMIT_NAME:</span> <span class="string">"Github Pages Deploy Action"</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># 以下是 Jobs 的执行顺序说明</span></span><br><span class="line">  <span class="comment"># 不要复制</span></span><br><span class="line">  <span class="attr">jobs2:</span></span><br><span class="line">    <span class="attr">needs:</span> <span class="string">build</span></span><br><span class="line">  <span class="attr">job3:</span></span><br><span class="line">    <span class="attr">needs:</span> <span class="string">[build,</span> <span class="string">jobs2]</span></span><br><span class="line">  <span class="comment"># 多个任务时，使用 needs 执行顺序，否则同时运行</span></span><br></pre></td></tr></table></figure>
+
+<p>编辑完成后 push 到远程仓库，紧接着 Actions 就会显示构建界面</p>
+<img src="/blog/40311/Successful.png" class="" title="Actions部署成功界面">
+
+<p>你还可以把 build passing 图标放置在你想展示的地方</p>
+<img src="/blog/40311/Build_Passing.png" class="" title="build passing 图标">
+
+<div class="note ">
+            <p>注意Github Actions使用限制：</p><ol><li>每个仓库只能同时支持20个Workflow并行，每个Workflow最多允许运行72小时，超时会自动取消该工作流</li><li>每小时可以调用1000次GitHub API</li><li>每个Job最多可以执行6个小时，超过该时间会自动终止Job</li><li>私有仓库每月累计使用时间为2000分钟，超过后$0.008/分钟，公共仓库则无限制</li></ol><p>虽然名称叫持续集成，但当所有任务终止和完成时，虚拟环境内的数据会随之清空，并不会持续。即每个新任务都是一个全新的虚拟环境。</p>
+          </div>
+]]></content>
+      <categories>
+        <category>github</category>
+      </categories>
+      <tags>
+        <tag>actions</tag>
+        <tag>github actions</tag>
+        <tag>github-pages-deploy-action</tag>
+        <tag>not a recognized Liquid tag</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>API 获取 Github ID</title>
+    <url>/blog/8621/</url>
+    <content><![CDATA[<p>获取 Github 当前账户的 ID，可使用官方给出的 API 是 <code>https://api.github.com/users/github</code>，把最后的 Github 换成你的用户名，直接在浏览器地址栏中输入回车即可获取，输出如下：</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"login"</span>: <span class="string">"qLzhu"</span>,</span><br><span class="line">  <span class="attr">"id"</span>: <span class="number">1</span>***<span class="number">59</span>,</span><br><span class="line">  <span class="attr">"node_id"</span>: <span class="string">"MDQX****DIzMzU5"</span>,</span><br><span class="line">  <span class="attr">"gravatar_id"</span>: <span class="string">""</span>,</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>github</category>
+      </categories>
+      <tags>
+        <tag>Github ID</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>git子模块添加hexo-theme-next</title>
     <url>/blog/46430/</url>
     <content><![CDATA[<p>博客重构 <code>git add</code> 添加到暂存区时报如下错误</p>
@@ -42,35 +109,32 @@
   <entry>
     <title>Travis CI 自动化部署静态博客</title>
     <url>/blog/65246/</url>
-    <content><![CDATA[<h2 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h2><p>登陆 <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a> 创建一个空的开源项目 trcl（<span style="color: #999;">项目名称随意，初次测试 Travis CI 最好跟着本文逐步操作，了解后再自己测试</span>）</p>
+    <content><![CDATA[<h2 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h2><p>登陆 <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a> 创建一个空的开源项目 trcl（<span class="text-gray">项目名称随意，初次测试 Travis CI 最好跟着本文逐步操作，了解后再自己测试</span>）</p>
 <img src="/blog/65246/New_Repository.png" class="" title="Github上新建项目">
 <a id="more"></a>
 
-<p>项目新建后，再使用如下命令初始化本地项目（<span style="color: #999;">不能直接 <code>Git Clone</code> 到本地再初始化，因为 <code>hexo init</code> 的必须是空白项目</span>）</p>
+<p>项目新建后，再使用如下命令初始化本地项目（<span class="text-gray">不能直接 <code>Git Clone</code> 到本地再初始化，因为 <code>hexo init</code> 的必须是空白项目</span>）</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir trcl &amp;&amp; <span class="built_in">cd</span> <span class="variable">$_</span></span><br><span class="line">hexo init &amp;&amp; git init</span><br></pre></td></tr></table></figure>
 
-<p>和远程 origin（<span style="color: #999;">克隆版本库的时候，所使用的远程主机自动被Git命名为origin</span> ）建立链接关系</p>
+<p>和远程 origin（<span class="text-gray">克隆版本库的时候，所使用的远程主机自动被Git命名为origin</span> ）建立链接关系</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git remote add origin git@github.com:***/trcl.git</span><br></pre></td></tr></table></figure>
 
 <p>landscape 主题更改为 NexT 主题，并提交到远程仓库</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next</span><br><span class="line">rm -rf themes/landscape/</span><br><span class="line"><span class="comment"># NexT主题设置为Git子模块命令</span></span><br><span class="line">git submodule add https://github.com/theme-next/hexo-theme-next themes/next</span><br><span class="line"></span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">"docs:init blog"</span></span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next</span><br><span class="line">rm -rf themes/landscape/</span><br><span class="line"><span class="comment"># NexT主题设置为Git子模块命令</span></span><br><span class="line">git submodule add https://github.com/theme-next/hexo-theme-next themes/next</span><br><span class="line"></span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">"docs:init blog"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 新建 gh-pages 分支用来部署静态网站</span></span><br><span class="line">git branch gh-pages</span><br><span class="line"></span><br><span class="line"><span class="comment"># 提交</span></span><br><span class="line">git push -u origin master</span><br><span class="line">git push -u origin gh-pages</span><br></pre></td></tr></table></figure>
 
-<p>新建 gh-pages 分支并提交，以此用来部署静态网站</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git branch gh-pages</span><br><span class="line">git push -u origin gh-pages</span><br></pre></td></tr></table></figure>
-
-<h2 id="配置-Hexo-config-yml"><a href="#配置-Hexo-config-yml" class="headerlink" title="配置 Hexo _config.yml"></a>配置 Hexo _config.yml</h2><p>把 gh-pages 分支同步到远程分支后，Github 会直接把该分支作为默认的静态网站进行部署。网址格式会按照这个格式进行生成 <code>https://username.github.io/trcl</code>，把 username 更换成你 Github 的用户名填写到下面（<span style="color: #999">也可以到 Github 上 Settings -&gt; GitHub Pages 处查看</span>）</p>
+<h2 id="配置-Hexo-config-yml"><a href="#配置-Hexo-config-yml" class="headerlink" title="配置 Hexo _config.yml"></a>配置 Hexo _config.yml</h2><p>把 gh-pages 分支提交到远程仓库后，Github 会直接把该分支作为静态网站进行部署，无需额外设置。生产的二级网址格式是 <code>https://username.github.io/trcl</code>，把 username 更换成你 Github 的用户名填写到下面（<span class="text-gray">不知道用户名的请到 Github Settings -&gt; GitHub Pages 处查看</span>）</p>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># URL</span></span><br><span class="line"><span class="comment">## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'</span></span><br><span class="line"><span class="attr">url:</span> <span class="string">https://yourname.github.io/trcl</span></span><br><span class="line"><span class="attr">root:</span> <span class="string">/trcl/</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="设置-Tokens"><a href="#设置-Tokens" class="headerlink" title="设置 Tokens"></a>设置 Tokens</h2><p>在 Github 上 Settings -&gt; Developer settings -&gt; Personal access tokens -&gt; Generate new token 处创建一个新的 token，该 token 只开启一个 repo 权限即可</p>
+<h2 id="设置-Token"><a href="#设置-Token" class="headerlink" title="设置 Token"></a>设置 Token</h2><p>在 Github 上 <strong>Settings -&gt; Developer settings -&gt; Personal access tokens -&gt; Generate new token</strong> 处创建一个新的 token，该 token 只开启一个 repo 权限即可</p>
 <blockquote>
-<p><code>Note</code> 的名称随意，自己看到知道是什么token就没问题</p>
+<p><code>Note</code> 的名称随意，自己看到知道是什么token就没问题<br>实在不知道如何创建token的请查阅 <a href="https://help.github.com/cn/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line" target="_blank" rel="noopener">https://help.github.com/cn/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line</a></p>
 </blockquote>
 <img src="/blog/65246/Set_Github_Tokens.png" class="" title="设置 token">
 
-<p>设置好后，滚动到界面最下方，点击 Generate token 按钮进行创建。注意：创建完的 token 只有第一次可见，之后再访问皆无法再见（<span style="color: #999">只能看见 token 的名称</span>），想查看只能重新再创建，因此要保存好这个值</p>
+<p>设置好后，滚动到界面最下方，点击 Generate token 按钮进行创建。注意：创建完的 token 只有第一次可见，之后再访问皆无法再见（<span class="text-gray">只能看见 token 的名称</span>），想查看只能重新再创建，因此要保存好这个值</p>
 <img src="/blog/65246/Token_hash.png" class="" title="token 值">
 
-<h2 id="配置-Travis-CI"><a href="#配置-Travis-CI" class="headerlink" title="配置 Travis CI"></a>配置 Travis CI</h2><p>登陆或注册 <a href="https://travis-ci.com/" target="_blank" rel="noopener">Travis CI</a> 需要使用 GitHub 账户，成功后应该是如下界面。到该界面后选择以下任意一个按钮点击（<span style="color: #999">+或者Activate all repositories using github apps</span>），进行 GitHub 项目的选择进行部署 Travis CI</p>
+<h2 id="配置-Travis-CI"><a href="#配置-Travis-CI" class="headerlink" title="配置 Travis CI"></a>配置 Travis CI</h2><p>登陆或注册 <a href="https://travis-ci.com/" target="_blank" rel="noopener">Travis CI</a> 需要使用 GitHub 账户，成功后应该是如下界面。到该界面后选择以下任意一个按钮点击（<span class="text-gray">+或者Activate all repositories using github apps</span>），进行 GitHub 项目的选择进行部署 Travis CI</p>
 <img src="/blog/65246/Travis_CI_Sign_In.png" class="" title="注册Travis CI">
 <img src="/blog/65246/Select_Trcl.png" class="" title="部署Travis CI">
 
@@ -86,7 +150,7 @@
 <figure class="highlight yml"><figcaption><span>.travis.yml</span><a href="/blog/_data/includecode/travis.yml">view raw</a></figcaption><table><tr><td class="code"><pre><span class="line"><span class="attr">language:</span> <span class="string">node_js</span>              <span class="comment"># 指定环境及其node_js版本</span></span><br><span class="line"><span class="attr">node_js:</span> </span><br><span class="line">  <span class="bullet">-</span> <span class="string">lts/*</span></span><br><span class="line"></span><br><span class="line"><span class="attr">cache:</span>                         <span class="comment"># 缓存设置，有利于提高下次构建的效率</span></span><br><span class="line">  <span class="attr">npm:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">directories:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">node_modules</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#notifications:                # 设置部署成功和失败时自动给你发送邮件</span></span><br><span class="line">  <span class="comment">#email:                      # https://docs.travis-ci.com/user/notifications</span></span><br><span class="line">    <span class="comment">#recipients:</span></span><br><span class="line">      <span class="comment">#- vensing@foxmail.com</span></span><br><span class="line">    <span class="comment">#on_success: never</span></span><br><span class="line">    <span class="comment">#on_failure: never</span></span><br><span class="line"></span><br><span class="line"><span class="attr">install:</span>                       <span class="comment"># 安装阶段</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">npm</span> <span class="string">install</span> <span class="string">hexo-cli</span> <span class="string">-g</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">npm</span> <span class="string">install</span></span><br><span class="line"></span><br><span class="line"><span class="attr">script:</span>                        <span class="comment"># 执行构建阶段</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">hexo</span> <span class="string">clean</span>                 <span class="comment"># hexo 的清理命令</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">hexo</span> <span class="string">generate</span>              <span class="comment"># hexo 的生成（构建）命令，即最核心的生成静态文件过程</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># GitHub Pages Deployment</span></span><br><span class="line"><span class="attr">deploy:</span>                        <span class="comment"># 部署阶段</span></span><br><span class="line">  <span class="attr">provider:</span> <span class="string">pages</span>              <span class="comment"># 约定 pages 为 GitHub Pages 服务，必须且不可更改</span></span><br><span class="line">  <span class="comment">#name: "yourname"            # 提交者</span></span><br><span class="line">  <span class="comment">#email: "yourname@email.com" # 提交者邮箱</span></span><br><span class="line">  <span class="attr">skip-cleanup:</span> <span class="literal">true</span>           <span class="comment"># 必须跳过清理，否则过程中生成的文件（要发布的静态资源）会被清理</span></span><br><span class="line">  <span class="attr">github-token:</span> <span class="string">$Trcl_Token</span>    <span class="comment"># Travis CI 设置 token 名称</span></span><br><span class="line">  <span class="attr">keep-history:</span> <span class="literal">true</span>           <span class="comment"># 设置为 false 时，使用 `git push --force` 命令覆盖历史记录</span></span><br><span class="line">  <span class="attr">on:</span></span><br><span class="line">    <span class="attr">branch:</span> <span class="string">master</span>             <span class="comment"># 仅监听 master 分支的变化，才执行构建</span></span><br><span class="line">  <span class="attr">target-branch:</span> <span class="string">gh-pages</span>      <span class="comment"># 用于存放静态资源的分支</span></span><br><span class="line">  <span class="attr">local-dir:</span> <span class="string">public</span>            <span class="comment"># `hexo generate` 命令生成的静态资源所在路径</span></span><br><span class="line">  <span class="comment">#fqdn:                       # 自定义域名</span></span><br></pre></td></tr></table></figure>
 
 <p>按照如上配置设置完成后，分别执行下<code>git add</code>、<code>git commit</code> 和 <code>git push</code> 提交下</p>
-<p>此时你再回到 Travis CI 应该可以看到构建成功的界面或者正在构建的界面（<span style="color: #999">如果构建失败，解决问题后重新提交 commit，再点击 Restart build 重新执行即可</span>）</p>
+<p>此时你再回到 Travis CI 应该可以看到构建成功的界面或者正在构建的界面（<span class="text-gray">如果构建失败，解决问题后重新提交 commit，再点击 Restart build 重新执行即可</span>）</p>
 <img src="/blog/65246/Travis_CI_Current.png" class="" title="构建成功界面">
 
 <p>另外点击 build passing 图标，还能够获得其链接，可以将它贴在其他地方，随时监控博客的 build 状态</p>
@@ -226,7 +290,9 @@
 <blockquote>
 <p>1.Application name 项目名称随意，只要你看到名称知道它是干什么的就可以<br>2.Application description 项目描述<br>3.Homepage URL 和 Authorization callback URL 要填写博客的地址，例如：<a href="https://qlzhu.github.io/blog/">https://qlzhu.github.io/blog/</a></p>
 </blockquote>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">gitalk:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># 注意 github_id 和 admin_user 是你账户的名称</span></span><br><span class="line">  <span class="comment"># 如果更改过账户名的话，要用第一次注册时使用的名称</span></span><br><span class="line">  <span class="attr">github_id:</span> <span class="string">'**'</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># 刚才注册的空白库名称</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">blog-comments</span></span><br><span class="line">    </span><br><span class="line">  <span class="comment"># 配置 Github OAuth 第三方验证给出的字符串</span></span><br><span class="line">  <span class="attr">client_id:</span> <span class="string">a***047*60**e</span></span><br><span class="line">  <span class="attr">client_secret:</span> <span class="string">4f***2c**a8*cd4**d8*</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">admin_user:</span> <span class="string">'**'</span></span><br><span class="line">  <span class="attr">distraction_free_mode:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">language:</span> <span class="string">zh-CN</span></span><br></pre></td></tr></table></figure>]]></content>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">gitalk:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># 注意 github_id 和 admin_user 是你账户的名称</span></span><br><span class="line">  <span class="comment"># 如果更改过账户名的话，要用第一次注册时使用的名称</span></span><br><span class="line">  <span class="attr">github_id:</span> <span class="string">'**'</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># 刚才注册的空白库名称</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">blog-comments</span></span><br><span class="line">    </span><br><span class="line">  <span class="comment"># 配置 Github OAuth 第三方验证给出的字符串</span></span><br><span class="line">  <span class="attr">client_id:</span> <span class="string">a***047*60**e</span></span><br><span class="line">  <span class="attr">client_secret:</span> <span class="string">4f***2c**a8*cd4**d8*</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">admin_user:</span> <span class="string">'**'</span></span><br><span class="line">  <span class="attr">distraction_free_mode:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">language:</span> <span class="string">zh-CN</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="更改server预览端口"><a href="#更改server预览端口" class="headerlink" title="更改server预览端口"></a>更改server预览端口</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo s -p 5000</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>hexo</category>
       </categories>
@@ -236,6 +302,137 @@
         <tag>hexo-abbrlink</tag>
         <tag>hexo-generator-searchdb</tag>
         <tag>hexo-symbols-count-time</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HomeBrew Basic</title>
+    <url>/blog/42669/</url>
+    <content><![CDATA[<p><a href="https://brew.sh/index_zh-cn" target="_blank" rel="noopener">Homebrew</a> 是 Mac 上一款比较出色的软件包管理器，类似 Linux 系统的 apt-get、yum。简单来说就是用来管理你软件的！</p>
+<p>打开终端执行下述命令，安装Homebrew</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo /bin/bash -c <span class="string">"<span class="variable">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)</span>"</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h2 id="更改源"><a href="#更改源" class="headerlink" title="更改源"></a>更改源</h2><p>安装完成后的第一件事，应该是更改 Homebrew 源，如果没更改的话在国内的使用体验是很差的。这是国内特有的网络状况造成的，同时也给开源项目的分发造成了一定的阻碍。在这种情况下为了我们更好的使用体验，国内的一些组织或者个人就自己新建了很多镜像，例如：</p>
+<div class="note ">
+            <p>阿里云：<a href="https://mirrors.aliyun.com/homebrew/" target="_blank" rel="noopener">https://mirrors.aliyun.com/homebrew/</a><br>中科大：<a href="https://mirrors.ustc.edu.cn/" target="_blank" rel="noopener">https://mirrors.ustc.edu.cn/</a><br>清华源：<a href="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/" target="_blank" rel="noopener">https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/</a></p>
+          </div>
+
+<p>当然你能科学上网的话，也可以使用 Homebrew 官方的源（即默认的）。如果你对如何搭建科学上网的工具有兴趣的话，也可参考之前我记录的 <a href="/blog/64387/" title="搭建 VPN 服务">搭建 VPN 服务</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 更改 Homebrew 的源，需要先进到本地 Homebrew 的仓库内</span></span><br><span class="line"><span class="built_in">cd</span> <span class="string">"<span class="variable">$(brew --repo)</span>"</span></span><br><span class="line"><span class="comment"># 更改为中科大的源</span></span><br><span class="line">git remote <span class="built_in">set</span>-url origin https://mirrors.ustc.edu.cn/brew.git</span><br><span class="line"></span><br><span class="line"><span class="comment"># Homebrew Core</span></span><br><span class="line"><span class="built_in">cd</span> <span class="string">"<span class="variable">$(brew --repo homebrew/core)</span>"</span></span><br><span class="line">git remote <span class="built_in">set</span>-url origin https://mirrors.ustc.edu.cn/homebrew-core.git</span><br><span class="line"></span><br><span class="line"><span class="comment"># Homebrew Cask，未安装 Cask 的不用此操作</span></span><br><span class="line"><span class="built_in">cd</span> <span class="string">"<span class="variable">$(brew --repo homebrew/cask)</span>"</span></span><br><span class="line">git remote <span class="built_in">set</span>-url origin https://mirrors.ustc.edu.cn/homebrew-cask.git</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Homebrew 默认的源分别是</span></span><br><span class="line"><span class="comment">#https://github.com/Homebrew/brew.git</span></span><br><span class="line"><span class="comment">#https://github.com/Homebrew/homebrew-core</span></span><br><span class="line"><span class="comment">#https://github.com/Homebrew/homebrew-cask</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取当前源的命令</span></span><br><span class="line">git remote get-url origin</span><br></pre></td></tr></table></figure>
+
+<p>更换 Homebrew Bottles 源</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> [<span class="variable">$SHELL</span> = <span class="string">"/bin/bash"</span>] <span class="comment">#bash</span></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">'export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles/'</span> &gt;&gt; ~/.bash_profile</span><br><span class="line">  <span class="built_in">source</span> ~/.bash_profile</span><br><span class="line"><span class="keyword">elif</span> [<span class="variable">$SHELL</span> = <span class="string">"/bin/zsh"</span>] <span class="comment">#zsh</span></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">'export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles/'</span> &gt;&gt; ~/.zshrc</span><br><span class="line">  <span class="built_in">source</span> ~/.zshrc</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h2><ul>
+<li>查看帮助：<code>brew help</code></li>
+<li>查看当前版本：<code>brew --version</code></li>
+<li>更新Homebrew：<code>brew update</code></li>
+<li>搜索包：<code>brew search &lt;name&gt;</code></li>
+<li>安装包：<code>brew install &lt;name&gt;</code></li>
+<li>卸载包：<code>brew uninstall &lt;name&gt;</code></li>
+<li>彻底卸载包：<code>brew uninstall &lt;name&gt; --force</code></li>
+<li>强制卸载包：<code>brew uninstall --ignore-dependencies &lt;name&gt;</code></li>
+<li>查看包信息：<code>brew info &lt;name&gt;</code></li>
+<li>列出指定包的依赖关系：<code>brew deps &lt;name&gt;</code></li>
+<li>列出已安装的包：<code>brew list</code></li>
+<li>列出可更新的包：<code>brew outdated</code></li>
+<li>更新所有安装过的包：<code>brew upgrade</code></li>
+<li>锁定指定的包：<code>brew pin &lt;name&gt;</code></li>
+<li>取消锁定：<code>brew unpin &lt;name&gt;</code></li>
+<li>更新指定的包：<code>brew upgrade &lt;name&gt;</code></li>
+<li>查看可清理的旧版本包：<code>brew cleanup -n</code></li>
+<li>清理指定版本的旧包：<code>brew cleanup &lt;name&gt;</code></li>
+<li>清理所有旧版本的包：<code>brew cleanup</code></li>
+</ul>
+<h2 id="常见错误"><a href="#常见错误" class="headerlink" title="常见错误"></a>常见错误</h2><h2 id="Error-Permission-denied"><a href="#Error-Permission-denied" class="headerlink" title="Error: Permission denied"></a>Error: Permission denied</h2><p>更新时报此错误，说明是权限不够的意思，但是 Homebrew 又不允许在命令前添加 sudo，可使用以下方式解决</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo chown -R $(whoami) $(brew --prefix)/*</span><br></pre></td></tr></table></figure>
+
+<p>如果 <code>install</code> 软件包时，报的 Permission denied 错误，请逐步按照下述命令解决</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo chown -R $(whoami) $(brew --prefix)/*</span><br><span class="line">brew install &lt;name&gt;</span><br><span class="line">brew link &lt;name&gt;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>HomeBrew</category>
+      </categories>
+      <tags>
+        <tag>HomeBrew</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>About Terminal</title>
+    <url>/blog/24678/</url>
+    <content><![CDATA[<h2 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h2><p>这里只列出几个常用的，更多请查阅 “帮助 - 终端帮助 - 键盘快捷键”</p>
+<ul>
+<li><code>⌘Command + N</code>：再打开一个终端</li>
+<li><code>⌘Command + T</code>：新建窗口</li>
+<li><code>⇧Shift + ⌘Command + K</code>：新建远程连接</li>
+<li><code>⌃Control + A</code>：光标移到行开头</li>
+<li><code>⌃Control + E</code>：光标移到行结尾</li>
+<li><code>⌃Control + U</code>：光标位置删除到行开头</li>
+<li><code>⌃Control + K</code>：光标位置删除到行尾</li>
+<li><code>⌃Control + W</code>：删除光标位置左侧一个单词</li>
+<li><code>⌥option + D</code>：删除光标位置右侧一个单词<span class="text-gray">（终端 - 偏好设置 - 描述文件 - 键盘 - 勾选将option键用作Meta键）</span></li>
+<li><code>⌥option + 左箭头</code>：光标前移一个单词</li>
+<li><code>⌥option + 右箭头</code>：光标后移一个单词</li>
+<li><code>⌘Command + .</code>：中断<span class="text-gray">（跳转到下一行重新开始）</span><a id="more"></a>
+
+</li>
+</ul>
+<h2 id="定制shell提示符"><a href="#定制shell提示符" class="headerlink" title="定制shell提示符"></a>定制shell提示符</h2><p>我们需要把设置添加到Shell解释器的配置文件内，才可实现定制终端化的目的！bash用户编辑<code>~/.bash_profile</code>文件；zsh编辑<code>~/.zshrc</code>文件；不知道用的是什么解释器的使用<code>echo $SHELL</code>命令进行查看</p>
+<p>例如：在<code>~/.zshrc</code>内添加<code>export PS1=“\u@\h\w $ ”</code>，终端提示会变成下面这样</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Admin@MacBook~Desktop&#x2F; $</span><br></pre></td></tr></table></figure>
+
+<p>PS1后的参数，例如：</p>
+<ul>
+<li>\W：当前工作目录名的最后部分</li>
+<li>\w：完整目录名</li>
+<li>$：显示”$”字符，超级用户显示一个”#”字符</li>
+<li>\l：当前终端设备名</li>
+<li>\d：当前日期</li>
+<li>\t：当前时间</li>
+<li>\h：hostname</li>
+</ul>
+<p><a href="https://billie66.github.io/TLCL/book/chap14.html" target="_blank" rel="noopener">https://billie66.github.io/TLCL/book/chap14.html</a><br><a href="http://bashrcgenerator.com/" target="_blank" rel="noopener">http://bashrcgenerator.com/</a><br>emoji表情 <a href="https://emojipedia.org/" target="_blank" rel="noopener">https://emojipedia.org/</a></p>
+<p>如果你要修改终端内的用户名的话，可使用<code>sudo scutil --set HostName yourname</code></p>
+<h2 id="安装Command-line-tools"><a href="#安装Command-line-tools" class="headerlink" title="安装Command line tools"></a>安装Command line tools</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">xcode-select –install</span><br></pre></td></tr></table></figure>
+
+<p>在弹出的界面点 install 同意即可<span class="text-gray">（经常使用VPN工具的，记得要关闭）</span></p>
+<a href="/blog/35871/" title="关于xcode-select –install的解释">关于xcode-select –install的解释</a>
+
+<h2 id="切换shell"><a href="#切换shell" class="headerlink" title="切换shell"></a>切换shell</h2><p><code>cat /etc/shells</code>命令可以查看当前系统可以使用哪些shell<br><code>echo $SHELL</code>命令可以查看我们当前正在使用的shell  </p>
+<p>切换shell</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chsh -s &#x2F;bin&#x2F;zsh</span><br></pre></td></tr></table></figure>
+
+<h2 id="tab自动补全"><a href="#tab自动补全" class="headerlink" title="tab自动补全"></a>tab自动补全</h2><p>打开Terminal输入<code>nano .inputrc</code>，再输入下述内容</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">set</span> completion-ignore-case on</span><br><span class="line"><span class="built_in">set</span> show-all-if-ambiguous on</span><br><span class="line">TAB: menu-complete</span><br></pre></td></tr></table></figure>
+
+<p>输入后按 <code>⌃Control ＋ o</code> 键，然后关闭、重启</p>
+<h2 id="安装oh-my-zsh"><a href="#安装oh-my-zsh" class="headerlink" title="安装oh-my-zsh"></a>安装oh-my-zsh</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh</span><br><span class="line">cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切换shell解释器为zsh</span></span><br><span class="line">chsh -s $(<span class="built_in">which</span> zsh)</span><br></pre></td></tr></table></figure>
+
+<p>完成后重启终端。卸载oh-my-zsh直接在终端执行 <code>uninstall_oh_my_zsh</code> 进行卸载！更改主题可到 <a href="https://github.com/ohmyzsh/ohmyzsh/wiki/Themes" target="_blank" rel="noopener">https://github.com/ohmyzsh/ohmyzsh/wiki/Themes</a> 进行查看，然后修改 ~/.zshrc 文件中的 <code>ZSH_THEME=&quot;&quot;</code> 模块，再 source ~/.zshrc 重启下即可完成主题的更改</p>
+<p>oh-my-zsh内置了很多Plugins（插件），默认开启的是git，你也可以按照 <a href="https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins" target="_blank" rel="noopener">https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins</a> 所示开启和查看</p>
+<h2 id="关闭崩溃报告"><a href="#关闭崩溃报告" class="headerlink" title="关闭崩溃报告"></a>关闭崩溃报告</h2><p>有时软件崩溃就已经很让人烦心了，重新打开后还弹出问题报告更是烦不胜烦，不过我们可以关闭它</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaults write com.apple.CrashReporter DialogType none        <span class="comment">#关闭</span></span><br><span class="line">defaults write com.apple.CrashReporter DialogType crashreport <span class="comment">#重新开启</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="强制退出程序"><a href="#强制退出程序" class="headerlink" title="强制退出程序"></a>强制退出程序</h2><p>有时候程序假死了，强行退出<span class="text-gray">（⌥option + 右键程序）</span>也没用，这时可以使用 <code>killall</code> 命令，以微信为例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">killall WeChat</span><br></pre></td></tr></table></figure>
+
+<h2 id="程序栏恢复初始状态"><a href="#程序栏恢复初始状态" class="headerlink" title="程序栏恢复初始状态"></a>程序栏恢复初始状态</h2><p>将程序栏恢复为电脑刚刚激活时的状态</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">defaults delete com.apple.dock; killall Dock</span><br></pre></td></tr></table></figure>
+
+<p>这些 <code>defaults</code> 开始的指令，实际修改的是系统默认的 Plist 表单，这些表单管理着系统中全部程序的默认设置，上面所做的修改无非是改了某些程序的默认设置罢了。你也可到<code>/Library/Preferences/</code>和<code>/Users/你的用户名/Library/Preferences/</code><span class="text-gray">（按住 ⌥option 点击访达的前往- 资源库）</span>内查看全部的 Plist 表单</p>
+<h2 id="文件格式转换"><a href="#文件格式转换" class="headerlink" title="文件格式转换"></a>文件格式转换</h2><p>textutil -convert 命令可在 txt, html, rtf, rtfd, doc, docx, wordml, odt, webarchive 之间来回转换格式</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">textutil -convert ./a.txt ./b.docx</span><br></pre></td></tr></table></figure>
+
+<p>更多相关指令可查阅我在 <a href="https://github.com/qLzhu/macCommand" target="_blank" rel="noopener">Github 上的 MacCommand 仓库</a></p>
+<h2 id="远程连接mac"><a href="#远程连接mac" class="headerlink" title="远程连接mac"></a>远程连接mac</h2><p>前提需要先开启 “系统偏好设置 - 共享 - 远程登录”，再把允许访问更改为所有用户，再记住上方给你的IP地址，然后你就可以使用另一台电脑远程ssh连接你的mac啦</p>
+]]></content>
+      <categories>
+        <category>mac</category>
+      </categories>
+      <tags>
+        <tag>terminal</tag>
+        <tag>bash</tag>
+        <tag>zsh</tag>
+        <tag>git</tag>
       </tags>
   </entry>
   <entry>
@@ -304,16 +501,171 @@
       </tags>
   </entry>
   <entry>
-    <title>科学上网</title>
+    <title>Mac 配置 VSCode Remote-SSH</title>
+    <url>/blog/15892/</url>
+    <content><![CDATA[<p>微软2019年05月03日，在PyCon 2019大会上推出了三个非常实用的功能性插件。它们可以帮助开发者在容器、物理机器或虚拟机，以及Windows Subsystem for Linux (WSL)中实现无缝的远程开发</p>
+<ul>
+<li><code>Remote-SSH</code>：连接虚拟/实体Linux主机</li>
+<li><code>Remote-Containers</code>：连接开发容器（例如：Docker）</li>
+<li><code>Remote-WSL</code>：连接WSL（也就是Linux子系统）</li>
+</ul>
+<p>所以推出这个三个插件的重点在于服务使用Windows系统但有Linux开发需求的用户群体</p>
+<a id="more"></a>
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这篇文章只介绍<code>Remote-SSH</code>的配置与使用，因为<code>Remote-Containers</code>和<code>Remote-WSL</code>我还未使用到，所以想了解它们的朋友可以参考<a href="https://code.visualstudio.com/docs/remote/remote-overview" target="_blank" rel="noopener">VSCode官网</a>给出的详情文档，也可以自动百度或者谷歌相关文章！以下是测试环境和工具</p>
+<ul>
+<li>MacOS</li>
+<li>VSCode</li>
+<li>远程主机：CentOS Linux release 7.4.1708 (Core)</li>
+</ul>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>打开VSCode软件，点击最左侧活动栏内的 <strong>“扩展”</strong> 小图标，然后搜索 <strong><code>Remote SSH</code></strong> 并安装即可。安装完成后在 <strong>“扩展”</strong> 的下方会多出一个类似电脑屏幕的小图标</p>
+<img src="/blog/15892/install.png" class="" title="Install Remote SSH 界面">
+
+<h2 id="配置密钥"><a href="#配置密钥" class="headerlink" title="配置密钥"></a>配置密钥</h2><h3 id="创建密钥"><a href="#创建密钥" class="headerlink" title="创建密钥"></a>创建密钥</h3><p>使用<a href="http://man.linuxde.net/ssh-keygen" target="_blank" rel="noopener">ssh-keygen</a>命令创建的密钥，会在本地<code>~/.ssh/</code>的目录内生成两个文件<code>id_rsa-remote-ssh</code>和<code>id_rsa-remote-ssh.pub</code>，我们要部署的是<code>id_rsa-remote-ssh.pub</code>公钥内容</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa -b 4096 -f ~&#x2F;.ssh&#x2F;id_rsa-remote-ssh</span><br></pre></td></tr></table></figure>
+
+<div class="note ">
+            <p>参数说明<br>-t 指定要创建的类型<br>-b 密钥长度<br>-f 指定用来保存密钥的文件名<br>id_rsa-remote-ssh 名字可以随意定义</p>
+          </div>
+
+<h2 id="上传公钥到远程服务器"><a href="#上传公钥到远程服务器" class="headerlink" title="上传公钥到远程服务器"></a>上传公钥到远程服务器</h2><ol>
+<li>mac拷贝公钥命令 <code>pbcopy &lt; ~/.ssh/id_rsa-remote-ssh.pub</code></li>
+<li>ssh登陆远程服务器</li>
+<li>创建 authorized_keys 文件，并把刚才使用pbcopy命令拷贝的公钥内容，粘贴到此文件内保存</li>
+<li>去除 /etc/ssh/sshd_config 内 <code>PubkeyAuthentication</code> 前的 # 号</li>
+<li><code>systemctl restart sshd.service</code> 重启远程服务器的ssh服务</li>
+</ol>
+<h2 id="配置Remote-SSH插件"><a href="#配置Remote-SSH插件" class="headerlink" title="配置Remote-SSH插件"></a>配置Remote-SSH插件</h2><p>按照图片所示，在用户级目录下的 .ssh 内创建一个配置文件（即/Users/your-host-name/.ssh/config），并在该文件内填写相应内容</p>
+<img src="/blog/15892/Remote-SSH-config.png" class="" title="创建配置文件 Config 图片">
+<img src="/blog/15892/example-config.png" class="" title="配置 config 图片">
+
+<p>如果你想连接多台远程服务器，继续在后面追加配置内容即可</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Host xxx                             <span class="comment"># xxx 自定义连接名称</span></span><br><span class="line">    User root                        <span class="comment"># root 远程服务器账户名称</span></span><br><span class="line">    HostName 47.92.xxx.18x           <span class="comment"># 47.92.xxx.18x 远程服务器地址</span></span><br><span class="line">    IdentityFile ~/.ssh/id_rsa_xxxx  <span class="comment"># ~/.ssh/id_rsa_xxxx 本地密钥所在位置</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="连接远程服务器"><a href="#连接远程服务器" class="headerlink" title="连接远程服务器"></a>连接远程服务器</h2><p>在VSCode左侧 “CONNECTIONS” 下找到你刚才创建的服务器名称，然后右键选择打开的方式</p>
+<div class="note ">
+            <p>Connect to Host in Current Window 在当前窗口中连接到主机<br>Connect to Host in New Window 在新窗口中连接到主机</p>
+          </div>
+
+<img src="/blog/15892/new-window.png" class="" title="创建配置文件 Config 图片">
+<img src="/blog/15892/succeed_.png" class="" title="配置 config 图片">
+
+<p>打开任意文件编辑后保存，它就会自动保存到远程服务器了(^_^)</p>
+]]></content>
+      <categories>
+        <category>mac</category>
+      </categories>
+      <tags>
+        <tag>VSCode</tag>
+        <tag>remote-ssh</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>NPM Cannot Find Module</title>
+    <url>/blog/21517/</url>
+    <content><![CDATA[<p>执行 <code>npm install</code> 时终端提示 Cannot find module ‘../lib/utils/unsupported.js’ 错误，解决方案就是删除 /usr/local/lib/node_modules/npm 目录！</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo rm -rf /usr/<span class="built_in">local</span>/lib/node_modules/npm</span><br><span class="line"></span><br><span class="line">brew reinstall node</span><br><span class="line">nvm reinstall-packages <span class="comment">#使用nvm管理Node的使用此命令</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>npm</category>
+      </categories>
+      <tags>
+        <tag>npm</tag>
+        <tag>Cannot find module</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>NPM Basic</title>
+    <url>/blog/27424/</url>
+    <content><![CDATA[<p>在使用npm之前，须先安装 <a href="https://nodejs.org/en/download/" target="_blank" rel="noopener">Node.js</a>，因为npm是随Node一起发布的，所以推荐安装 LTS 版的稳定版本。如果网速比较慢的话，推荐到 <a href="https://npm.taobao.org/mirrors/node" target="_blank" rel="noopener">TaoBao Node.js</a> 镜像下载。建议大家使用nvm进行安装，不推荐直接下载程序包进行安装，原因请查阅 <a href="/blog/21969/" title="Mac 卸载 App 残留、Node 和 NPM">Mac 卸载 App 残留、Node 和 NPM</a></p>
+<p>Node.js安装完成后，可通过相关命令查看安装位置及其版本，以此来检测是否安装成功</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">which</span> node     <span class="comment">#/usr/local/bin/node</span></span><br><span class="line">node --version <span class="comment">#v12.14.1</span></span><br><span class="line">npm --version  <span class="comment">#6.13.4</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<p>由于npm的更新频率比Node.js多，所以通过上面的命令安装的npm可能不是最新版本，可以通过下面的命令单独更新npm</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install npm@latest -g</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置基本信息"><a href="#配置基本信息" class="headerlink" title="配置基本信息"></a>配置基本信息</h2><p>执行 <code>npm init</code> 时会用到</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm <span class="built_in">set</span> init.author.email <span class="string">"qinlzhu@outlook.com"</span></span><br><span class="line">npm <span class="built_in">set</span> init.author.name <span class="string">"qinlzhu"</span></span><br><span class="line">npm <span class="built_in">set</span> init.license <span class="string">"MIT"</span></span><br></pre></td></tr></table></figure>
+
+<p>通过 <code>npm config</code> 命令可查看npm的相关配置，也可根据自己的需求自定义配置，在不同的环境下执行不同的配置文件，配置加载优先级如下(从高到低)</p>
+<ol>
+<li>命令行参数、环境变量、npmrc 文件</li>
+<li>npmrc 文件（项目级、用户级~/.npmrc、系统级、npm 内置级）</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm config list</span><br><span class="line"><span class="comment"># ; cli configs</span></span><br><span class="line"><span class="comment"># metrics-registry = "https://registry.npmjs.org/"</span></span><br><span class="line"><span class="comment"># scope = ""</span></span><br><span class="line"><span class="comment"># user-agent = "npm/6.13.4 node/v12.14.1 darwin x64"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ; userconfig /Users/leizhu/.npmrc</span></span><br><span class="line"><span class="comment"># home = "https://npm.taobao.org"</span></span><br><span class="line"><span class="comment"># init-author-email = "qinlzhu@outlook.com"</span></span><br><span class="line"><span class="comment"># init-author-name = "qinlzhu"</span></span><br><span class="line"><span class="comment"># init-license = "MIT"</span></span><br><span class="line"><span class="comment"># registry = "https://registry.npmjs.org/"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ; node bin location = /usr/local/bin/node</span></span><br><span class="line"><span class="comment"># ; cwd = /Users/leizhu/Downloads/Code/github/blog/example/class</span></span><br><span class="line"><span class="comment"># ; HOME = /Users/leizhu</span></span><br><span class="line"><span class="comment"># ; "npm config ls -l" to show all defaults.</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="配置-npm-源"><a href="#配置-npm-源" class="headerlink" title="配置 npm 源"></a>配置 npm 源</h2><p>我们使用默认配置从npm官网下载模块时，由于网络的因素，会导致我们的下载速度特别慢。所以我们可以配置一些国内的镜像来加快我们的下载速度。这里以淘宝的npm镜像为例</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 临时使用</span></span><br><span class="line">npm install express --registry https://registry.npm.taobao.org</span><br><span class="line"></span><br><span class="line"><span class="comment"># 全局使用</span></span><br><span class="line">npm config <span class="built_in">set</span> registry https://registry.npm.taobao.org</span><br><span class="line">npm config get registry</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 cnpm</span></span><br><span class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+
+<h2 id="更改安装目录"><a href="#更改安装目录" class="headerlink" title="更改安装目录"></a>更改安装目录</h2><p>更改目录后需要重新安装npm，然后再更改环境变量。即在 <code>.profile</code>、<code>.bash_profile(Mac)</code> 或 <code>.bashrc</code> 文件内最后一行添加 <code>export PATH=&quot;$HOME/Folder-Name/bin:$PATH&quot;</code>，最后再重启下文件即可</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 获取全局安装位置</span></span><br><span class="line">npm config get prefix <span class="comment">#/usr/local</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 更改安装位置(path_url换成你要安装的位置)</span></span><br><span class="line">npm config <span class="built_in">set</span> prefix=<span class="variable">$HOME</span>/path_url</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重新下载npm并重启配置文件</span></span><br><span class="line">npm install npm -g</span><br><span class="line">vim ~/.bashrc</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>使用npm安装软件包之前，需要先初始化本地目录。命令执行后会在工程根目录下，生成如下文件及其目录</p>
+<div class="note ">
+            <p>node_modules：保存软件包的文件夹<br>package.json：软件包管理文件<br>package-lock.json：软件包各种依赖关系管理文件</p>
+          </div>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm init</span><br><span class="line"></span><br><span class="line"><span class="comment"># 回车后，它会询问一些关于包的基本信息，根据实际情况回答即可</span></span><br><span class="line"><span class="comment"># 如果不喜欢这种方式，可以使用 `npm init --yes` 或 `npm init -y` 命令</span></span><br><span class="line"><span class="comment"># 直接使用默认的配置来创建 package.json 文件</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># package name: (npms)     项目名称</span></span><br><span class="line"><span class="comment"># version: (1.0.0)         版本信息</span></span><br><span class="line"><span class="comment"># description:             项目简单描述，如果为空，</span></span><br><span class="line"><span class="comment">#                          读取当前目录的 READMD.md 或 README 文件第一行内容作为它的默认值</span></span><br><span class="line"><span class="comment"># entry point: (index.js)  入口文件</span></span><br><span class="line"><span class="comment"># test command:            test脚本</span></span><br><span class="line"><span class="comment"># git repository:          项目地址</span></span><br><span class="line"><span class="comment"># keywords:                项目关键词</span></span><br><span class="line"><span class="comment"># license: (MIT)           项目许可协议</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># package.json</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># &#123;</span></span><br><span class="line"><span class="comment">#   "name": "npms",</span></span><br><span class="line"><span class="comment">#   "version": "1.0.0",</span></span><br><span class="line"><span class="comment">#   "description": "",</span></span><br><span class="line"><span class="comment">#   "main": "index.js",</span></span><br><span class="line"><span class="comment">#   "dependencies": &#123;</span></span><br><span class="line"><span class="comment">#     "lodash": "^4.17.15"</span></span><br><span class="line"><span class="comment">#   &#125;,</span></span><br><span class="line"><span class="comment">#   "devDependencies": &#123;&#125;,</span></span><br><span class="line"><span class="comment">#   "scripts": &#123;</span></span><br><span class="line"><span class="comment">#     "test": "echo \"Error: no test specified\" &amp;&amp; exit 1"</span></span><br><span class="line"><span class="comment">#   &#125;,</span></span><br><span class="line"><span class="comment">#   "author": "qinlzhu &lt;qinlzhu@outlook.com&gt;",</span></span><br><span class="line"><span class="comment">#   "license": "MIT"</span></span><br><span class="line"><span class="comment"># &#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="搜索安装包"><a href="#搜索安装包" class="headerlink" title="搜索安装包"></a>搜索安装包</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm search Loadsh</span><br><span class="line"></span><br><span class="line"><span class="comment"># NAME                   | DESCRIPTION         | AUTHOR          | DATE       | VERSION  | KEYWORDS</span></span><br><span class="line"><span class="comment"># loadsh                 | Lodash modular…     | =atool          | 2019-03-12 | 0.0.4    | modules stdlib util</span></span><br><span class="line"><span class="comment"># loadsh-get             | 访问嵌套对象         | =allen(lisong)  | 2020-02-01 | 1.0.1    | lodash get</span></span><br><span class="line"><span class="comment"># eskom-loadshedding-api | Exposing the Eskom… | =polarizedions  | 2020-01-09 | 0.1.4    | eskom loadshedding api</span></span><br><span class="line"><span class="comment"># madoka                 | A json generator    | =allenice       | 2016-02-17 | 1.1.2    | json generator faker ohana loadsh</span></span><br><span class="line"><span class="comment"># e-loadsh               | 前端常用函数工具库    | =alexjia        | 2019-09-30 | 1.0.3    | javascript util</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 命令格式</span></span><br><span class="line">npm install &lt;package_name&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 本地安装</span></span><br><span class="line"><span class="comment"># 生产环境下安装依赖的软件包，默认自带 --save-prod 参数</span></span><br><span class="line">npm install Lodash</span><br><span class="line"><span class="comment"># 等同于</span></span><br><span class="line">npm i Lodash</span><br><span class="line">npm install Lodash --save</span><br><span class="line">npm install Lodash --save-prod</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试或开发环境下安装依赖的软件包</span></span><br><span class="line"><span class="comment"># 保存在 package.json 的 devDependencies 下</span></span><br><span class="line">npm install Lodash --save-dev</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装软件包的指定版本</span></span><br><span class="line">npm install Lodash@4.17.00</span><br><span class="line">npm install Lodash@latest</span><br><span class="line"></span><br><span class="line"><span class="comment"># 全局安装</span></span><br><span class="line">npm install Lodash --global</span><br><span class="line">npm i Loadsh -g</span><br></pre></td></tr></table></figure>
+
+<h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 检测更新</span></span><br><span class="line">npm outdated</span><br><span class="line">npm outdated -g --depth=0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更新</span></span><br><span class="line">npm update</span><br><span class="line">npm update Loadsh</span><br></pre></td></tr></table></figure>
+
+<h2 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 删除 node_modules 目录内的包</span></span><br><span class="line">npm uninstall</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除 package.json dependencies 选项下的包必须使用该命令</span></span><br><span class="line">npm uninstall --save</span><br><span class="line"></span><br><span class="line"><span class="comment"># package.json devDependencies</span></span><br><span class="line">npm uninstall --save-dev</span><br></pre></td></tr></table></figure>
+
+<h2 id="枚列"><a href="#枚列" class="headerlink" title="枚列"></a>枚列</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm list --global</span><br><span class="line"><span class="comment"># /usr/local/lib</span></span><br><span class="line"><span class="comment"># ├─┬ cnpm@6.1.1</span></span><br><span class="line"><span class="comment"># │ ├─┬ commander@2.10.0</span></span><br><span class="line"><span class="comment"># │ │ └── graceful-readlink@1.0.1</span></span><br><span class="line"><span class="comment"># │ ├─┬ cross-spawn@0.2.9</span></span><br><span class="line"><span class="comment"># │ │ └── lru-cache@2.7.3</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 --depth=“n” 参数来指定递归的深度</span></span><br><span class="line">npm list -g --depth=1</span><br><span class="line"><span class="comment"># ├─┬ cnpm@6.1.1</span></span><br><span class="line"><span class="comment"># │ ├── commander@2.10.0</span></span><br><span class="line"><span class="comment"># │ ├── cross-spawn@0.2.9</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h2><p>每当你通过npm安装一个软件包时，npm会自动在你系统用户根目录下创建一个副本，并保存到 <code>.npm</code> 目录内，之所以你安装相同的软件包时，速度会更快，那是因为它不需要再访问网络安装了，所以我们需要定期清理</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls ~/.npm</span><br><span class="line"></span><br><span class="line">npm cache clean --force</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://npm.comptechs.cn/" target="_blank" rel="noopener">https://npm.comptechs.cn/</a><br><a href="http://caibaojian.com/npm/" target="_blank" rel="noopener">http://caibaojian.com/npm/</a><br><a href="https://cloud.tencent.com/developer/doc/1282" target="_blank" rel="noopener">https://cloud.tencent.com/developer/doc/1282</a></p>
+]]></content>
+      <categories>
+        <category>npm</category>
+      </categories>
+      <tags>
+        <tag>npm</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>搭建 VPN 服务</title>
     <url>/blog/64387/</url>
-    <content><![CDATA[<p>国内的国情确定了我们可浏览的网站，由于我们是开发者需要翻看很多国外技术网站，查看这些技术网站就需要到科学的技术。这里我们就介绍下 hosts、<a href="https://github.com/getlantern/lantern" target="_blank" rel="noopener">lantern</a>、<a href="https://shadowsocks.org/en/index.html" target="_blank" rel="noopener">shadowsocks</a>、<a href="https://getoutline.org/en/home" target="_blank" rel="noopener">outline</a> 的搭建和使用</p>
+    <content><![CDATA[<p>国内的国情确定了我们可浏览的网站，由于我们是开发者需要翻看很多国外技术网站，查看这些技术网站就需要到科学的技术。这里我们就介绍下 hosts、ssh、<a href="https://github.com/getlantern/lantern" target="_blank" rel="noopener">lantern</a>、<a href="https://shadowsocks.org/en/index.html" target="_blank" rel="noopener">shadowsocks</a>、<a href="https://getoutline.org/en/home" target="_blank" rel="noopener">outline</a> 的搭建和使用</p>
 <h2 id="hosts"><a href="#hosts" class="headerlink" title="hosts"></a>hosts</h2><p>hosts（the static table lookup for host name 主机名查询静态表）用于补充或取代网络中DNS的功能。它储存的是计算机网络中各节点信息，负责将主机名映射到相应的IP地址，合理利用可提高域名的解析速度。<strong>在以前通过该技术可以实现FQ目的，现在已不再适用，因为自2018年8月24号起，长城开始启用基于SNI检测和TCP连接重置等手段进行了封锁</strong></p>
 <a id="more"></a>
 
+<h2 id="ssh"><a href="#ssh" class="headerlink" title="ssh"></a>ssh</h2><p>使用ssh端口映射也可达到FQ的目的。ssh端口映射、shadowsocks和outline这三种方式，都需要你有台境外服务器！这里推荐两个服务器提供商 <a href="https://www.vultr.com/" target="_blank" rel="noopener">vultr</a> 和 <a href="https://bandwagonhost.com/" target="_blank" rel="noopener">搬瓦工</a>，它们都支持微信和支付宝付款，两者的区别在于：</p>
+<ul>
+<li><a href="https://bandwagonhost.com/" target="_blank" rel="noopener">搬瓦工</a>：按月或者年进行扣费；换IP需要缴纳多余的费用</li>
+<li><a href="https://www.vultr.com/" target="_blank" rel="noopener">vultr</a>：按小时进行扣费；换IP选择个地区重建个服务器镜像即可</li>
+</ul>
+<p>我自己就是使用的vultr，并且官网的UI设计的比较不错！我搭建的VPS服务器镜像地区是日本，系统是Ubuntu 19.10 x 64<span class="text-gray">（搭建镜像时尽量选择离你比较近的地区，同时记得要开启IP6协议哦）</span>。如何搭建VPS服务请参考<a href="https://www.stackcc.com/2019/07/25/vultrdas/" target="_blank" rel="noopener">https://www.stackcc.com/2019/07/25/vultrdas/</a> 和 <a href="https://github.com/Alvin9999/new-pac/wiki/%E8%87%AA%E5%BB%BAss%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%95%99%E7%A8%8B" target="_blank" rel="noopener">https://github.com/Alvin9999/new-pac/wiki/%E8%87%AA%E5%BB%BAss%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%95%99%E7%A8%8B</a> 太简单这里不赘述</p>
+<p>VPS服务搭建好后，输入如下指令回车，并输入VPS服务器的密码</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh -D127.0.0.1:9000 root@remote_host</span><br></pre></td></tr></table></figure>
+<ul>
+<li>-D 动态转发，远程主机通过SOCKS协议连接到你要访问的网站，有加密作用</li>
+<li>127.0.0.1:9000 是本地的IP和端口<span class="text-gray">（端口随便定义，一般选用 1024-65535 之间的并且尚未使用的端口号）</span></li>
+<li>root 远程主机用户名<span class="text-gray">（一般默认的都是这个，即我们刚搭建的VPS服务器镜像）</span></li>
+<li>remote_host 远程主机的IP地址</li>
+</ul>
+<p>连接成功后，我们打开 <strong>“系统偏好设置 - 网络 - 当前正在使用的网络<span class="text-gray">（例如：WIFI）</span>- 高级<span class="text-gray">（右下角）</span>- 代理 - SOCKS代理 - SOCKS代理服务器处填写上127.0.0.1:9000<span class="text-gray">（端口写你自己定义的）</span> - 好 - 应用”</strong></p>
+<p>此时你再查看下自己的<a href="https://www.ip.cn/" target="_blank" rel="noopener">IP地址</a>是不是变成VPS服务的了！访问一些被墙的网站也访问通了！终端内退出服务器的话，ssh连接就会断开</p>
+<div class="note ">
+            <p>想了解更多ssh转发知识请参考：<br><a href="https://www.ssh.com/ssh/" target="_blank" rel="noopener">https://www.ssh.com/ssh/</a><br><a href="https://man.linuxde.net/ssh" target="_blank" rel="noopener">https://man.linuxde.net/ssh</a><br><a href="https://www.ibm.com/developerworks/cn/linux/l-cn-sshforward/index.html" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/linux/l-cn-sshforward/index.html</a><br><a href="https://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html" target="_blank" rel="noopener">https://www.ruanyifeng.com/blog/2011/12/ssh_port_forwarding.html</a></p>
+          </div>
+
 <h2 id="lantern"><a href="#lantern" class="headerlink" title="lantern"></a>lantern</h2><p><a href="https://github.com/getlantern/lantern" target="_blank" rel="noopener">lantern（蓝灯）</a>免费的全平台兼容的FQ软件，每月500M，每月月初自动重置</p>
-<h2 id="shadowsocks"><a href="#shadowsocks" class="headerlink" title="shadowsocks"></a>shadowsocks</h2><p>Shadowsocks是一种基于socks5协议的代理工具。搭建该服务需要先买台境外的服务器，我这里使用的是<a href="https://www.vultr.com/" target="_blank" rel="noopener">vultr</a><span class="text-gray">（搬瓦工也是可以。搬瓦工是按月或者年扣费，不过经常会推出活动；而vultr是按小时进行扣费。两者都支持微信和支付宝付款）</span>的，搭建的镜像系统是 Ubuntu 19.10 x 64<span class="text-gray">（搭建镜像时尽量选择离你比较近的位置，同时记得要开启IP6协议哦）</span>，地点选择的是日本</p>
-<p>线上镜像服务搭建好后，在本地使用终端通过SSH命令，登陆到Vultr的云主机服务器上</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh root@Vultr-OS-IP</span><br></pre></td></tr></table></figure>
+<h2 id="shadowsocks"><a href="#shadowsocks" class="headerlink" title="shadowsocks"></a>shadowsocks</h2><p>Shadowsocks是一种基于socks5协议的代理工具。客户端下载列表如下：</p>
+<ul>
+<li><a href="https://github.com/shadowsocks/ShadowsocksX-NG/releases" target="_blank" rel="noopener">Mac</a></li>
+<li><a href="https://github.com/shadowsocks/shadowsocks-windows/releases" target="_blank" rel="noopener">window</a></li>
+<li><a href="https://github.com/shadowsocks/shadowsocks-android/releases" target="_blank" rel="noopener">Android</a></li>
+<li>iPhone <span class="text-gray">（版本的客户端是 Shadowrocket 需要国外的 Apple ID 才可下载，并且该软件是收费的）</span></li>
+</ul>
+<p>VPS服务搭建这里直接跳过，不懂的请<a href="#ssh">参考ssh端口映射</a>的那一步。通过本地的终端ssh连接到远程服务器上</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh root@remote_host</span><br></pre></td></tr></table></figure>
 
 <h3 id="安装组件"><a href="#安装组件" class="headerlink" title="安装组件"></a>安装组件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-get update</span><br><span class="line">apt-get install python-pip</span><br><span class="line">pip install shadowsocks</span><br></pre></td></tr></table></figure>
 
@@ -322,7 +674,7 @@
 <h3 id="创建Shadowsocks服务配置文件"><a href="#创建Shadowsocks服务配置文件" class="headerlink" title="创建Shadowsocks服务配置文件"></a>创建Shadowsocks服务配置文件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 路径和名称可随意定义</span></span><br><span class="line">vim /etc/shadowsocks.json</span><br></pre></td></tr></table></figure>
 
 <p>在shadowsocks.json文件内添加如下内容<span class="text-gray">（回车后英文状态下按 <code>i</code> 键进入编辑模式，编辑后按 <code>esc</code> 退出编辑模式， 输入 <code>:wq</code> 保存退出vim）</span></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;server&quot;:&quot;VPS IP&quot;,</span><br><span class="line">  &quot;local_address&quot;:&quot;127.0.0.1&quot;,</span><br><span class="line">  &quot;local_port&quot;:1080,</span><br><span class="line">  &quot;port_password&quot;:&#123;</span><br><span class="line">    &quot;9**0&quot;:&quot;ss**&quot;,</span><br><span class="line">    &quot;9**1&quot;:&quot;ss*1&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;timeout&quot;:300,</span><br><span class="line">  &quot;method&quot;:&quot;aes-256-cfb&quot;,</span><br><span class="line">  &quot;fast_open&quot;: true</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;server&quot;:&quot;remote_host&quot;,</span><br><span class="line">  &quot;local_address&quot;:&quot;127.0.0.1&quot;,</span><br><span class="line">  &quot;local_port&quot;:1080,</span><br><span class="line">  &quot;port_password&quot;:&#123;</span><br><span class="line">    &quot;9**0&quot;:&quot;ss**&quot;,</span><br><span class="line">    &quot;9**1&quot;:&quot;ss*1&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;timeout&quot;:300,</span><br><span class="line">  &quot;method&quot;:&quot;aes-256-cfb&quot;,</span><br><span class="line">  &quot;fast_open&quot;: true</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>server：换成你服务器的IP<br>port_password：多用户使用时开放的端口及其密码<br>method：加密协议<br>fast_open：是否开启加速器</p>
 <h3 id="开启Shadowsocks服务"><a href="#开启Shadowsocks服务" class="headerlink" title="开启Shadowsocks服务"></a>开启Shadowsocks服务</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssserver -c /etc/shadowsocks.json -d start</span><br><span class="line"></span><br><span class="line"><span class="comment"># 停止命令</span></span><br><span class="line"><span class="comment"># ssserver -c /etc/shadowsocks.json -d stop</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 调试时使用以下命令可实时预览请求信息</span></span><br><span class="line"><span class="comment"># ssserver -c /etc/shadowsocks.json</span></span><br></pre></td></tr></table></figure>
@@ -331,14 +683,8 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 如果终端里的 openssl.py 路径跟这里不一致</span></span><br><span class="line"><span class="comment"># 请改成终端错误信息内的路径</span></span><br><span class="line">vim /usr/<span class="built_in">local</span>/lib/python2.7/dist-packages/shadowsocks/crypto/openssl.py</span><br><span class="line"></span><br><span class="line"><span class="comment"># 进入文件后，直接按 shift 输入如下指令</span></span><br><span class="line">:%s/cleanup/reset/</span><br><span class="line">:x</span><br></pre></td></tr></table></figure>
 
 <p>现在再使用 <code>ssserver -c /etc/shadowsocks.json -d start</code> 命令开启Shadowsocks服务即可完成！</p>
-<h3 id="客户端下载"><a href="#客户端下载" class="headerlink" title="客户端下载"></a>客户端下载</h3><p>现在服务器端已经配置完毕，要想FQ还需要配置下客户端。Shadowsocks客户端的设置及其使用非常简单。在客户端中“添加服务器”，正确填写服务器的地址、端口、密码和加密方式，然后就可以连接服务端了</p>
-<ul>
-<li><a href="https://github.com/shadowsocks/ShadowsocksX-NG/releases" target="_blank" rel="noopener">Mac</a></li>
-<li><a href="https://github.com/shadowsocks/shadowsocks-windows/releases" target="_blank" rel="noopener">window</a></li>
-<li><a href="https://github.com/shadowsocks/shadowsocks-android/releases" target="_blank" rel="noopener">Android</a></li>
-<li>iPhone <span class="text-gray">（版本的客户端是 Shadowrocket 需要国外的 Apple ID 才可下载，并且该软件是收费的）</span></li>
-</ul>
-<h2 id="Outline"><a href="#Outline" class="headerlink" title="Outline"></a>Outline</h2><p>Outline 是 Jigsaw 团队开发的，而 Jigsaw 又是谷歌母公司 alphabet 旗下的，开源口号好像是为全球媒体工作者提供帮助什么的，具体的没记清楚。反正跟 shadowscoks 是同类型的工具，都是用来帮助我们科学上网的。软件核心部分依赖的还是 shadowscoks，只不过在此基础上重新包装开发而已。选择它的目地，主要是在国内各应用商城内 Outline App 依然可下载。使用 Outline 服务需要服务端和客户端两个软件配合使用，即</p>
+<h3 id="客户端配置"><a href="#客户端配置" class="headerlink" title="客户端配置"></a>客户端配置</h3><p>现在服务器端已经配置完毕，紧接着就是配置客户端。Shadowsocks客户端的设置及其使用非常简单。在客户端中“添加服务器”，正确填写服务器的地址、端口、密码和加密方式，然后就可以连接服务端了</p>
+<h2 id="Outline"><a href="#Outline" class="headerlink" title="Outline"></a>Outline</h2><p>Outline 是 Jigsaw 团队开发的，而 Jigsaw 又是谷歌母公司 alphabet 旗下的，开源口号好像是为全球媒体工作者提供帮助什么的，具体的没记清楚。反正跟 shadowscoks 是同类型的工具，都是用来帮助我们科学上网的。软件核心部分依赖的还是 shadowscoks，只不过在此基础上重新包装开发而已。选择它的目地，主要是国内各应用商城内依然可下载 Outline App。使用 Outline 服务需要服务端和客户端两个软件配合使用，即</p>
 <ul>
 <li>服务端：Outline Manager</li>
 <li>客户端：Outline</li>
@@ -357,7 +703,7 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;&quot;apiUrl&quot;:&quot;https:&#x2F;&#x2F;***.28.*1.**9:***69&#x2F;*********mfPAusF9w&quot;,</span><br><span class="line">&quot;certSha256&quot;:&quot;FFFA7***************5B61976F57B4B1E12BB9***19772F6&quot;&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="配置-outline"><a href="#配置-outline" class="headerlink" title="配置 outline"></a>配置 outline</h3><p>完成 Outline Manager 服务端的配置后，进入该服务的管理界面，在该界面内选择“添加新密钥”，然后把新创建的密钥共享给 outline App 使用。注意使用的主要是以 ss 开头的字符串哦！操作还有迷糊的地方，可点击该文章 <a href="https://oracleblog.org/its-my-life/how-to-deploy-outline-by-jigsaw/" target="_blank" rel="noopener">“Outline 的部署和使用”</a> 看图文进行操作</p>
-<h2 id="使用总结"><a href="#使用总结" class="headerlink" title="使用总结"></a>使用总结</h2><p>长城防火墙封锁比较严重时或者不想付费的使用lantern，不严重使用shadowsocks或者outline。shadowsocks配置稍复杂些，严查期间封锁shadowsocks也要比outline严重</p>
+<h2 id="使用总结"><a href="#使用总结" class="headerlink" title="使用总结"></a>使用总结</h2><p>长城防火墙封锁比较严重时或者不想付费的使用lantern。不严重使用shadowsocks或者outline。shadowsocks配置稍复杂些，严查期间封锁shadowsocks也要比outline严重。短时间使用那就选ssh端口映射。</p>
 <p>同时要提醒大家的是：</p>
 <p style="color: #f2777a;text-align: center;">科学上网别信谣、别传谣、别造谣、别看不该看的东西、让我们做个守法的好公民！</p>]]></content>
       <categories>
