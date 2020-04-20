@@ -59,7 +59,7 @@ url: https://yourname.github.io/trcl
 root: /trcl/
 ```
 
-## 设置 Token
+## 创建 Token
 
 在 Github 上 **Settings -> Developer settings -> Personal access tokens -> Generate new token** 处创建一个新的 token，该 token 只开启一个 repo 权限即可
 

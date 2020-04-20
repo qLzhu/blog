@@ -36,7 +36,7 @@ hexo init && git init
 git add .
 git commit -m "docs(new):initial"
 
-# 建立 gh-pages 静态网站分支
+# 部署静态网站时 Github 默认拉取的分支即该分支
 git branch gh-pages
 
 # 关联远程仓库并提交
@@ -46,7 +46,7 @@ git push -u origin master
 git push -u origin gh-pages
 ```
 
-配置hexo _config.yml
+配置 hexo _config.yml
 
 ```yml
 # URL
@@ -68,13 +68,21 @@ cd source/
 touch .nojekyll
 ```
 
-配置hexo _config.yml 和创建 .nojekyll 是为了绕过 GitHub Pages 上的Jekyll处理，不然 GitHub Pages 会报 `The tag fancybox on line 77 in themes/landscape/README.md is not a recognized Liquid tag.` 错误
+配置 hexo _config.yml 和创建 .nojekyll 是为了绕过 GitHub Pages 上的Jekyll处理，不然 GitHub Pages 会报 `The tag fancybox on line 77 in themes/landscape/README.md is not a recognized Liquid tag.` 错误。下述是问题参考链接：
+
 https://github.blog/2009-12-29-bypassing-jekyll-on-github-pages/
 https://github.com/theme-next/hexo-theme-next/issues/410
+https://help.github.com/cn/github/working-with-github-pages/about-github-pages-and-jekyll
 
-### 设置 Token
+### 创建 Token
 
 在 Github 上 **Settings -> Developer settings -> Personal access tokens -> Generate new token** 处创建一个新的 token，该 token 只开启一个 repo 权限即可
+
+{% note %}
+让Github自动为工作流创建token也行，只需要在需要token的地方换成 &#36;&#123;&#123; secrets.GITHUB_TOKEN &#125;&#125; 即可。详情请参考 https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token
+
+还有一种是ssh-keygen的方式，把公钥保存到 Settings - SSH and GPG keys，私钥保存到 Settings - Secrets https://help.github.com/cn/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+{% endnote %}
 
 > `Note` 的名称随意，自己看到知道是什么token就没问题
 > 实在不知道如何创建token的请查阅 https://help.github.com/cn/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line
@@ -85,9 +93,9 @@ https://github.com/theme-next/hexo-theme-next/issues/410
 
 {% asset_img Token_hash.png token 值 %}
 
-### 设置密钥
+### 设置 Token
 
-把刚才生成的 token 值保存到当前仓库的 `Settings/Secrets` 里面。Name 的名称随意，建议名称全部大写并加下划线的形式，Workflow File 配置文件内会用到该名称
+把刚才生成的 token 值保存到当前仓库的 `Settings - Secrets` 里面。Name 的名称随意，建议名称全部大写并加下划线的形式，Workflow File 配置文件内会用到该名称
 
 {% asset_img GH_ACTION_TEST_KEY.png token保存到当前项目 %}
 
@@ -106,7 +114,7 @@ https://github.com/theme-next/hexo-theme-next/issues/410
 {% asset_img Build_Passing.png build passing 图标 %}
 
 {% note %}
-注意Github Actions使用限制：
+Github Actions限制策略：
 1. 每个仓库只能同时支持20个Workflow并行，每个Workflow最多允许运行72小时，超时会自动取消该工作流
 2. 每小时可以调用1000次GitHub API
 3. 每个Job最多可以执行6个小时，超过该时间会自动终止Job
