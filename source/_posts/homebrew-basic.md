@@ -66,15 +66,17 @@ fi
 
 ## 基本命令
 
-- 查看帮助：`brew help`
-- 查看当前版本：`brew --version`
+- 查看帮助：`brew help <name>`
+- 列出当前版本：`brew --version`
+- 列出配置信息：`brew config`
 - 更新Homebrew：`brew update`
+- 诊断问题并给出解决方案：`brew doctor`
 - 搜索包：`brew search <name>`
 - 安装包：`brew install <name>`
 - 卸载包：`brew uninstall <name>`
 - 彻底卸载包：`brew uninstall <name> --force`
 - 强制卸载包：`brew uninstall --ignore-dependencies <name>`
-- 查看包信息：`brew info <name>`
+- 列出指定包的信息：`brew info <name>`
 - 列出指定包的依赖关系：`brew deps <name>`
 - 列出已安装的包：`brew list`
 - 列出可更新的包：`brew outdated`
@@ -82,9 +84,14 @@ fi
 - 锁定指定的包：`brew pin <name>`
 - 取消锁定：`brew unpin <name>`
 - 更新指定的包：`brew upgrade <name>`
-- 查看可清理的旧版本包：`brew cleanup -n`
+- 列出可清理的旧版本包：`brew cleanup -n`
 - 清理指定版本的旧包：`brew cleanup <name>`
 - 清理所有旧版本的包：`brew cleanup`
+- 列出已安装的仓库：`brew tap`
+- 添加仓库：`brew tap [--full] user/repo [URL]`
+- 删除仓库：`brew untap tap`
+- 管理安装的软件服务：`brew services`
+- 查询服务列表：`brew services list`
 
 ## 常见错误
 

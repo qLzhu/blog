@@ -24,9 +24,17 @@ rm -rf /Applications/CleanMyMac\ X.app
 ```
 <!-- more -->
 
+## Uninstall Node PKG
+
+卸载从官网下载的安装，使用如下命令。如果未正常卸载的使用`which`命令查看下，安装的位置是不是自己更改了
+
+```bash
+sudo rm -rf /usr/local/{bin/{node,npm},lib/node_modules/npm,lib/node,share/man/*/node.*}
+```
+
 ## Install nvm
 
-[Node](https://nodejs.org/en/)版本比较不好管理，我们可以借助[nvm](https://github.com/nvm-sh/nvm)进行管理Node。通过[HomeBrew](https://brew.sh/index_zh-cn)安装nvm，然后再通过nvm安装Node，这样一级管理一级，方便卸载和安装
+这里再说下 [Node](https://nodejs.org/en/) 版本管理的问题！当你开发项目时，该项目对 Node 的版本有要求，且跟你安装的版本不同（过高和者低了），这时你怎么办？卸载当前版本再安装项目所需的版本？如果多个项目每个项目要求的版本都不同那，总不能每个项目都是卸载再安装吧，那多麻烦！所以我们可以借助 [nvm](https://github.com/nvm-sh/nvm) 管理 Node。通过 [HomeBrew](https://brew.sh/index_zh-cn) 安装 nvm，然后再通过 nvm 安装 Node，这样一级管理一级，方便卸载和安装
 
 ```bash
 # 已安装HomeBrew的请跳过
@@ -35,25 +43,12 @@ rm -rf /Applications/CleanMyMac\ X.app
 brew install nvm
 ```
 
-安装完成后还不能直接使用，因为通过HomeBrew安装的nvm缺少`nvm.sh`脚本文件，执行时总会报`command not found: nvm`错误，所以需要额外设置下
+安装完成后还不能直接使用，因为通过 HomeBrew 安装的 nvm，[缺少 nvm.sh](https://stackoverflow.com/questions/27651892/homebrew-installs-nvm-but-nvm-cant-be-found-afterwards) 执行脚本文件，执行时总会报 `command not found: nvm` 错误，所以需要在 `~/.bash_profile`、`~/.bashrc` 或 `~/.zshrc` 添加如下内容
 
-{% tabs nvm %}
-  <!-- tab bash -->
-    Mac系统默认的Shell解释器是Bash，如果你未更换的话，请在`~/.bash_profile`内添加如下配置。确实不知道用`echo $SHELL`命令查看下
-    ```bash
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-    [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-    ```
-  <!-- endtab -->
-  <!-- tab zsh -->
-    编辑`~/.zshrc`文件
-    ```bash
-    export NVM_DIR=~/.nvm
-    source $(brew --prefix nvm)/nvm.sh
-    ```
-  <!-- endtab -->
-{% endtabs %}
+```bash
+export NVM_DIR=~/.nvm
+source $(brew --prefix nvm)/nvm.sh
+```
 
 配置完成后，`source`命令重启下相应的配置文件
 
@@ -93,12 +88,4 @@ nvm cache clear             清楚nvm的缓存目录
 # 阅读拓展
 # https://github.com/nvm-sh/nvm
 # http://www.srcmini.com/1433.html
-```
-
-## Uninstall Node PKG
-
-卸载从官网下载的安装，使用如下命令。如果未正常卸载的使用`which`命令查看下，安装的位置是不是自己更改了
-
-```bash
-sudo rm -rf /usr/local/{bin/{node,npm},lib/node_modules/npm,lib/node,share/man/*/node.*}
 ```

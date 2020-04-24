@@ -85,15 +85,13 @@ skip_render: README.md
 
 ## 置入本地图片
 
-Markdown 置入图片的语法是 `![img-title](img-url)`，但该语法没办法置入本地图片！这时需要使用到 [hexo-asset-image](https://github.com/xcodebuild/hexo-asset-image) 插件。<span style="color: #999">注意：1.0.0 版本插入图片时，文章内部的图片可正常显示，在首页时图片显示异常，建议继续使用 hexo 的 {% asset_img name.png 描述 %} 标签</span>
+Markdown 置入图片的语法是 `![img-title](img-url)`，但该语法没办法置入本地图片！这时需要使用到 [hexo-asset-image](https://github.com/xcodebuild/hexo-asset-image) 插件<span style="color: #999">（注意：1.0.0 版本插入图片时，文章内部的图片可正常显示，在首页时图片显示异常，建议继续使用 hexo 的 [asset_img](https://hexo.io/zh-cn/docs/asset-folders) 标签）</span>
 
 ```bash
 npm install hexo-asset-image
 ```
 
 ```yml 配置 hexo _config.yml
-# hexo 置入图片的标签插件语法：{% asset_img name.png 描述 %}
-
 # 开启资源文件管理功能
 # 当我们再通过 hexo new [layout] <title> 命令创建新文章时，Hexo 就会自动创建一个跟文章同名的资源文件夹
 # 把图片导入到该文件夹后，你就可以按照正常的 Markdown 语法置入图片了
@@ -272,7 +270,7 @@ gitalk:
 
   # 刚才注册的空白库名称
   repo: blog-comments
-    
+
   # 配置 Github OAuth 第三方验证给出的字符串
   client_id: a***047*60**e
   client_secret: 4f***2c**a8*cd4**d8*
@@ -284,6 +282,7 @@ gitalk:
 
 ## 更改server预览端口
 
+https://hexo.io/zh-cn/docs/server
 ```bash
 hexo s -p 5000
 ```
