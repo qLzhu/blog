@@ -28,7 +28,7 @@
 <meta property="og:description" content="本博客采用的是 NexT 主题，以下配置结合 hexo 和 NexT 两方面混合讲解。说明：NexT 7.3 配置文件及其目录也发生了很多变化，并且支持了 Pjax。使得我们可以通过启动数据目录来管理配置，升级新的 release 版本更加平滑  NexT 数据目录官方说明 Hexo-NexT 版本更新记录 NexT 7.3 数据目录及自定义 CSS 的启用方式">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-04-15T23:37:21.000Z">
-<meta property="article:modified_time" content="2020-04-19T15:37:52.843Z">
+<meta property="article:modified_time" content="2020-04-25T08:20:49.873Z">
 <meta property="article:author" content="qinlzhu">
 <meta property="article:tag" content="NexT">
 <meta property="article:tag" content="hexo">
@@ -230,7 +230,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-19 15:37:52" itemprop="dateModified" datetime="2020-04-19T15:37:52+00:00">2020-04-19</time>
+                <time title="修改时间：2020-04-25 08:20:49" itemprop="dateModified" datetime="2020-04-25T08:20:49+00:00">2020-04-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -294,10 +294,10 @@
 
 <h2 id="忽略README文件"><a href="#忽略README文件" class="headerlink" title="忽略README文件"></a>忽略README文件</h2><figure class="highlight yml"><figcaption><span>配置 hexo _config.yml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># skip_render 属性可以跳过指定文件的渲染，同时它还支持表达式来匹配路径</span></span><br><span class="line"><span class="attr">skip_render:</span> <span class="string">README.md</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="置入本地图片"><a href="#置入本地图片" class="headerlink" title="置入本地图片"></a>置入本地图片</h2><p>Markdown 置入图片的语法是 <code>![img-title](img-url)</code>，但该语法没办法置入本地图片！这时需要使用到 <a href="https://github.com/xcodebuild/hexo-asset-image" target="_blank" rel="noopener">hexo-asset-image</a> 插件。<span style="color: #999">注意：1.0.0 版本插入图片时，文章内部的图片可正常显示，在首页时图片显示异常，建议继续使用 hexo 的  标签</span></p>
+<h2 id="置入本地图片"><a href="#置入本地图片" class="headerlink" title="置入本地图片"></a>置入本地图片</h2><p>Markdown 置入图片的语法是 <code>![img-title](img-url)</code>，但该语法没办法置入本地图片！这时需要使用到 <a href="https://github.com/xcodebuild/hexo-asset-image" target="_blank" rel="noopener">hexo-asset-image</a> 插件<span style="color: #999">（注意：1.0.0 版本插入图片时，文章内部的图片可正常显示，在首页时图片显示异常，建议继续使用 hexo 的 <a href="https://hexo.io/zh-cn/docs/asset-folders" target="_blank" rel="noopener">asset_img</a> 标签）</span></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-asset-image</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight yml"><figcaption><span>配置 hexo _config.yml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># hexo 置入图片的标签插件语法：&#123;% asset_img name.png 描述 %&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启资源文件管理功能</span></span><br><span class="line"><span class="comment"># 当我们再通过 hexo new [layout] &lt;title&gt; 命令创建新文章时，Hexo 就会自动创建一个跟文章同名的资源文件夹</span></span><br><span class="line"><span class="comment"># 把图片导入到该文件夹后，你就可以按照正常的 Markdown 语法置入图片了</span></span><br><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yml"><figcaption><span>配置 hexo _config.yml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 开启资源文件管理功能</span></span><br><span class="line"><span class="comment"># 当我们再通过 hexo new [layout] &lt;title&gt; 命令创建新文章时，Hexo 就会自动创建一个跟文章同名的资源文件夹</span></span><br><span class="line"><span class="comment"># 把图片导入到该文件夹后，你就可以按照正常的 Markdown 语法置入图片了</span></span><br><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="插入代码文件"><a href="#插入代码文件" class="headerlink" title="插入代码文件"></a>插入代码文件</h2><p>插入代码文件需要先在 hexo 的 <code>code_dir</code> 模块处配置路径，这里以插入 <code>source/_data/includecode</code> 文件夹内的代码文件为例：<code>code_dir: _data/includecode/</code></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;% include_code css lang:css example.css %&#125;</span><br><span class="line">&#123;% include_code css lang:css from:2 to:3 example.css %&#125;</span><br></pre></td></tr></table></figure>
@@ -349,9 +349,11 @@
 <blockquote>
 <p>1.Application name 项目名称随意，只要你看到名称知道它是干什么的就可以<br>2.Application description 项目描述<br>3.Homepage URL 和 Authorization callback URL 要填写博客的地址，例如：<a href="https://qlzhu.github.io/blog/">https://qlzhu.github.io/blog/</a></p>
 </blockquote>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">gitalk:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># 注意 github_id 和 admin_user 是你账户的名称</span></span><br><span class="line">  <span class="comment"># 如果更改过账户名的话，要用第一次注册时使用的名称</span></span><br><span class="line">  <span class="attr">github_id:</span> <span class="string">'**'</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># 刚才注册的空白库名称</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">blog-comments</span></span><br><span class="line">    </span><br><span class="line">  <span class="comment"># 配置 Github OAuth 第三方验证给出的字符串</span></span><br><span class="line">  <span class="attr">client_id:</span> <span class="string">a***047*60**e</span></span><br><span class="line">  <span class="attr">client_secret:</span> <span class="string">4f***2c**a8*cd4**d8*</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">admin_user:</span> <span class="string">'**'</span></span><br><span class="line">  <span class="attr">distraction_free_mode:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">language:</span> <span class="string">zh-CN</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">gitalk:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># 注意 github_id 和 admin_user 是你账户的名称</span></span><br><span class="line">  <span class="comment"># 如果更改过账户名的话，要用第一次注册时使用的名称</span></span><br><span class="line">  <span class="attr">github_id:</span> <span class="string">'**'</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># 刚才注册的空白库名称</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">blog-comments</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># 配置 Github OAuth 第三方验证给出的字符串</span></span><br><span class="line">  <span class="attr">client_id:</span> <span class="string">a***047*60**e</span></span><br><span class="line">  <span class="attr">client_secret:</span> <span class="string">4f***2c**a8*cd4**d8*</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">admin_user:</span> <span class="string">'**'</span></span><br><span class="line">  <span class="attr">distraction_free_mode:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">language:</span> <span class="string">zh-CN</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="更改server预览端口"><a href="#更改server预览端口" class="headerlink" title="更改server预览端口"></a>更改server预览端口</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s -p 5000</span><br></pre></td></tr></table></figure>
+<h2 id="更改server预览端口"><a href="#更改server预览端口" class="headerlink" title="更改server预览端口"></a>更改server预览端口</h2><p><a href="https://hexo.io/zh-cn/docs/server" target="_blank" rel="noopener">https://hexo.io/zh-cn/docs/server</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s -p 5000</span><br></pre></td></tr></table></figure>
+
     </div>
 
     
@@ -472,7 +474,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/blog/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -485,7 +487,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/blog/tags/">
           
-        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -563,12 +565,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">32k</span>
+    <span title="站点总字数">34k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">53 分钟</span>
+    <span title="站点阅读时长">56 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
