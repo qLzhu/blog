@@ -68,6 +68,7 @@ avatar:
 social:
   GitHub: https://github.com/qLzhu || fab fa-github
   E-Mail: mailto:qinlzhu@outlook.com || fa fa-envelope
+  website: /website || fa fa-laptop
 
 social_icons:
   icons_only: true
@@ -80,12 +81,14 @@ links_settings:
 
 links:
   MDN: https://developer.mozilla.org/zh-CN/
+  Sass: https://sass.bootcss.com/
+  GitBasic: https://backlog.com/git-tutorial/cn/
+  CSS-Tricks: https://css-tricks.com/
   JueJin: https://juejin.im/
   stackoverflow: https://stackoverflow.com/
   Caniuse: https://caniuse.com/
   CodePen: https://codepen.io/popular/pens/
   Favivon: https://realfavicongenerator.net/
-  Sass: https://sass.bootcss.com/
   FeTools: https://github.com/MichealWayne/fe-tools
   TravisCI: https://travis-ci.com/
 

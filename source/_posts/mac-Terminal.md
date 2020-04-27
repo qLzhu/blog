@@ -61,10 +61,23 @@ xcode-select –install
 在弹出的界面点 install 同意即可<span class="text-gray">（经常使用VPN工具的，记得要关闭）</span>
 {% post_link mac-xcode-select-install "关于xcode-select –install的解释" %}
 
+## pbcopy 和 pbpaste
+
+pbcopy 和 pbpaste 可以打通命令行和剪贴板，相当于右键的复制粘贴命令，它们真正发挥威力的地方是将其用作 Unix 工具的时候
+
+```
+ls ~ | pbcopy
+pbpaste >> folder_tree.txt
+```
+
+## uptime
+
+查看上次关机到现在有多长时间
+
 ## 切换shell
 
 `cat /etc/shells`命令可以查看当前系统可以使用哪些shell
-`echo $SHELL`命令可以查看我们当前正在使用的shell  
+`echo $SHELL`命令可以查看我们当前正在使用的shell
 
 切换shell
 ```

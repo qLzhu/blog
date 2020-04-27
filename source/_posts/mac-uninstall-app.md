@@ -11,6 +11,10 @@ tags:
 
 Mac上我们不借助第三方应用删除App的话，通常是直接移除到垃圾篓，或者按住`⌥option`删除<span class="text-gray">（App Store 下载的 App）</span>，时间长了系统会帮我们自动清理一些App残留。但是有些文件系统是不删除的，这时我们可以借助`mdfind`命令进行查询下跟App有关的文件，例如我们删除CleanMyMac
 
+{% note %}
+mdfind 其实就是 Mac 的 Spotlight。如果你的 Spotlight 的工作不正确，也可以 `mdutil -E` 强制重建索引数据库
+{% endnote %}
+
 ```bash
 mdfind -name CleanMyMac
 
@@ -22,6 +26,8 @@ mdfind -name CleanMyMac
 # 命令删除时注意要转义下空格
 rm -rf /Applications/CleanMyMac\ X.app
 ```
+
+还可以使用 -onlyin 参数，指定搜索的目录。例如：`mdfind -onlyin ~/downloads CleanMyMac`
 <!-- more -->
 
 ## Uninstall Node PKG
