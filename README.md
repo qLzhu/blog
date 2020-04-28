@@ -11,33 +11,35 @@ NoiiApple
 ### 目录
 
 #### Mac
-- [About Terminal](https://qlzhu.github.io/blog/24678/)
+- [Terminal终端基础知识](https://qlzhu.github.io/blog/24678/)
 - [xcode-select --install](https://qlzhu.github.io/blog/35871/)
-- [Mac 卸载 App 残留、Node 和 NPM](https://qlzhu.github.io/blog/21969/)
-- [Mac 启动WEB服务的方法](https://qlzhu.github.io/blog/3450/)
-- [Mac 配置 VSCode Remote-SSH](https://qlzhu.github.io/blog/15892/)
-- [SSH Connection closed](https://qlzhu.github.io/blog/11331/)
+- [Mac卸载App残留、Node和NPM](https://qlzhu.github.io/blog/21969/)
+- [Mac启动WEB服务的方法](https://qlzhu.github.io/blog/3450/)
+- [SSH_Connection_closed](https://qlzhu.github.io/blog/11331/)
+- [VSCode显示GIT隐藏目录](https://qlzhu.github.io/blog/13726/)
+- [Mac配置VSCode_Remote-SSH](https://qlzhu.github.io/blog/15892/)
 
 #### NPM
-- [NPM 基础知识](https://qlzhu.github.io/blog/27424/)
-- [NPM Cannot Find Module](https://qlzhu.github.io/blog/21517/)
-- [NPM EAUDITNOPJSON 错误](https://qlzhu.github.io/blog/2777/)
+- [NPM基础知识](https://qlzhu.github.io/blog/27424/)
+- [NPM_Cannot_Find_Module](https://qlzhu.github.io/blog/21517/)
+- [NPM报EAUDITNOPJSON错误](https://qlzhu.github.io/blog/2777/)
 
 #### Hexo
-- [Hexo 配置进阶](https://qlzhu.github.io/blog/49139/)
-- [部署博客到 Github Pages](https://qlzhu.github.io/blog/51941/)
-- [Travis CI 自动化部署静态博客](https://qlzhu.github.io/blog/65246/)
+- [Hexo配置进阶](https://qlzhu.github.io/blog/49139/)
+- [部署博客到Github_Pages](https://qlzhu.github.io/blog/51941/)
+- [Travis_CI自动化部署静态博客](https://qlzhu.github.io/blog/65246/)
 
 #### HomeBrew
-- [HomeBrew 基础知识](https://qlzhu.github.io/blog/42669/)
+- [HomeBrew基础知识](https://qlzhu.github.io/blog/42669/)
 
 #### Git
-- [git子模块添加hexo-theme-next](https://qlzhu.github.io/blog/46430/)
+- [GIT基础知识](https://qlzhu.github.io/blog/39939/)
+- [GIT子模块添加hexo-theme-next](https://qlzhu.github.io/blog/46430/)
 
 #### Github
-- [Github Actions CI 工作流程](https://qlzhu.github.io/blog/40311/)
-- [API 获取 Github ID](https://qlzhu.github.io/blog/8621/)
-- [Github 复原删除的仓库](https://qlzhu.github.io/blog/9273/)
+- [Github_Actions_CI工作流程](https://qlzhu.github.io/blog/40311/)
+- [API获取Github_ID](https://qlzhu.github.io/blog/8621/)
+- [Github复原删除的仓库](https://qlzhu.github.io/blog/9273/)
 
 #### VPN
-- [搭建 VPN 服务](https://qlzhu.github.io/blog/64387/)
+- [如何搭建VPN服务](https://qlzhu.github.io/blog/64387/)
