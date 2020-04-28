@@ -8,7 +8,7 @@ abbrlink: 46430
 date: 2020-04-16 19:09:02
 ---
 
-博客重构 `git add` 添加到暂存区时报如下错误
+博客重构执行 `git add` 时报如下错误
 
 ```
 $ git add .
@@ -18,14 +18,14 @@ hint: You've added another git repository inside your current repository.
 hint: Clones of the outer repository will not contain the contents of
 hint: the embedded repository and will not know how to obtain it.
 hint: If you meant to add a submodule, use:
-hint: 
+hint:
 hint:   git submodule add <url> themes/next
-hint: 
+hint:
 hint: If you added this path by mistake, you can remove it from the
 hint: index with:
-hint: 
+hint:
 hint:   git rm --cached themes/next
-hint: 
+hint:
 hint: See "git help submodule" for more information.
 ```
 <!-- more -->
@@ -60,9 +60,15 @@ git add .
 git reset -- themes/
 ```
 
-注意：以后更新 hexo-theme-next 子模块的话，需要使用 `git submodule update` 命令
+注意：以后更新 hexo-theme-next 子模块的话，需要使用 `git submodule update` 命令。以下列几个常用的命令，更多请查阅 GIT-SCM 官网 https://git-scm.com/docs/git-submodule
 
-## 阅读拓展
-- [Git工具-子模块](https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E5%AD%90%E6%A8%A1%E5%9D%97)
-- [Hexo文章发布环境的自动部署02-Hexo配置](https://www.charlesjoe.com.cn/category/20190525-hexo-autodeploy-two.html)
-- [如何使用Git子模块迁移和同步Hexo和theme-next](http://blog.zedyeung.com/2018/08/05/How-to-migrate-and-synchronize-Hexo-and-theme-next-with-git-submodules/)
+```bash
+git submodule add ["remote repo"]                         #添加子模块
+git submodule add ["remote repo"] ["path\submodule name"]
+git submodule init                                        #初始化本地配置文件
+git submodule updata                                      #拉取子模块数据
+git submodule updata ["path\submodule name"]
+git clone --recursive ["remote repo"]                     #克隆包含子模块的仓库
+git rm ["path\submodule name"]                            #删除子模块
+git submodule foreach ["command"]                         #遍历子模块执行同样的命令
+```
