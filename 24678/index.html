@@ -9,6 +9,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16.png">
   <link rel="mask-icon" href="/blog/images/safari-pinned-tab.svg" color="#222">
+  <meta name="google-site-verification" content="1UcXsAWvaj-vYyc22RMZrBYQcFQHX5NXObFwQGhSEgk">
 
 <link rel="stylesheet" href="/blog/css/main.css">
 
@@ -28,12 +29,12 @@
 <meta property="og:description" content="快捷键这里只列出几个常用的，更多请查阅 “帮助 - 终端帮助 - 键盘快捷键”  ⌘Command + N：再打开一个终端 ⌘Command + T：新建窗口 ⇧Shift + ⌘Command + K：新建远程连接 ⌃Control + A：光标移到行开头 ⌃Control + E：光标移到行结尾 ⌃Control + U：光标位置删除到行开头 ⌃Control + K：光标位置删除到行尾 ⌃C">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-04-17T21:18:34.000Z">
-<meta property="article:modified_time" content="2020-04-25T09:41:49.032Z">
+<meta property="article:modified_time" content="2020-05-08T10:29:06.572Z">
 <meta property="article:author" content="qinlzhu">
+<meta property="article:tag" content="git">
 <meta property="article:tag" content="terminal">
 <meta property="article:tag" content="bash">
 <meta property="article:tag" content="zsh">
-<meta property="article:tag" content="git">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://qlzhu.github.io/blog/24678/">
@@ -229,7 +230,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-25 09:41:49" itemprop="dateModified" datetime="2020-04-25T09:41:49+00:00">2020-04-25</time>
+                <time title="修改时间：2020-05-08 10:29:06" itemprop="dateModified" datetime="2020-05-08T10:29:06+00:00">2020-05-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -254,7 +255,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.2k</span>
+              <span>2.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -311,7 +312,11 @@
 <p>在弹出的界面点 install 同意即可<span class="text-gray">（经常使用VPN工具的，记得要关闭）</span></p>
 <a href="/blog/35871/" title="关于xcode-select –install的解释">关于xcode-select –install的解释</a>
 
-<h2 id="切换shell"><a href="#切换shell" class="headerlink" title="切换shell"></a>切换shell</h2><p><code>cat /etc/shells</code>命令可以查看当前系统可以使用哪些shell<br><code>echo $SHELL</code>命令可以查看我们当前正在使用的shell  </p>
+<h2 id="pbcopy-和-pbpaste"><a href="#pbcopy-和-pbpaste" class="headerlink" title="pbcopy 和 pbpaste"></a>pbcopy 和 pbpaste</h2><p>pbcopy 和 pbpaste 可以打通命令行和剪贴板，相当于右键的复制粘贴命令，它们真正发挥威力的地方是将其用作 Unix 工具的时候</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ls ~ | pbcopy</span><br><span class="line">pbpaste &gt;&gt; folder_tree.txt</span><br></pre></td></tr></table></figure>
+
+<h2 id="uptime"><a href="#uptime" class="headerlink" title="uptime"></a>uptime</h2><p>查看上次关机到现在有多长时间</p>
+<h2 id="切换shell"><a href="#切换shell" class="headerlink" title="切换shell"></a>切换shell</h2><p><code>cat /etc/shells</code>命令可以查看当前系统可以使用哪些shell<br><code>echo $SHELL</code>命令可以查看我们当前正在使用的shell</p>
 <p>切换shell</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chsh -s &#x2F;bin&#x2F;zsh</span><br></pre></td></tr></table></figure>
 
@@ -364,10 +369,10 @@
 
       <footer class="post-footer">
           <div class="post-tags">
+              <a href="/blog/tags/git/" rel="tag"># git</a>
               <a href="/blog/tags/terminal/" rel="tag"># terminal</a>
               <a href="/blog/tags/bash/" rel="tag"># bash</a>
               <a href="/blog/tags/zsh/" rel="tag"># zsh</a>
-              <a href="/blog/tags/git/" rel="tag"># git</a>
           </div>
 
         
@@ -442,7 +447,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#快捷键"><span class="nav-number">1.</span> <span class="nav-text">快捷键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定制shell提示符"><span class="nav-number">2.</span> <span class="nav-text">定制shell提示符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Command-line-tools"><span class="nav-number">3.</span> <span class="nav-text">安装Command line tools</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#切换shell"><span class="nav-number">4.</span> <span class="nav-text">切换shell</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tab自动补全"><span class="nav-number">5.</span> <span class="nav-text">tab自动补全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装oh-my-zsh"><span class="nav-number">6.</span> <span class="nav-text">安装oh-my-zsh</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关闭崩溃报告"><span class="nav-number">7.</span> <span class="nav-text">关闭崩溃报告</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#强制退出程序"><span class="nav-number">8.</span> <span class="nav-text">强制退出程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序栏恢复初始状态"><span class="nav-number">9.</span> <span class="nav-text">程序栏恢复初始状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件格式转换"><span class="nav-number">10.</span> <span class="nav-text">文件格式转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#远程连接mac"><span class="nav-number">11.</span> <span class="nav-text">远程连接mac</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#快捷键"><span class="nav-number">1.</span> <span class="nav-text">快捷键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定制shell提示符"><span class="nav-number">2.</span> <span class="nav-text">定制shell提示符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Command-line-tools"><span class="nav-number">3.</span> <span class="nav-text">安装Command line tools</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pbcopy-和-pbpaste"><span class="nav-number">4.</span> <span class="nav-text">pbcopy 和 pbpaste</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#uptime"><span class="nav-number">5.</span> <span class="nav-text">uptime</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#切换shell"><span class="nav-number">6.</span> <span class="nav-text">切换shell</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tab自动补全"><span class="nav-number">7.</span> <span class="nav-text">tab自动补全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装oh-my-zsh"><span class="nav-number">8.</span> <span class="nav-text">安装oh-my-zsh</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关闭崩溃报告"><span class="nav-number">9.</span> <span class="nav-text">关闭崩溃报告</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#强制退出程序"><span class="nav-number">10.</span> <span class="nav-text">强制退出程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序栏恢复初始状态"><span class="nav-number">11.</span> <span class="nav-text">程序栏恢复初始状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件格式转换"><span class="nav-number">12.</span> <span class="nav-text">文件格式转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#远程连接mac"><span class="nav-number">13.</span> <span class="nav-text">远程连接mac</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -458,20 +463,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/blog/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/blog/categories/">
           
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/blog/tags/">
           
-        <span class="site-state-item-count">37</span>
+        <span class="site-state-item-count">49</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -483,6 +488,9 @@
       <span class="links-of-author-item">
         <a href="mailto:qinlzhu@outlook.com" title="E-Mail → mailto:qinlzhu@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
       </span>
+      <span class="links-of-author-item">
+        <a href="/blog/website" title="website → &#x2F;website"><i class="fa fa-laptop fa-fw"></i></a>
+      </span>
   </div>
 
 
@@ -493,6 +501,15 @@
     <ul class="links-of-blogroll-list">
         <li class="links-of-blogroll-item">
           <a href="https://developer.mozilla.org/zh-CN/" title="https:&#x2F;&#x2F;developer.mozilla.org&#x2F;zh-CN&#x2F;" rel="noopener" target="_blank">MDN</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sass.bootcss.com/" title="https:&#x2F;&#x2F;sass.bootcss.com&#x2F;" rel="noopener" target="_blank">Sass</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://backlog.com/git-tutorial/cn/" title="https:&#x2F;&#x2F;backlog.com&#x2F;git-tutorial&#x2F;cn&#x2F;" rel="noopener" target="_blank">GitBasic</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://css-tricks.com/" title="https:&#x2F;&#x2F;css-tricks.com&#x2F;" rel="noopener" target="_blank">CSS-Tricks</a>
         </li>
         <li class="links-of-blogroll-item">
           <a href="https://juejin.im/" title="https:&#x2F;&#x2F;juejin.im&#x2F;" rel="noopener" target="_blank">JueJin</a>
@@ -508,9 +525,6 @@
         </li>
         <li class="links-of-blogroll-item">
           <a href="https://realfavicongenerator.net/" title="https:&#x2F;&#x2F;realfavicongenerator.net&#x2F;" rel="noopener" target="_blank">Favivon</a>
-        </li>
-        <li class="links-of-blogroll-item">
-          <a href="https://sass.bootcss.com/" title="https:&#x2F;&#x2F;sass.bootcss.com&#x2F;" rel="noopener" target="_blank">Sass</a>
         </li>
         <li class="links-of-blogroll-item">
           <a href="https://github.com/MichealWayne/fe-tools" title="https:&#x2F;&#x2F;github.com&#x2F;MichealWayne&#x2F;fe-tools" rel="noopener" target="_blank">FeTools</a>
@@ -549,12 +563,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">34k</span>
+    <span title="站点总字数">56k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">56 分钟</span>
+    <span title="站点阅读时长">1:34</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
