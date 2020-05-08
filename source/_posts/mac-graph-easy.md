@@ -1,5 +1,5 @@
 ---
-title: ASCII码（字符集）绘制流程图
+title: Graph:Easy绘制ASCII码（字符集）流程图
 abbrlink: 44940
 date: 2020-04-28 21:12:11
 categories: mac

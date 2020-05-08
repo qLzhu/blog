@@ -1,5 +1,5 @@
 ---
-title: man
+title: Line too long in config file
 categories: mac
 tags:
   - man

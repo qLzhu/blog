@@ -174,3 +174,13 @@ gitalk:
   admin_user: 'qlzhu'
   distraction_free_mode: false
   language: zh-CN
+
+# -----------------------------------------------------
+# SEO
+# -----------------------------------------------------
+# https://search.google.com/search-console/welcome?hl=zh-CN
+# https://upupming.site/2018/04/08/beautify-hexo-SEO-travis/
+# https://indexmoon.com/articles/1153730074/
+# GitHub Pages 禁止百度蜘蛛爬取会返回 403 错误
+
+google_site_verification: 59As2-XGZdaAcrgZLs_zyEmo7T1UlJ0ayrAGw_7APD0

@@ -10,7 +10,7 @@ date: 2020-04-20 17:48:20
 
 ## Install
 
-Mac 用户请先安装 Xcode command line tools，然后通过 {% post_link homebrew-basic HomeBrew %} 安装 GIT，完成后再检测下 GIT 版本
+Mac 用户需要先安装 Xcode command line tools，再通过 {% post_link homebrew-basic HomeBrew %} 安装 GIT，然后检测下 GIT 版本
 
 ```bash
 xcode-select --install
@@ -19,7 +19,7 @@ git --version           #git version 2.25.0
 ```
 
 {% note %}
-如果检测GIT版本时，发现使用的不是刚才安装的版本，就用 `which` 命令检测下GIT的安装路径。然后把该路径添加到环境变量里（Bash用户编辑 \~/.bash_profile 或 \~/.bashrc；ZSH用户编辑 \~/.zshrc 文件）
+如果检测的GIT版本不是刚安装的版本，就用 `which` 命令检测下GIT的安装路径。然后把该路径添加到变量配置文件里，Bash用户编辑 \~/.bash_profile 或 \~/.bashrc，ZSH用户编辑 \~/.zshrc 文件
 
 - which -a git
   + /usr/bin/git：Mac_Xcode内置的GIT路径
@@ -46,20 +46,22 @@ man git-add
 
 ### config
 
-初次使用需要设置用户名及其邮箱，git init 初始化项目时会用到，这些信息在你提交项目时会包含在里面
+初次使用需要设置用户名及其邮箱，git init 初始化项目时会用到，这些信息会在你commit时包含到附注里
 
 ```bash
 git config --global user.name ["Your Name"]
 git config --global user.email ["email@example.com"]
 ```
 
---global 是全局{% label info@（也称用户级） %}设置的意思，除了用户级还有系统级 --system 和项目级 --local
+--global 是全局{% label info@（也称用户级，注意global前面有两个中划线-） %}设置的意思，除了用户级还有系统级 --system 和项目级 --local
 
 {% note %}
-git config core.ignorecase false 可设置大小写敏感
-git config --list --show-origin  查看所有配置文件位置
-git config --list 获取当前仓库的所有配置信息，也可指定范围，例如：
-git config --list --global
+git config core.ignorecase false    设置大小写敏感
+git config --global -e              编辑全局配置文件
+git config --list --show-origin     列出所有配置文件位置
+git config --list                   列出当前仓库的所有配置信息
+git config --list --global          列出全局的配置信息
+git config --global alias.st status 设置全局的命令别名
 {% endnote %}
 
 查看、更改、删除 config 内的用户名或者邮箱
@@ -113,8 +115,8 @@ git init .
 git init blog
 ```
 
-初始化裸仓库{% label info@（主要应用在服务器，创建出来目录不包含工作区，直接就是版本库（.git）的内容，这样的版本库称为裸版本库） %}
-
+裸仓库
+初始化后的内容，跟你 init 生成的 .git 目录里面的东西几乎一样，该目录不允许直接操作没有工作区，只能接收push提交的版本记录，你在代码托管平台建仓库时就是建的这玩意
 ```bash
 git init --bare
 git init --bare .
@@ -148,9 +150,9 @@ git remote -v
 # origin  https://github.com/OWNER/REPOSITORY.git (fetch)
 # origin  https://github.com/OWNER/REPOSITORY.git (push)
 
-git remote show origin               #查看origin远程仓库
-git remote rename origin destination #重命名
-git remote rm destination            #删除
+git remote show origin                               #查看远程仓库
+git remote rename origin destination                 #重命名
+git remote rm destination                            #删除
 git remote get-url
 git remote set-url
 ```
@@ -161,7 +163,7 @@ https://git-scm.com/docs/git-remote
 
 ### .gitignore
 
-项目克隆或者初始化后，你做的第一件事应该是，在项目的根目录下创建个 .gitignore 文件，它是用来帮助你忽略某些文件的，语法支持正则表达式。如果你不知道该忽略那些文件的话，可直接拷贝 Github 上给出的模版文件 https://github.com/github/gitignore https://www.gitignore.io/
+项目 clone 或 init 后，你做的第一件事应该是，在项目的根目录下创建个 .gitignore 文件。它是用来帮助你忽略某些文件的，语法支持正则表达式。如果你不知道该忽略那些文件的话，可直接拷贝 Github 上给出的模版 https://github.com/github/gitignore https://www.gitignore.io/
 
 {% note %}
 主要应用场景：
@@ -172,7 +174,7 @@ https://git-scm.com/docs/git-remote
 > https://www.liaoxuefeng.com/wiki/896043488029600/900004590234208
 {% endnote %}
 
-还有就是你不想创建 .gitignore 文件或者不愿意跟别人共享的话，可把规则写入 `.git/info/exclude` 内，这样就不会影响到其他人，也不会提交到版本库内。你还可以使用 `git config --global core.excludesfile ~/.gitignore_global` 指定全局使用的忽略规则文件
+如果你不想创建 .gitignore 文件或者不愿意跟别人共享的话，可把规则写在 `.git/info/exclude` 内，这样就不会影响到其他人了，也不会 push 到 remote repo。你还可以使用 `git config --global core.excludesfile ~/.gitignore_global` 指定全局的 .gitignore 文件
 
 ```bash
 .DS_Store           # 忽略指定的文件
@@ -194,7 +196,7 @@ public/**           # /** 形式会忽略该目录下的所有内容
 - [abc]      代表 a, b, c 中任一字符即可
 - [^abc]    代表必须不是 a, b, c 中任一字符
 
-项目实际开发中由于你的疏忽大意，把不应该提交的文件做成版本了，这时再添加到 .gitignore 里是无效的。正确的做法是先 `git rm -r –cached filename` 删除下缓存，再把文件添加到 .gitignore 内{% label info@（另外GIT默认不会把空目录纳入到版本管控里，你可以在空目录里创建一个空白的 .gitignore文件，这样空白目录就会正常的提交了） %}
+项目实际开发中由于你的疏忽大意，把不该提交的文件做成了版本，这时再添加到 .gitignore 是无效的。正确的做法是先 `git rm -r –cached filename` 删除下缓存，再添加到 .gitignore 内{% label info@（另外GIT默认不会把空目录纳入到版本管控里，你可以在空目录里创建一个空白的 .gitignore，这样空白目录就会正常的提交了） %}
 
 {% note %}
 GIT 默认会监听文件的权限，可使用以下命令关闭（也可直接配置 .git/config 文件）。如果是脚本、二进制程序等需要权限认证的建议还是开启，只是源码的话可随意
@@ -205,7 +207,7 @@ git config --global core.filemode false 全局设置
 
 ### ssh_key
 
-日常我们提交代码时，使用的是SSH方式链接的远程仓库。所以我们需要先创建个密钥，然后再把公钥部署到指定的网站上，才可正常使用。
+日常我们提交代码时，使用的是SSH方式链接的远程仓库。所以我们还需要创建个密钥，再把它部署到代码托管平台上，才可以正常使用
 
 单个账户使用，直接按照下述命令格式 {% label info@（命令选项说明请查阅 https://ipcmen.com/ssh-keygen ） %}，一路回车即可
 
@@ -213,7 +215,7 @@ git config --global core.filemode false 全局设置
 ssh-keygen -t rsa -b 4096 -C ["email@example.com"]
 ```
 
-多账户使用需要在第一次提示处，输入密钥保存的路径及其名称{% label info@（也可使用 [SKM](https://github.com/TimothyYe/skm)（类似NVM）管理 key） %}
+多账户使用需要在第一次提示处，输入密钥保存的路径及其名称{% label info@（也可使用https://github.com/TimothyYe/skm管理 key（类似NVM管理Node版本的形式）） %}
 
 ```bash
 # ssh-keygen -t ...执行后终端内会有三次提示信息
@@ -243,7 +245,7 @@ Connection to github.com closed.
 
 ### git add
 
-跟踪文件并添加到暂存区{% label info@（index）%}
+跟踪文件并添加到索引区（index\暂存区）
 
 ```bash
 # 除 git rm 删除的文件外，其它的都提交到暂存区（new 和 modified）
@@ -289,7 +291,7 @@ git clean -n
 
 ### git rm
 
-从版本库中删除文件，需要使用 `git rm`，尽量不要直接删除{% label info@（空目录除外；直接删除需要分别再执行下 git rm 和 git add 命令，等价与 git rm） %}
+从版本库中删除文件，请使用 `git rm` 不要直接删除{% label info@（空目录除外）%}{% label danger@【没直接用 git rm 删除的，请分别 git rm 和 git add 下】%}
 
 ```bash
 # 删除工作区和暂存区内的文件
@@ -297,13 +299,13 @@ git rm README.md
 git rm -r node_modules/
 ```
 
-只删除索引区（暂存区）内的文件，不删除工作区里的
+只删除索引区（index\暂存区）内的文件
 
 ```bash
 git rm --cached README.md
 ```
 
-恢复误删除的文件，实际是版本库里的版本替换了工作区的版本而已{% label info@（注意：删除未添加到版本库的文件，是没办法恢复的） %}
+恢复误删除的文件，实际是版本库（历史记录）里的版本替换了工作区里的版本而已{% label danger@【未追踪的文件是无法恢复】%}
 
 ```bash
 git restore README.md
@@ -315,35 +317,57 @@ git checkout -- README.md
 移动或者重命名文件
 
 ```bash
-git mv README.md doc/
-git mv README.md doc/README.txt
+git mv ["file"] ["path"]
+git mv ["file"] ["path/xx/file_name"]
 
-# 上述语句等价于
-git rm README.md
-git add doc/README.txt
+# 实例
+git mv a ~/downloads/code/b
+
+# 等价于
+git rm a
+git add ~/downloads/code/b
 ```
 
 ### git restore
 
-还原未添加到暂存区的文件{% label info@（git restore GIT2.23版本新增，该命令只针对文件，为了区分 git checkout 的混淆部分） %}
+版本库里的文件同时恢复到索引区（index\暂存区）和工作区{% label info@【为了区分 checkout 混淆部分，2.23版本新增了 restore 和 switch，restore 只针对文件，switch 则针对分支】%}
 
 ```bash
-git checkout -- README.md
-git restore README.md
+git restore --source=HEAD --staged --worktree ["file"]
+git restore -s@ -SW ["file"]                           #简写
+
+# --source   指定恢复源 HEAD\branch\SHA-1，默认HEAD
+# --staged   还恢复索引区
+# --worktree 还恢复工作区
+# SW都未设置的情况下默认还恢复工作区，都设置的情况下必须指定 --source
 ```
 
-撤销已添加到暂存区的 README.md
+版本库里的文件恢复到索引区
 
 ```bash
-git reset HEAD README.md
-git restore --staged README.md
+git restore --source ["HEAD\master\SHA-1"] ["file"]
+```
+
+索引区恢复到工作区或取消此次暂存操作
+
+```bash
+git rm --cached ["file"]                               #仓库初次暂存时使用
+git reset HEAD ["file"]
+git restore --staged ["file"]
+```
+
+工作区还原文件
+
+```bash
+git checkout -- ["file"]
+git restore ["file"]
 ```
 
 ### git commit
 
-文件添加到暂存区后，要使用 `git commit` 命令，把这次暂存的所有文件状态做成版本，提交到历史记录里{% label info@（commit提交的内容实际是 .git/index 索引文件内的信息【还有就是commit附注会储存在 .git/COMMIT_EDITMSG 内，下次commit时会覆盖此信息，GIT并不会使用该文件，它是给作者提示用的】）%}
+文件 add 到索引区（index\暂存区）后，要用 `commit` 把这次暂存的所有文件做成版本，提交到版本库里（历史记录）{% label info@（commit的内容实际是 .git/index 索引文件内的信息【还有就是commit附注会储存在 .git/COMMIT_EDITMSG 内，主要是给作者提示使用，GIT不会使用，下次commit时的附注也会覆盖此文件】）%}
 
-如果 `git commit` 不加参数直接回车，GIT会使用默认的编辑器打开一个交互式窗口，并显示下面类似的文本提示
+如果 commit 时不加参数，GIT会用默认的编辑器打开一个交互式窗口，并提示下面类似的信息
 
 ```bash
 # Please enter the commit message for your changes. Lines starting
@@ -365,7 +389,7 @@ git config --global core.editor "vim" 可修改git默认的编辑器
 git config --global commit.template ~/.xxx.txt 可设置commit提交时的模版信息
 {% endnote %}
 
-加 -m 参数，可将提交信息与命令放在同一行
+加 -m 参数，可将附注与命令放在同一行
 
 ```bash
 git commit -m  ["单行写commit"]
@@ -373,7 +397,7 @@ git commit README.md -m ["单独提交暂存区内README.md文件，并单行写
 git commit -am ["提交已追踪且修改了的文件，同时单行写commit做成版本"]
 ```
 
-修改上次提交的 commit 信息{% label danger@（已提交到远程仓库的误用！） %}
+修改上次附注{% label danger@（已push到远程仓库的误用！） %}
 
 ```bash
 git commit --amend
@@ -382,13 +406,13 @@ git commit --amend -am ["替换加暂存一块"]
 git commit --amend README.md -m ["修改上次提交时，捎带下暂存区里的README.md"]
 ```
 
-提交时使用上次的 commit 信息{% label danger@（已提交到远程仓库的误用！） %}
+再次 commit 时使用上次的附注{% label danger@（已push到远程仓库的误用！） %}
 
 ```bash
 git commit --amend --no-edit
 ```
 
-删除版本库里所有提交的commit{% label danger@（慎用） %}
+删除版本库里所有版本（附注/历史记录）{% label danger@【慎用】 %}
 
 ```bash
 git update-ref -d HEAD
@@ -462,7 +486,7 @@ git blame README.md
 # 00000000 (qinlzhu 2020-04-21 16:45:10 +0800 1) change init after
 ```
 
-指定要显示的区间段
+指定显示的区间段
 
 ```bash
 git blame -L 8,12 README.md
@@ -474,7 +498,7 @@ https://wxnacy.com/2019/05/21/git-blame/
 
 ### git diff
 
-查看指定文件暂存区跟工作区内的内容有什么不同
+查看索引区（index\暂存区）里的文件跟工作区的有什么不同
 
 ```bash
 git diff README.md
@@ -495,7 +519,7 @@ index cdb8d0e..a7d33fb 100644      #元数据
 # https://www.git-tower.com/learn/git/ebook/cn/command-line/advanced-topics/diffs https://git-scm.com/docs/git-diff
 ```
 
-暂存区跟版本 {% label info@（版本的 SHA-1 校验和或者HEAD） %}
+索引区（index\暂存区）跟版本 {% label info@（版本的 SHA-1 校验和或者HEAD） %}
 
 ```bash
 git diff --cached README.md
