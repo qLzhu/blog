@@ -184,3 +184,7 @@ gitalk:
 # GitHub Pages 禁止百度蜘蛛爬取会返回 403 错误
 
 google_site_verification: 59As2-XGZdaAcrgZLs_zyEmo7T1UlJ0ayrAGw_7APD0
+
+google_analytics:
+  tracking_id: UA-165976554-1
+  only_pageview: true
