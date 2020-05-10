@@ -27,7 +27,7 @@
 <meta property="og:site_name" content="NoiiApple">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-04-15T23:34:43.000Z">
-<meta property="article:modified_time" content="2020-05-09T03:58:27.415Z">
+<meta property="article:modified_time" content="2020-05-10T09:26:38.140Z">
 <meta property="article:author" content="qinlzhu">
 <meta name="twitter:card" content="summary">
 
@@ -47,6 +47,22 @@
   <title>tags | NoiiApple
 </title>
   
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-165976554-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
 
 
 

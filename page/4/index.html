@@ -44,6 +44,22 @@
 <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
   <title>NoiiApple</title>
   
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-165976554-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
 
 
 
@@ -222,7 +238,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-09 03:58:27" itemprop="dateModified" datetime="2020-05-09T03:58:27+00:00">2020-05-09</time>
+                <time title="修改时间：2020-05-10 09:26:38" itemprop="dateModified" datetime="2020-05-10T09:26:38+00:00">2020-05-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -315,7 +331,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-09 03:58:27" itemprop="dateModified" datetime="2020-05-09T03:58:27+00:00">2020-05-09</time>
+                <time title="修改时间：2020-05-10 09:26:38" itemprop="dateModified" datetime="2020-05-10T09:26:38+00:00">2020-05-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -411,7 +427,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-09 03:58:27" itemprop="dateModified" datetime="2020-05-09T03:58:27+00:00">2020-05-09</time>
+                <time title="修改时间：2020-05-10 09:26:38" itemprop="dateModified" datetime="2020-05-10T09:26:38+00:00">2020-05-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -507,7 +523,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-09 03:58:27" itemprop="dateModified" datetime="2020-05-09T03:58:27+00:00">2020-05-09</time>
+                <time title="修改时间：2020-05-10 09:26:38" itemprop="dateModified" datetime="2020-05-10T09:26:38+00:00">2020-05-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -606,7 +622,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-09 03:58:27" itemprop="dateModified" datetime="2020-05-09T03:58:27+00:00">2020-05-09</time>
+                <time title="修改时间：2020-05-10 09:26:38" itemprop="dateModified" datetime="2020-05-10T09:26:38+00:00">2020-05-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
