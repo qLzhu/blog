@@ -38,7 +38,7 @@ rm -rf /Applications/CleanMyMac\ X.app
 sudo rm -rf /usr/local/{bin/{node,npm},lib/node_modules/npm,lib/node,share/man/*/node.*}
 ```
 
-## Install nvm
+## Install NVM
 
 这里再说下 [Node](https://nodejs.org/en/) 版本管理的问题！当你开发项目时，该项目对 Node 的版本有要求，且跟你安装的版本不同（过高和者低了），这时你怎么办？卸载当前版本再安装项目所需的版本？如果多个项目每个项目要求的版本都不同那，总不能每个项目都是卸载再安装吧，那多麻烦！所以我们可以借助 [nvm](https://github.com/nvm-sh/nvm) 管理 Node。通过 [HomeBrew](https://brew.sh/index_zh-cn) 安装 nvm，然后再通过 nvm 安装 Node，这样一级管理一级，方便卸载和安装
 
@@ -54,6 +54,10 @@ brew install nvm
 ```bash
 export NVM_DIR=~/.nvm
 source $(brew --prefix nvm)/nvm.sh
+
+# MacOS Big Sur 版本请添加
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 ```
 
 配置完成后，`source`命令重启下相应的配置文件

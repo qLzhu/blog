@@ -207,15 +207,17 @@ git config --global core.filemode false 全局设置
 
 ### ssh_key
 
-日常我们提交代码时，使用的是SSH方式链接的远程仓库。所以我们还需要创建个密钥，再把它部署到代码托管平台上，才可以正常使用
+GIT 管理代码版本时用到的传输协议有四种：[本地传输、SSH 协议、Git 协议和 HTTPS 协议](https://git-scm.com/book/zh/v2/%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E7%9A%84-Git-%E5%8D%8F%E8%AE%AE)。而我们平时链接远程仓库需要验证授权时，主要用到的是SSH协议，所以托管代码前还需要在本地配置SSH密钥
 
-单个账户使用，直接按照下述命令格式 {% label info@（命令选项说明请查阅 https://ipcmen.com/ssh-keygen ） %}，一路回车即可
+单个账户
+执行 ssh-keygen 一路回车，命令选项说明请查阅 https://ipcmen.com/ssh-keygen
 
 ```bash
 ssh-keygen -t rsa -b 4096 -C ["email@example.com"]
 ```
 
-多账户使用需要在第一次提示处，输入密钥保存的路径及其名称{% label info@（也可使用https://github.com/TimothyYe/skm管理 key（类似NVM管理Node版本的形式）） %}
+多账户
+执行 ssh-keygen 后在第一次提示处，输入密钥保存名称及其位置路径（[SKM](https://github.com/TimothyYe/skm) 插件也能管理多账户 key【类似NVM】）
 
 ```bash
 # ssh-keygen -t ...执行后终端内会有三次提示信息
@@ -230,8 +232,7 @@ Enter passphrase (empty for no passphrase):
 Enter same passphrase again:
 ```
 
-以Github为例：
-把[公钥（~/.ssh/id_rsa.pub）部署到Github上](https://help.github.com/cn/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)后，用 ssh命令测试会返回下内容
+密钥创建成功后，需要把 [公钥（~/.ssh/id_rsa.pub）](https://help.github.com/cn/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) 部署到代码托管网站上，以 Github 为例，ssh 命令测试链接是否成功
 
 ```bash
 ssh git@github.com
@@ -240,6 +241,22 @@ PTY allocation request failed on channel 0
 Hi qLzhu! You've successfully authenticated, but GitHub does not provide shell access.
 Connection to github.com closed.
 ```
+
+在创建密钥时设置了密码，可使用下述命令进行设置，避免每次 Push\pull 时都需要手动输入密码
+
+{% note %}
+设置记住密码（默认15分钟）
+git config --global credential.helper cache
+
+如果想自己设置时间，例如一个小时之后失效
+git config credential.helper 'cache --timeout=3600'
+
+还可以选择长期存储密码
+git config --global credential.helper store
+
+或者在增加 remote 时带上密码
+http://yourname:password@git.oschina.net/name/project.git
+{% endnote %}
 
 ## 管理项目
 

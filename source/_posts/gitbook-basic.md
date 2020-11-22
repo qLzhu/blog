@@ -1,9 +1,11 @@
 ---
-title: GitBook
+title: GitBook Basic
 categories: gitbook
 tags:
   - gitbook
-  - gitbook init
+  - SUMMARY.md
+  - LANGS.md
+  - book.json
 abbrlink: 19654
 date: 2020-05-02 13:02:25
 ---

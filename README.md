@@ -30,6 +30,7 @@ NoiiApple
 - [Hexo配置进阶](https://qlzhu.github.io/blog/49139/)
 - [部署博客到 Github Pages](https://qlzhu.github.io/blog/51941/)
 - [Travis CI 自动化部署静态博客](https://qlzhu.github.io/blog/65246/)
+- [SEO Google 搜索引擎收录设置](https://qlzhu.github.io/blog/10730/)
 
 #### HomeBrew
 - [HomeBrew基础知识](https://qlzhu.github.io/blog/42669/)

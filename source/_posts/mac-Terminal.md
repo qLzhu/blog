@@ -84,6 +84,35 @@ pbpaste >> folder_tree.txt
 chsh -s /bin/zsh
 ```
 
+问题：
+
+```bash
+[oh-my-zsh] Insecure completion-dependent directories detected:
+drwxrwxr-x  3 qinlzhu  admin  96 11 19 17:38 /usr/local/share/zsh
+drwxrwxr-x  2 qinlzhu  admin  64 11 19 17:38 /usr/local/share/zsh/site-functions
+
+[oh-my-zsh] For safety, we will not load completions from these directories until
+[oh-my-zsh] you fix their permissions and ownership and restart zsh.
+[oh-my-zsh] See the above list for directories with group or other writability.
+
+[oh-my-zsh] To fix your permissions you can do so by disabling
+[oh-my-zsh] the write permission of "group" and "others" and making sure that the
+[oh-my-zsh] owner of these directories is either root or your current user.
+[oh-my-zsh] The following command may help:
+[oh-my-zsh]     compaudit | xargs chmod g-w,o-w
+
+[oh-my-zsh] If the above didn't help or you want to skip the verification of
+[oh-my-zsh] insecure directories you can set the variable ZSH_DISABLE_COMPFIX to
+[oh-my-zsh] "true" before oh-my-zsh is sourced in your zshrc file.
+```
+
+按照报错提示在配置文件内设置 `ZSH_DISABLE_COMPFIX=true` 是无效的！解决方案就是更改目录的权限。
+
+```bash
+chmod 755 /usr/local/share/zsh
+chmod 755 /usr/local/share/zsh/site-functions
+```
+
 ## tab自动补全
 
 打开Terminal输入`nano .inputrc`，再输入下述内容
