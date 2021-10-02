@@ -73,25 +73,25 @@ social_icons:
   icons_only: true
 
 # 常用网站链接
-links_settings:
-  icon: fa fa-link
-  title: 常用网站链接
-  layout: inline
+# links_settings:
+#   icon: fa fa-link
+#   title: 常用网站链接
+#   layout: inline
 
-links:
-  MDN: https://developer.mozilla.org/zh-CN/
-  Sass: https://sass.bootcss.com/
-  GitBasic: https://backlog.com/git-tutorial/cn/
-  CSS-Tricks: https://css-tricks.com/
-  JueJin: https://juejin.im/
-  stackoverflow: https://stackoverflow.com/
-  75team: https://weekly.75team.com/
-  Caniuse: https://caniuse.com/
-  CodePen: https://codepen.io/popular/pens/
-  Favivon: https://realfavicongenerator.net/
-  FeTools: https://github.com/MichealWayne/fe-tools
-  TravisCI: https://travis-ci.com/
-  Carbon: https://carbon.now.sh/
+# links:
+#   MDN: https://developer.mozilla.org/zh-CN/
+#   Sass: https://sass.bootcss.com/
+#   GitBasic: https://backlog.com/git-tutorial/cn/
+#   CSS-Tricks: https://css-tricks.com/
+#   JueJin: https://juejin.im/
+#   stackoverflow: https://stackoverflow.com/
+#   75team: https://weekly.75team.com/
+#   Caniuse: https://caniuse.com/
+#   CodePen: https://codepen.io/popular/pens/
+#   Favivon: https://realfavicongenerator.net/
+#   FeTools: https://github.com/MichealWayne/fe-tools
+#   TravisCI: https://travis-ci.com/
+#   Carbon: https://carbon.now.sh/
 
 # -----------------------------------------------------
 # 文章界面
