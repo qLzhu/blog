@@ -38,6 +38,8 @@ NoiiApple
 #### Git
 - [GIT基础知识](https://qlzhu.github.io/blog/39939/)
 - [GIT子模块添加hexo-theme-next](https://qlzhu.github.io/blog/46430/)
+- [SSH连接远程仓库无权限问题](https://qlzhu.github.io/blog/53774/)
+- [commit时忘记设置全局用户名及其邮箱](https://qlzhu.github.io/blog/58535/)
 
 #### Github
 - [API获取Github ID](https://qlzhu.github.io/blog/8621/)
