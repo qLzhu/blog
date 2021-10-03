@@ -5,7 +5,8 @@ on:
     branches:
       - master # master 分支有 push 行为时就触发这个 action
 
-build-and-deploy:
+jobs:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
