@@ -39,7 +39,7 @@ tree ./
 └── SUMMARY.md #目录，GitBook会按照这个文件来生成书籍的结构，目录深度只支持两级
 ```
 
-编辑SUMMARY.md书籍目录，就跟我们平时在MD文件里添加链接是一样的。方括号{%label default@[]%}内的是章节名称，小括号{%label default@()%}内的则是章节路径。例如：
+编辑SUMMARY.md书籍目录，就跟我们平时在MD文件里添加链接是一样的。方括号 [] 内的是章节名称，小括号 () 内的则是章节路径。例如：
 
 ```markdown ./SUMMARY.md
 # 目录
@@ -162,13 +162,13 @@ node_modules/
 
 本文以集成Github为例，演示Gitbook如何发布电子书籍
 
-1. 在Github上创建开源仓库gitbook-example{%label info@（如何创建此处不赘述）%}
+1. 在Github上创建开源仓库gitbook-example（如何创建此处不赘述）
   1.1. `git init`
   1.2. `git remote add origin <git......>`
   1.3. `git add .`
   1.4. `git commit "docs(add):initial"`
   1.4. `git push --set-upstream origin master`
-2. 注册Gitbook{%label info@（注册比较简单就不截图了）%}，创建书籍项目（名称可不一样）并同步gitbook-example仓库的master分支
+2. 注册Gitbook（注册比较简单就不截图了），创建书籍项目（名称可不一样）并同步 gitbook-example 仓库的 master 分支
 
 {% asset_img create.png %}
 {% asset_img create-example.png %}
