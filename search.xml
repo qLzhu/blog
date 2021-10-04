@@ -1186,17 +1186,59 @@
 <li>客户端：Outline</li>
 </ul>
 <p>第一步跟配置Shadowsocks一样，都是先在Vultr搭建服务器，然后使用ssh再登陆上去</p>
-<h3 id="部署-Docker-容器"><a href="#部署-Docker-容器" class="headerlink" title="部署 Docker 容器"></a>部署 Docker 容器</h3><p>登陆成功后在终端分别执行下述命令</p>
+<h3 id="部署方案"><a href="#部署方案" class="headerlink" title="部署方案"></a>部署方案</h3><div class="tabs" id="outline-服务器部署方案"><ul class="nav-tabs"><li class="tab active"><a href="#outline-服务器部署方案-1">Docker方式部署</a></li><li class="tab"><a href="#outline-服务器部署方案-2">手动开启Firewall防火墙方式</a></li></ul><div class="tab-content"><div class="tab-pane active" id="outline-服务器部署方案-1"><p>登陆成功后在终端分别执行下述命令</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt update</span><br><span class="line">apt install apt-transport-https ca-certificates curl software-properties-common</span><br><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</span><br><span class="line">add-apt-repository <span class="string">&quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable&quot;</span></span><br><span class="line">apt update</span><br><span class="line">apt-cache policy docker-ce</span><br><span class="line">apt install docker-ce</span><br></pre></td></tr></table></figure>
 
 <p>完成后用<code>systemctl status docker</code>命令检测，如出现以下类似界面，说明 Docker 部署已成功</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker.service - Docker Application Container Engine</span><br><span class="line">   Loaded: loaded (/lib/systemd/system/docker.service; enabled; vendor preset: enabled)</span><br><span class="line">   Active: active (running) since Thu 2018-07-05 15:08:39 UTC; 2min 55s ago</span><br><span class="line">     Docs: https://docs.docker.com</span><br><span class="line"> Main PID: 10096 (dockerd)</span><br><span class="line">    Tasks: 16</span><br><span class="line">   CGroup: /system.slice/docker.service</span><br><span class="line">           ├─10096 /usr/bin/dockerd -H fd://</span><br><span class="line">           └─10113 docker-containerd --config /var/run/docker/containerd/containerd.toml</span><br></pre></td></tr></table></figure>
 
-<h3 id="配置-Outline-Manager"><a href="#配置-Outline-Manager" class="headerlink" title="配置 Outline Manager"></a>配置 Outline Manager</h3><p>到 <a href="https://getoutline.org/en/home">Outline</a> 官网选择系统相对应的版本，分别下载下 outline Manager 和 Outline。完成后先打开 Outline Manager 服务端软件，进入软件后点击界面右下脚的“<strong>随时随地安装 outline</strong>”选项，然后<strong>复制第一段提示你安装 shadowsocks 服务的代码，粘贴到服务器内进行安装</strong>，即下述代码</p>
+<p>配置 Outline Manager</p>
+<p>到 <a href="https://getoutline.org/en/home">Outline</a> 官网选择系统相对应的版本，分别下载下 outline Manager 和 Outline。完成后先打开 Outline Manager 服务端软件，进入软件后点击界面右下脚的“<strong>随时随地安装 outline</strong>”选项，然后<strong>复制第一段提示你安装 shadowsocks 服务的代码，粘贴到服务器内进行安装</strong>，即下述代码</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bash -c <span class="string">&quot;<span class="subst">$(wget -qO- https://raw.githubusercontent.com/Jigsaw-Code/outline-server/master/src/server_manager/install_scripts/install_server.sh)</span>&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p>安装完成后服务器终端提示信息内，会给出以”apiUrl”开头的一段字符串，复制该字符串粘贴到 Outline Manager 内（就是你复制服务器端安装shadowsocks的那块）</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;&quot;apiUrl&quot;:&quot;https://***.28.*1.**9:***69/*********mfPAusF9w&quot;,</span><br><span class="line">&quot;certSha256&quot;:&quot;FFFA7***************5B61976F57B4B1E12BB9***19772F6&quot;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;&quot;apiUrl&quot;:&quot;https://***.28.*1.**9:***69/*********mfPAusF9w&quot;,</span><br><span class="line">&quot;certSha256&quot;:&quot;FFFA7***************5B61976F57B4B1E12BB9***19772F6&quot;&#125;</span><br></pre></td></tr></table></figure></div><div class="tab-pane" id="outline-服务器部署方案-2"><p>连接到服务器后在终端执行安装 outline 服务的命令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo bash -c <span class="string">&quot;<span class="subst">$(wget -qO- https://raw.githubusercontent.com/Jigsaw-Code/outline-server/master/src/server_manager/install_scripts/install_server.sh)</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>执行成功后会有下述提示</p>
+<img src="/blog/64387/846459FAE33F2E2E514COFOESCI.png" class="" title="apiUrl值">
+
+<p>我们把”apiUrl（上图绿色的部分）”开头的一段字符串复制，然后粘贴到 Outline Manager 内（就是你复制服务器端安装shadowsocks的那块）</p>
+<p>注意：<br>这两个端口需要牢记，我们待会手动开防火墙端口时会用到这两个端口</p>
+<ul>
+<li>Management port 32135, for TCP</li>
+<li>Access key port 60302, for TCP and UDP</li>
+</ul>
+<p>回到 vultr 服务器管理界面</p>
+<img src="/blog/64387/home.jpg" class="" title="服务器管理界面">
+
+<p>进到该实例管理界面，依次点击 Settings -&gt; + -&gt; Add Firewall Group -&gt; Manage Firewall Group</p>
+<img src="/blog/64387/DServerInformation.jpg" class="" title="Firewall管理界面">
+<img src="/blog/64387/AddFirewallGroup.jpg" class="" title="Add Firewall Group管理界面">
+<img src="/blog/64387/ManageFirewallGroup.jpg" class="" title="Manage Firewall Group管理界面">
+
+<p>分别在 IPv4 Rules 和 IPv6 Rules 添加下述规则</p>
+<ul>
+<li>Protocol：SSH / Port(or range)：22</li>
+<li>Protocol：TCP / Port(or range)：32135</li>
+<li>Protocol：TCP / Port(or range)：60302</li>
+<li>Protocol：UDP / Port(or range)：32135</li>
+</ul>
+<p>最后点 Linked Instances 把这些规则连接到实例上</p>
+<img src="/blog/64387/LinkedInstances.jpg" class="" title="Linked Instances管理界面">
+
+<p>然后我们回到该实例管理界面，依次点击 Settings -&gt; Firewall</p>
+<img src="/blog/64387/ServerFirewall.jpg" class="" title="防火墙管理界面">
+<img src="/blog/64387/UpdateFirewallGroup.jpg" class="" title="防火墙应用界面">
+
+<p>至此防火墙配置完成<br>重新使用 ssh 命令连接到该实例，安装谷歌BBR加速器</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh &amp;&amp; chmod +x bbr.sh &amp;&amp; ./bbr.sh</span><br></pre></td></tr></table></figure>
+
+<p>重启 VPS，检测 BBR 是否开启</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">lsmod | grep bbr</span><br></pre></td></tr></table></figure>
+
+<p>出现 tcp_bbr 即说明 BBR 已经启动</p></div></div></div>
+
 
 <h3 id="配置-outline"><a href="#配置-outline" class="headerlink" title="配置 outline"></a>配置 outline</h3><p>完成 Outline Manager 服务端的配置后，进入该服务的管理界面，在该界面内选择“添加新密钥”，然后把新创建的密钥共享给 outline App 使用。注意使用的主要是以 ss 开头的字符串哦！操作还有迷糊的地方，可点击该文章 <a href="https://oracleblog.org/its-my-life/how-to-deploy-outline-by-jigsaw/">“Outline 的部署和使用”</a> 看图文进行操作</p>
 <h2 id="使用总结"><a href="#使用总结" class="headerlink" title="使用总结"></a>使用总结</h2><p>长城防火墙封锁比较严重时或者不想付费的使用lantern。不严重使用shadowsocks或者outline。shadowsocks配置稍复杂些，严查期间封锁shadowsocks也要比outline严重。短时间使用那就选ssh端口映射。</p>
