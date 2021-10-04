@@ -162,13 +162,13 @@ node_modules/
 
 本文以集成Github为例，演示Gitbook如何发布电子书籍
 
-1. 在Github上创建开源仓库gitbook-example{%label info@（如何创建此处不赘述）%}
+1. 在Github上创建开源仓库gitbook-example（如何创建此处不赘述）
   1.1. `git init`
   1.2. `git remote add origin <git......>`
   1.3. `git add .`
   1.4. `git commit "docs(add):initial"`
   1.4. `git push --set-upstream origin master`
-2. 注册Gitbook{%label info@（注册比较简单就不截图了）%}，创建书籍项目（名称可不一样）并同步gitbook-example仓库的master分支
+2. 注册Gitbook（注册比较简单就不截图了），创建书籍项目（名称可不一样）并同步 gitbook-example 仓库的 master 分支
 
 {% asset_img create.png %}
 {% asset_img create-example.png %}
