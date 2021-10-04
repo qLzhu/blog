@@ -22,7 +22,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v1
         with:
-          node-version: "10.x"        #设置要安装的 Node 版本
+          node-version: "13.x"        #设置要安装的 Node 版本
 
       - name: NPM Install Packges     #设置 npm 要执行的步骤，当成本地操作就行
         run: |
@@ -35,7 +35,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           ACCESS_TOKEN: ${{ secrets.HEXO_DEPLOY }} #在 Settings/Secrets 内设置的 token 名称
-                                                          #未创建个人Token的，请换成${{ secrets.GITHUB_TOKEN }}
+                                      #未创建个人Token的，请换成${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages            #要部署到哪个分支
           FOLDER: public              #从那个文件夹内复制静态文件
           COMMIT_NAME: "Github Pages Deploy Action"
