@@ -3,7 +3,7 @@ NoiiApple
 ---
 记录下技能知识及其工作或日常遇到的问题，喜欢的可以 star！blog 使用 hexo 静态生成器搭建并采用的NexT主题，Travis CI 自动化部署到 Github Pages
 
-[![Build Status](https://travis-ci.com/qLzhu/blog.svg?branch=master)](https://travis-ci.com/qLzhu/blog)
+[![deploying Hexo project to GitHub pages](https://github.com/qLzhu/blog/actions/workflows/hexo-deploy.yml/badge.svg)](https://github.com/qLzhu/blog/actions/workflows/hexo-deploy.yml)
 [![](https://img.shields.io/badge/node->=13.12.0-brightgreen?style=flat&logo=node.js)](https://nodejs.org/en/)
 [![](https://img.shields.io/badge/hexo->=4.0.0-blue?style=flat&logo=hexo)](https://hexo.io/zh-cn/)
 [![](https://img.shields.io/badge/NexT->=7.8.0-lightgrey?style=flat)](https://github.com/theme-next/hexo-theme-next)
