@@ -6,16 +6,12 @@ on:
       - master
 
 jobs:
-  build-and-deploy:
+  pages:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@master
-
-    - name: Build and Deploy
-      uses: theme-keep/hexo-deploy-github-pages-action@master
-      env:
-        PERSONAL_TOKEN: ${{ secrets.HEXO_DEPLOY }}
-        PUBLISH_REPOSITORY: https://github.com/qLzhu/blog/
-        BRANCH: gh-pages
-        PUBLISH_DIR: ./public
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.HEXO_DEPLOY }}
+          publish_dir: ./public
+          publish_branch: gh-pages
