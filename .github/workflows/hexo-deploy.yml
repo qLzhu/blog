@@ -3,41 +3,19 @@ name: deploying Hexo project to GitHub pages
 on:
   push:
     branches:
-      - master # master 分支有 push 行为时就触发这个 action
+      - master
 
-# Jobs 即工作流中的执行任务
 jobs:
-  build-and-deploy:                   #Job_id 名称为 build，自主定义
-    runs-on: ubuntu-latest            #设置虚拟服务器环境（ubuntu最新版本）
-
-    # 任务步骤集合
+  build-and-deploy:
+    runs-on: ubuntu-latest
     steps:
-      - name: Pull Code               #Action 名称，自主定义
-        uses: actions/checkout@v2     #使用 Github Action 官方可重用的脚本，actions/checkout 获取源码
-                                      #@ 后面可指定分支、release 版本或特定的 commit
-                                      #https://help.github.com/cn/actions/building-actions/about-actions#versioning-your-action
-        with:                         #当前 actions 的一些配置
-          submodules: true            #项目内有 Git 子项目时可以设为 true，拉取的时候会一并拉取下来
-          persist-credentials: false
+    - name: Checkout
+      uses: actions/checkout@master
 
-      - name: Install Node
-        uses: actions/setup-node@v1
-        with:
-          node-version: "12.x"        #设置要安装的 Node 版本
-
-      - name: NPM Install Packges     #设置 npm 要执行的步骤，当成本地操作就行
-        run: |
-          rm -rf node_modules
-          npm install hexo-cli -g
-          npm install
-          hexo clean
-          hexo generate
-
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@releases/v3
-        with:
-          ACCESS_TOKEN: ${{ secrets.HEXO_DEPLOY }} #在 Settings/Secrets 内设置的 token 名称
-                                      #未创建个人Token的，请换成${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages            #要部署到哪个分支
-          FOLDER: public              #从那个文件夹内复制静态文件
-          COMMIT_NAME: "Github Pages Deploy Action"
+    - name: Build and Deploy
+      uses: theme-keep/hexo-deploy-github-pages-action@master
+      env:
+        PERSONAL_TOKEN: ${{ secrets.HEXO_DEPLOY }}
+        PUBLISH_REPOSITORY: qLzhu/blog
+        BRANCH: gh-pages
+        PUBLISH_DIR: ./public
