@@ -580,6 +580,80 @@
       </tags>
   </entry>
   <entry>
+    <title>HomeBrew Basic</title>
+    <url>/blog/42669/</url>
+    <content><![CDATA[<p><a href="https://brew.sh/index_zh-cn">Homebrew</a> 是 Mac 上一款比较出色的软件包管理器，BSD 开源由 Max Howell 开发。类似 Linux 系统的 apt-get、yum。简单来说就是用来管理你软件的！</p>
+<p>打开终端执行下述命令，安装Homebrew</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo /bin/bash -c <span class="string">&quot;<span class="subst">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>概念词汇</p>
+<ul>
+<li>formula 安装包的描述文件</li>
+<li>cellar  程序安装所在的目录</li>
+<li>keg     具体某个包所在的目录，cellar 下的子目录</li>
+<li>bottle  预先编译好的包，不需要现场下载编译源码，速度会快很多；官方库中的包大多都是通过 bottle 方式安装</li>
+<li>tag     下载源，可以类比于 Linux 下的包管理器 repository</li>
+<li>cask    安装 macOS 应用的扩展，你也可以理解为有图形化界面的应用</li>
+<li>bundle  描述 Homebrew 依赖的扩展<span id="more"></span>
+
+</li>
+</ul>
+<p>相关目录</p>
+<ul>
+<li>/usr/local/Homebrew/：程序自身安装目录</li>
+<li>/usr/local/Homebrew/Library/Homebrew/：命令集所在目录</li>
+<li>/usr/local/Cellar/：程序安装软件包的路径</li>
+</ul>
+<h2 id="更改源"><a href="#更改源" class="headerlink" title="更改源"></a>更改源</h2><p>安装完成后的第一件事，应该是更改 Homebrew 源，如果没更改的话在国内的使用体验是很差的。这是国内特有的网络状况造成的，同时也给开源项目的分发造成了一定的阻碍。在这种情况下为了我们更好的使用体验，国内的一些组织或者个人就自己新建了很多镜像，例如：</p>
+<div class="note ">
+            <p>阿里云：<a href="https://mirrors.aliyun.com/homebrew/">https://mirrors.aliyun.com/homebrew/</a><br>中科大：<a href="https://mirrors.ustc.edu.cn/">https://mirrors.ustc.edu.cn/</a><br>清华源：<a href="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/">https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/</a></p>
+          </div>
+
+<p>当然你能科学上网的话，也可以使用 Homebrew 官方的源（即默认的）。如果你对如何搭建科学上网的工具有兴趣的话，也可参考之前我记录的 <a href="/blog/64387/" title="搭建 VPN 服务">搭建 VPN 服务</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 更改 Homebrew 的源，需要先进到本地 Homebrew 的仓库内</span></span><br><span class="line"><span class="built_in">cd</span> <span class="string">&quot;<span class="subst">$(brew --repo)</span>&quot;</span></span><br><span class="line"><span class="comment"># 更改为中科大的源</span></span><br><span class="line">git remote set-url origin https://mirrors.ustc.edu.cn/brew.git</span><br><span class="line"></span><br><span class="line"><span class="comment"># Homebrew Core</span></span><br><span class="line"><span class="built_in">cd</span> <span class="string">&quot;<span class="subst">$(brew --repo homebrew/core)</span>&quot;</span></span><br><span class="line">git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git</span><br><span class="line"></span><br><span class="line"><span class="comment"># Homebrew Cask，未安装 Cask 的不用此操作</span></span><br><span class="line"><span class="built_in">cd</span> <span class="string">&quot;<span class="subst">$(brew --repo homebrew/cask)</span>&quot;</span></span><br><span class="line">git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-cask.git</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Homebrew 默认的源分别是</span></span><br><span class="line"><span class="comment">#https://github.com/Homebrew/brew.git</span></span><br><span class="line"><span class="comment">#https://github.com/Homebrew/homebrew-core</span></span><br><span class="line"><span class="comment">#https://github.com/Homebrew/homebrew-cask</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取当前源的命令</span></span><br><span class="line">git remote get-url origin</span><br></pre></td></tr></table></figure>
+
+<p>更换 Homebrew Bottles 源</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> [<span class="variable">$SHELL</span> = <span class="string">&quot;/bin/bash&quot;</span>] <span class="comment">#bash</span></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&#x27;export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles/&#x27;</span> &gt;&gt; ~/.bash_profile</span><br><span class="line">  <span class="built_in">source</span> ~/.bash_profile</span><br><span class="line"><span class="keyword">elif</span> [<span class="variable">$SHELL</span> = <span class="string">&quot;/bin/zsh&quot;</span>] <span class="comment">#zsh</span></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&#x27;export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles/&#x27;</span> &gt;&gt; ~/.zshrc</span><br><span class="line">  <span class="built_in">source</span> ~/.zshrc</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><p>使用基础</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew <span class="built_in">help</span> [COMMAND]                      <span class="comment">#帮助</span></span><br><span class="line">man brew</span><br><span class="line">brew commands                            <span class="comment">#列出所有指令</span></span><br><span class="line">brew update                              <span class="comment">#更细自身</span></span><br><span class="line">brew --version                           <span class="comment">#列出当前版本</span></span><br><span class="line">brew config                              <span class="comment">#列出当前配置</span></span><br><span class="line">brew doctor                              <span class="comment">#诊断问题并给出解决方案</span></span><br></pre></td></tr></table></figure>
+
+<p>卸载及安装<br>brew 在安装程序时会先更新自身，可在环境配置文件底部加入 <code>export HOMEBREW_NO_AUTO_UPDATE=true</code><br>以此禁止自动更新</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew search [FORMULA]                    <span class="comment">#搜索要安装的程序</span></span><br><span class="line">brew install [FORMULA]                   <span class="comment">#安装程序</span></span><br><span class="line">brew install --verbose --debug [FORMULA] <span class="comment">#失败时使用这条指令重新安装，查看错误信息</span></span><br><span class="line">brew reinstall [FORMULA]                 <span class="comment">#重新安装</span></span><br><span class="line">brew uninstall [FORMULA]                 <span class="comment">#卸载</span></span><br><span class="line">brew uninstall --force [FORMULA]         <span class="comment">#强制卸载</span></span><br><span class="line">brew uninstall -f [FORMULA]</span><br><span class="line">brew uninstall --ignore-dependencies [FORMULA]</span><br><span class="line">brew rmtree -f [FORMULA]                 <span class="comment">#卸载时连依赖的包一块卸载</span></span><br></pre></td></tr></table></figure>
+
+<p>查看程序</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew list                                <span class="comment">#列出所有已安装的程序</span></span><br><span class="line">brew list --version</span><br><span class="line">brew deps --tree --installed             <span class="comment">#列出所有程序的依赖</span></span><br><span class="line">brew deps [FORMULA]                      <span class="comment">#列出程序依赖的软件包</span></span><br><span class="line">brew deps --tree [FORMULA]</span><br><span class="line">brew info [FORMULA]                      <span class="comment">#列出指定程序的详细信息</span></span><br><span class="line">brew home [FORMULA]                      <span class="comment">#访问程序的官网</span></span><br></pre></td></tr></table></figure>
+
+<p>更新</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew outdated                            <span class="comment">#列出所有可更新的程序</span></span><br><span class="line">brew upgrade                             <span class="comment">#更新所有可更新的程序</span></span><br><span class="line">brew upgrade [FORMULA]                   <span class="comment">#更新指定程序</span></span><br><span class="line"></span><br><span class="line">brew pin [FORMULA]                       <span class="comment">#锁定（禁止更新某个程序）</span></span><br><span class="line">brew unpin [FORMULA]                     <span class="comment">#取消锁定</span></span><br></pre></td></tr></table></figure>
+
+<p>清除</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew --cache                             <span class="comment">#查看缓存路径</span></span><br><span class="line">brew cleanup -n                          <span class="comment">#列出可清理的旧程序版本</span></span><br><span class="line">brew cleanup                             <span class="comment">#清除所有可清理的旧版本</span></span><br><span class="line">brew cleanup [FORMULA]                   <span class="comment">#清理指定程序的旧版本</span></span><br></pre></td></tr></table></figure>
+
+<p>仓库<br>可以理解为应用商城 <a href="https://github.com/Homebrew/brew/blob/master/docs/Taps.md">https://github.com/Homebrew/brew/blob/master/docs/Taps.md</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew tap                                 <span class="comment">#列出已配置的仓库</span></span><br><span class="line">brew tap [user/repo] [URL]               <span class="comment">#添加仓库</span></span><br><span class="line">brew tap homebrew/cask-fonts</span><br><span class="line">brew untap user/repo                     <span class="comment">#卸载指定的仓库</span></span><br></pre></td></tr></table></figure>
+
+<p>服务<br>诸如 Nginx、MySQL 等软件，都是有一些服务端软件在后台运行，如果你希望对这些软件进行管理，可以使用 brew services 命令来进行管理</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew services list                      <span class="comment">#列出所有服务</span></span><br><span class="line">brew services run [FORMULA]             <span class="comment">#运行指定服务</span></span><br><span class="line">brew services start [FORMULA]</span><br><span class="line">brew services stop [FORMULA]</span><br><span class="line">brew services restart [FORMULA]</span><br></pre></td></tr></table></figure>
+
+<p>备份</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew bundle dump                        <span class="comment">#备份安装的所有程序（换电脑时使用）</span></span><br><span class="line">brew bundle                             <span class="comment">#根据备份时生产的Brewfile文件安装所有程序</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="FQA"><a href="#FQA" class="headerlink" title="FQA"></a>FQA</h2><h3 id="Homebrew-cask"><a href="#Homebrew-cask" class="headerlink" title="Homebrew cask"></a>Homebrew cask</h3><p>安装 Homebrew 时会自动安装 cask，cask 安装 app 的命令跟 Homebrew 几乎相同。另外你还可以到此网站 <a href="http://macappstore.org/">http://macappstore.org/</a> 查找你要安装 app</p>
+<h3 id="Error-Permission-denied-无权限"><a href="#Error-Permission-denied-无权限" class="headerlink" title="Error: Permission denied 无权限"></a>Error: Permission denied 无权限</h3><p>更新时报此错误，说明是权限不够的意思，但是 Homebrew 又不允许在命令前添加 sudo，可使用以下方式解决</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo chown -R $(whoami) $(brew --prefix)/*</span><br></pre></td></tr></table></figure>
+
+<p>安装时也报权限不够的错误时，请再执行下述命令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew install &lt;name&gt;</span><br><span class="line">brew link &lt;name&gt;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>HomeBrew</category>
+      </categories>
+      <tags>
+        <tag>HomeBrew</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>About Terminal</title>
     <url>/blog/24678/</url>
     <content><![CDATA[<h2 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h2><p>这里只列出几个常用的，更多请查阅 “帮助 - 终端帮助 - 键盘快捷键”</p>
@@ -767,80 +841,6 @@
         <tag>Graph Easy</tag>
         <tag>http://asciiflow.com/</tag>
         <tag>https://metacpan.org/pod/distribution/Graph-Easy/bin/graph-easy</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>HomeBrew Basic</title>
-    <url>/blog/42669/</url>
-    <content><![CDATA[<p><a href="https://brew.sh/index_zh-cn">Homebrew</a> 是 Mac 上一款比较出色的软件包管理器，BSD 开源由 Max Howell 开发。类似 Linux 系统的 apt-get、yum。简单来说就是用来管理你软件的！</p>
-<p>打开终端执行下述命令，安装Homebrew</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo /bin/bash -c <span class="string">&quot;<span class="subst">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)</span>&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>概念词汇</p>
-<ul>
-<li>formula 安装包的描述文件</li>
-<li>cellar  程序安装所在的目录</li>
-<li>keg     具体某个包所在的目录，cellar 下的子目录</li>
-<li>bottle  预先编译好的包，不需要现场下载编译源码，速度会快很多；官方库中的包大多都是通过 bottle 方式安装</li>
-<li>tag     下载源，可以类比于 Linux 下的包管理器 repository</li>
-<li>cask    安装 macOS 应用的扩展，你也可以理解为有图形化界面的应用</li>
-<li>bundle  描述 Homebrew 依赖的扩展<span id="more"></span>
-
-</li>
-</ul>
-<p>相关目录</p>
-<ul>
-<li>/usr/local/Homebrew/：程序自身安装目录</li>
-<li>/usr/local/Homebrew/Library/Homebrew/：命令集所在目录</li>
-<li>/usr/local/Cellar/：程序安装软件包的路径</li>
-</ul>
-<h2 id="更改源"><a href="#更改源" class="headerlink" title="更改源"></a>更改源</h2><p>安装完成后的第一件事，应该是更改 Homebrew 源，如果没更改的话在国内的使用体验是很差的。这是国内特有的网络状况造成的，同时也给开源项目的分发造成了一定的阻碍。在这种情况下为了我们更好的使用体验，国内的一些组织或者个人就自己新建了很多镜像，例如：</p>
-<div class="note ">
-            <p>阿里云：<a href="https://mirrors.aliyun.com/homebrew/">https://mirrors.aliyun.com/homebrew/</a><br>中科大：<a href="https://mirrors.ustc.edu.cn/">https://mirrors.ustc.edu.cn/</a><br>清华源：<a href="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/">https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/</a></p>
-          </div>
-
-<p>当然你能科学上网的话，也可以使用 Homebrew 官方的源（即默认的）。如果你对如何搭建科学上网的工具有兴趣的话，也可参考之前我记录的 <a href="/blog/64387/" title="搭建 VPN 服务">搭建 VPN 服务</a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 更改 Homebrew 的源，需要先进到本地 Homebrew 的仓库内</span></span><br><span class="line"><span class="built_in">cd</span> <span class="string">&quot;<span class="subst">$(brew --repo)</span>&quot;</span></span><br><span class="line"><span class="comment"># 更改为中科大的源</span></span><br><span class="line">git remote set-url origin https://mirrors.ustc.edu.cn/brew.git</span><br><span class="line"></span><br><span class="line"><span class="comment"># Homebrew Core</span></span><br><span class="line"><span class="built_in">cd</span> <span class="string">&quot;<span class="subst">$(brew --repo homebrew/core)</span>&quot;</span></span><br><span class="line">git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git</span><br><span class="line"></span><br><span class="line"><span class="comment"># Homebrew Cask，未安装 Cask 的不用此操作</span></span><br><span class="line"><span class="built_in">cd</span> <span class="string">&quot;<span class="subst">$(brew --repo homebrew/cask)</span>&quot;</span></span><br><span class="line">git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-cask.git</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Homebrew 默认的源分别是</span></span><br><span class="line"><span class="comment">#https://github.com/Homebrew/brew.git</span></span><br><span class="line"><span class="comment">#https://github.com/Homebrew/homebrew-core</span></span><br><span class="line"><span class="comment">#https://github.com/Homebrew/homebrew-cask</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取当前源的命令</span></span><br><span class="line">git remote get-url origin</span><br></pre></td></tr></table></figure>
-
-<p>更换 Homebrew Bottles 源</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> [<span class="variable">$SHELL</span> = <span class="string">&quot;/bin/bash&quot;</span>] <span class="comment">#bash</span></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&#x27;export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles/&#x27;</span> &gt;&gt; ~/.bash_profile</span><br><span class="line">  <span class="built_in">source</span> ~/.bash_profile</span><br><span class="line"><span class="keyword">elif</span> [<span class="variable">$SHELL</span> = <span class="string">&quot;/bin/zsh&quot;</span>] <span class="comment">#zsh</span></span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&#x27;export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.ustc.edu.cn/homebrew-bottles/&#x27;</span> &gt;&gt; ~/.zshrc</span><br><span class="line">  <span class="built_in">source</span> ~/.zshrc</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><p>使用基础</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew <span class="built_in">help</span> [COMMAND]                      <span class="comment">#帮助</span></span><br><span class="line">man brew</span><br><span class="line">brew commands                            <span class="comment">#列出所有指令</span></span><br><span class="line">brew update                              <span class="comment">#更细自身</span></span><br><span class="line">brew --version                           <span class="comment">#列出当前版本</span></span><br><span class="line">brew config                              <span class="comment">#列出当前配置</span></span><br><span class="line">brew doctor                              <span class="comment">#诊断问题并给出解决方案</span></span><br></pre></td></tr></table></figure>
-
-<p>卸载及安装<br>brew 在安装程序时会先更新自身，可在环境配置文件底部加入 <code>export HOMEBREW_NO_AUTO_UPDATE=true</code><br>以此禁止自动更新</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew search [FORMULA]                    <span class="comment">#搜索要安装的程序</span></span><br><span class="line">brew install [FORMULA]                   <span class="comment">#安装程序</span></span><br><span class="line">brew install --verbose --debug [FORMULA] <span class="comment">#失败时使用这条指令重新安装，查看错误信息</span></span><br><span class="line">brew reinstall [FORMULA]                 <span class="comment">#重新安装</span></span><br><span class="line">brew uninstall [FORMULA]                 <span class="comment">#卸载</span></span><br><span class="line">brew uninstall --force [FORMULA]         <span class="comment">#强制卸载</span></span><br><span class="line">brew uninstall -f [FORMULA]</span><br><span class="line">brew uninstall --ignore-dependencies [FORMULA]</span><br><span class="line">brew rmtree -f [FORMULA]                 <span class="comment">#卸载时连依赖的包一块卸载</span></span><br></pre></td></tr></table></figure>
-
-<p>查看程序</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew list                                <span class="comment">#列出所有已安装的程序</span></span><br><span class="line">brew list --version</span><br><span class="line">brew deps --tree --installed             <span class="comment">#列出所有程序的依赖</span></span><br><span class="line">brew deps [FORMULA]                      <span class="comment">#列出程序依赖的软件包</span></span><br><span class="line">brew deps --tree [FORMULA]</span><br><span class="line">brew info [FORMULA]                      <span class="comment">#列出指定程序的详细信息</span></span><br><span class="line">brew home [FORMULA]                      <span class="comment">#访问程序的官网</span></span><br></pre></td></tr></table></figure>
-
-<p>更新</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew outdated                            <span class="comment">#列出所有可更新的程序</span></span><br><span class="line">brew upgrade                             <span class="comment">#更新所有可更新的程序</span></span><br><span class="line">brew upgrade [FORMULA]                   <span class="comment">#更新指定程序</span></span><br><span class="line"></span><br><span class="line">brew pin [FORMULA]                       <span class="comment">#锁定（禁止更新某个程序）</span></span><br><span class="line">brew unpin [FORMULA]                     <span class="comment">#取消锁定</span></span><br></pre></td></tr></table></figure>
-
-<p>清除</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew --cache                             <span class="comment">#查看缓存路径</span></span><br><span class="line">brew cleanup -n                          <span class="comment">#列出可清理的旧程序版本</span></span><br><span class="line">brew cleanup                             <span class="comment">#清除所有可清理的旧版本</span></span><br><span class="line">brew cleanup [FORMULA]                   <span class="comment">#清理指定程序的旧版本</span></span><br></pre></td></tr></table></figure>
-
-<p>仓库<br>可以理解为应用商城 <a href="https://github.com/Homebrew/brew/blob/master/docs/Taps.md">https://github.com/Homebrew/brew/blob/master/docs/Taps.md</a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew tap                                 <span class="comment">#列出已配置的仓库</span></span><br><span class="line">brew tap [user/repo] [URL]               <span class="comment">#添加仓库</span></span><br><span class="line">brew tap homebrew/cask-fonts</span><br><span class="line">brew untap user/repo                     <span class="comment">#卸载指定的仓库</span></span><br></pre></td></tr></table></figure>
-
-<p>服务<br>诸如 Nginx、MySQL 等软件，都是有一些服务端软件在后台运行，如果你希望对这些软件进行管理，可以使用 brew services 命令来进行管理</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew services list                      <span class="comment">#列出所有服务</span></span><br><span class="line">brew services run [FORMULA]             <span class="comment">#运行指定服务</span></span><br><span class="line">brew services start [FORMULA]</span><br><span class="line">brew services stop [FORMULA]</span><br><span class="line">brew services restart [FORMULA]</span><br></pre></td></tr></table></figure>
-
-<p>备份</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew bundle dump                        <span class="comment">#备份安装的所有程序（换电脑时使用）</span></span><br><span class="line">brew bundle                             <span class="comment">#根据备份时生产的Brewfile文件安装所有程序</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="FQA"><a href="#FQA" class="headerlink" title="FQA"></a>FQA</h2><h3 id="Homebrew-cask"><a href="#Homebrew-cask" class="headerlink" title="Homebrew cask"></a>Homebrew cask</h3><p>安装 Homebrew 时会自动安装 cask，cask 安装 app 的命令跟 Homebrew 几乎相同。另外你还可以到此网站 <a href="http://macappstore.org/">http://macappstore.org/</a> 查找你要安装 app</p>
-<h3 id="Error-Permission-denied-无权限"><a href="#Error-Permission-denied-无权限" class="headerlink" title="Error: Permission denied 无权限"></a>Error: Permission denied 无权限</h3><p>更新时报此错误，说明是权限不够的意思，但是 Homebrew 又不允许在命令前添加 sudo，可使用以下方式解决</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo chown -R $(whoami) $(brew --prefix)/*</span><br></pre></td></tr></table></figure>
-
-<p>安装时也报权限不够的错误时，请再执行下述命令</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew install &lt;name&gt;</span><br><span class="line">brew link &lt;name&gt;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>HomeBrew</category>
-      </categories>
-      <tags>
-        <tag>HomeBrew</tag>
       </tags>
   </entry>
   <entry>
