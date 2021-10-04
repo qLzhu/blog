@@ -16,6 +16,6 @@ jobs:
       uses: theme-keep/hexo-deploy-github-pages-action@master
       env:
         PERSONAL_TOKEN: ${{ secrets.HEXO_DEPLOY }}
-        PUBLISH_REPOSITORY: qLzhu/blog
+        PUBLISH_REPOSITORY: https://github.com/qLzhu/blog/
         BRANCH: gh-pages
         PUBLISH_DIR: ./public
