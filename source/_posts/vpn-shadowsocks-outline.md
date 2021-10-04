@@ -147,7 +147,10 @@ Outline 是 Jigsaw 团队开发的，而 Jigsaw 又是谷歌母公司 alphabet �
 
 第一步跟配置Shadowsocks一样，都是先在Vultr搭建服务器，然后使用ssh再登陆上去
 
-### 部署 Docker 容器
+### 部署方案
+
+{% tabs Outline 服务器部署方案 %}
+  <!-- tab Docker方式部署 -->
 
 登陆成功后在终端分别执行下述命令
 
@@ -175,7 +178,7 @@ docker.service - Docker Application Container Engine
            └─10113 docker-containerd --config /var/run/docker/containerd/containerd.toml
 ```
 
-### 配置 Outline Manager
+配置 Outline Manager
 
 到 [Outline](https://getoutline.org/en/home) 官网选择系统相对应的版本，分别下载下 outline Manager 和 Outline。完成后先打开 Outline Manager 服务端软件，进入软件后点击界面右下脚的“**随时随地安装 outline**”选项，然后**复制第一段提示你安装 shadowsocks 服务的代码，粘贴到服务器内进行安装**，即下述代码
 
@@ -189,6 +192,68 @@ bash -c "$(wget -qO- https://raw.githubusercontent.com/Jigsaw-Code/outline-serve
 {"apiUrl":"https://***.28.*1.**9:***69/*********mfPAusF9w",
 "certSha256":"FFFA7***************5B61976F57B4B1E12BB9***19772F6"}
 ```
+  <!-- endtab -->
+  <!-- tab 手动开启Firewall防火墙方式 -->
+连接到服务器后在终端执行安装 outline 服务的命令
+
+```bash
+sudo bash -c "$(wget -qO- https://raw.githubusercontent.com/Jigsaw-Code/outline-server/master/src/server_manager/install_scripts/install_server.sh)"
+```
+
+执行成功后会有下述提示
+
+{% asset_img 846459FAE33F2E2E514COFOESCI.png apiUrl值 %}
+
+我们把”apiUrl（上图绿色的部分）”开头的一段字符串复制，然后粘贴到 Outline Manager 内（就是你复制服务器端安装shadowsocks的那块）
+
+注意：
+这两个端口需要牢记，我们待会手动开防火墙端口时会用到这两个端口
+- Management port 32135, for TCP
+- Access key port 60302, for TCP and UDP
+
+回到 vultr 服务器管理界面
+
+{% asset_img home.jpg 服务器管理界面 %}
+
+进到该实例管理界面，依次点击 Settings -> + -> Add Firewall Group -> Manage Firewall Group
+
+{% asset_img DServerInformation.jpg Firewall管理界面 %}
+{% asset_img AddFirewallGroup.jpg Add Firewall Group管理界面 %}
+{% asset_img ManageFirewallGroup.jpg Manage Firewall Group管理界面 %}
+
+分别在 IPv4 Rules 和 IPv6 Rules 添加下述规则
+
+- Protocol：SSH / Port(or range)：22
+- Protocol：TCP / Port(or range)：32135
+- Protocol：TCP / Port(or range)：60302
+- Protocol：UDP / Port(or range)：32135
+
+最后点 Linked Instances 把这些规则连接到实例上
+
+{% asset_img LinkedInstances.jpg Linked Instances管理界面 %}
+
+然后我们回到该实例管理界面，依次点击 Settings -> Firewall
+
+{% asset_img ServerFirewall.jpg 防火墙管理界面 %}
+{% asset_img UpdateFirewallGroup.jpg 防火墙应用界面 %}
+
+至此防火墙配置完成
+重新使用 ssh 命令连接到该实例，安装谷歌BBR加速器
+
+```bash
+wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && ./bbr.sh
+```
+
+重启 VPS，检测 BBR 是否开启
+
+```bash
+lsmod | grep bbr
+```
+
+出现 tcp_bbr 即说明 BBR 已经启动
+  <!-- endtab -->
+{% endtabs %}
+
 
 ### 配置 outline
 
