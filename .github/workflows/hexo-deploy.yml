@@ -16,7 +16,8 @@ jobs:
         uses: actions/checkout@v2     #使用 Github Action 官方可重用的脚本，actions/checkout 获取源码
                                       #@ 后面可指定分支、release 版本或特定的 commit
                                       #https://help.github.com/cn/actions/building-actions/about-actions#versioning-your-action
-        # with:                       #当前 actions 的一些配置
+        with:                         #当前 actions 的一些配置
+          persist-credentials: false
         #   submodules: true          #项目内有 Git 子项目时可以设为 true，拉取的时候会一并拉取下来
 
       - name: Install Node
