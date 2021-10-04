@@ -39,7 +39,7 @@ tree ./
 └── SUMMARY.md #目录，GitBook会按照这个文件来生成书籍的结构，目录深度只支持两级
 ```
 
-编辑SUMMARY.md书籍目录，就跟我们平时在MD文件里添加链接是一样的。方括号{%label default@[]%}内的是章节名称，小括号{%label default@()%}内的则是章节路径。例如：
+编辑SUMMARY.md书籍目录，就跟我们平时在MD文件里添加链接是一样的。方括号 [] 内的是章节名称，小括号 () 内的则是章节路径。例如：
 
 ```markdown ./SUMMARY.md
 # 目录
