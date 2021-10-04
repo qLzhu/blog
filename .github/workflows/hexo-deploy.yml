@@ -27,6 +27,7 @@ jobs:
 
       - name: NPM Install Packges     #设置 npm 要执行的步骤，当成本地操作就行
         run: |
+          rm -rf node_modules
           npm install hexo-cli -g
           npm install
           hexo clean
