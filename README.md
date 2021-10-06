@@ -39,14 +39,14 @@ NoiiApple
 #### Git
 - [GIT基础知识](https://qlzhu.github.io/blog/39939/)
 - [GIT子模块添加hexo-theme-next](https://qlzhu.github.io/blog/46430/)
-- [SSH连接远程仓库无权限问题](https://qlzhu.github.io/blog/53774/)
-- [commit时忘记设置全局用户名及其邮箱](https://qlzhu.github.io/blog/58535/)
+- [SSH连接Github提示Permission denied](https://qlzhu.github.io/blog/53774/)
+- [Commit 未设置 Author 和 Email](https://qlzhu.github.io/blog/58535/)
 
 #### Github
 - [API获取Github ID](https://qlzhu.github.io/blog/8621/)
 - [Github复原删除的仓库](https://qlzhu.github.io/blog/9273/)
 - [Github Actions CI工作流程](https://qlzhu.github.io/blog/40311/)
-- [GitBook基础知识](https://qlzhu.github.io/blog/19654/)
+- [GitBook 入门知识](https://qlzhu.github.io/blog/19654/)
 
 #### VPN
 - [如何搭建VPN服务](https://qlzhu.github.io/blog/64387/)

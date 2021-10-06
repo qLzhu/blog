@@ -1,5 +1,5 @@
 ---
-title: Git Basic
+title: Git
 categories: git
 tags:
   - git
@@ -235,7 +235,7 @@ Enter same passphrase again:
 密钥创建成功后，需要把 [公钥（~/.ssh/id_rsa.pub）](https://help.github.com/cn/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) 部署到代码托管网站上，以 Github 为例，ssh 命令测试链接是否成功
 
 ```bash
-ssh git@github.com
+ssh -T git@github.com
 
 PTY allocation request failed on channel 0
 Hi qLzhu! You've successfully authenticated, but GitHub does not provide shell access.

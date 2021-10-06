@@ -63,11 +63,12 @@ git reset -- themes/
 注意：以后更新 hexo-theme-next 子模块的话，需要使用 `git submodule update` 命令。以下列几个常用的命令，更多请查阅 GIT-SCM 官网 https://git-scm.com/docs/git-submodule
 
 ```bash
+git submodule                                             #查看子模块
 git submodule add ["remote repo"]                         #添加子模块
 git submodule add ["remote repo"] ["path\submodule name"]
 git submodule init                                        #初始化本地配置文件
-git submodule updata                                      #拉取子模块数据
-git submodule updata ["path\submodule name"]
+git submodule update --remote                             #更新子模块为远程项目的最新版本
+git submodule update ["path\submodule name"]
 git clone --recursive ["remote repo"]                     #克隆包含子模块的仓库
 git rm ["path\submodule name"]                            #删除子模块
 git submodule foreach ["command"]                         #遍历子模块执行同样的命令

@@ -1,5 +1,5 @@
 ---
-title: WebPack Basic
+title: Webpack
 abbrlink: 24855
 date: 2020-04-18 17:42:39
 categories: webpack
