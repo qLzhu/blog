@@ -29,7 +29,7 @@
 <meta property="og:description" content="NPM 是 NodeJS 下的包（Module 模块）管理工具。在 NodeJS v0.6.x 之后的版本中，嵌套于 NodeJS 系统中，随 NodeJS 一起发布。通过 NPM 可以协助开发者安装、卸载、删除、更新 NodeJS 套件，并且可以通过 NPM 发布自己的插件。 安装 NPM 通过 NodeJS 官网直接下载 LTS 稳定版本的 PKG 包安装 通过 NVM 管理 NodeJS 安">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-04-18T18:37:27.000Z">
-<meta property="article:modified_time" content="2021-10-06T10:09:20.398Z">
+<meta property="article:modified_time" content="2021-10-06T11:51:08.941Z">
 <meta property="article:author" content="qinlzhu">
 <meta property="article:tag" content="npm">
 <meta name="twitter:card" content="summary">
@@ -258,7 +258,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-10-06 10:09:20" itemprop="dateModified" datetime="2021-10-06T10:09:20+00:00">2021-10-06</time>
+                <time title="修改时间：2021-10-06 11:51:08" itemprop="dateModified" datetime="2021-10-06T11:51:08+00:00">2021-10-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -283,14 +283,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>6.6k</span>
+              <span>7.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>11 分钟</span>
+              <span>12 分钟</span>
             </span>
 
         </div>
@@ -351,7 +351,7 @@
 <li>maintainers：贡献者固定格式：作者 &lt;邮箱&gt; (网址)</li>
 <li>version</li>
 <li>description</li>
-<li>license</li>
+<li>license：授权方式</li>
 <li>homepage：项目网址</li>
 <li>repository：项目仓库地址</li>
 </ul>
@@ -363,19 +363,27 @@
 </li>
 <li><p>scripts<br>例如：上面的 test，当我在终端执行 <code>npm run test</code> 时 gulp 命令会被执行，单纯的只执行 <code>npm run</code> 不加任何参数，系统会列出 scripts 下所有可执行的命令</p>
 </li>
-<li><p>dependencies<br>执行 <code>npm install</code> 时安装的包会注册到此属性下</p>
+<li><p>dependencies<br>项目运行所依赖的模块，执行 <code>npm install</code> 时安装的包会注册到此属性下</p>
 </li>
-<li><p>devDependencies<br>开发依赖，执行 <code>npm install --save-dev</code> 时安装的包会注册到此属性下</p>
+<li><p>devDependencies<br>项目开发所需要的模块，执行 <code>npm install --save-dev</code> 时安装的包会注册到此属性下</p>
 </li>
-<li><p>bin<br>在该属性下指定命令行文件名称及其路径</p>
+<li><p>bin<br>用来指定各个内部命令对应的可执行文件的位置</p>
 </li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 注意脚本文件的开头必须指定解释器</span></span><br><span class="line"><span class="comment"># 即./bin/cli.js</span></span><br><span class="line"><span class="comment"># !usr/bin/env node</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;bin&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;cli&quot;</span>: <span class="string">&quot;./bin/cli.js&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的例子是，cli 命令对应的可执行文件在当前路径下的 bin 内，NPM 会自动寻找到该文件并在 node_modules/.bin/ 下创建该命令的符号链接（node_modules/.bin/cli）。node_modules/.bin/ 目录会在运行时加入系统的PATH变量，因此在运行 npm 时，就可以不带路径，直接通过命令来调用这些脚本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">  <span class="string">&quot;build&quot;</span>: &#123;<span class="string">&quot;./node_modules/bin/cli.js&quot;</span>&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 简写为</span></span><br><span class="line"><span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">  <span class="string">&quot;build&quot;</span>: &#123;<span class="string">&quot;cli&quot;</span>&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 所有 node_modules/.bin/ 目录下的命令，都可以用 npm run [command] 的格式运行</span></span><br></pre></td></tr></table></figure>
 
 <ol start="6">
 <li>bugs<br>设置使用者提交 bug 的网址及其邮箱</li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;url&quot;</span> : <span class="string">&quot;https://github.com/owner/project/issues&quot;</span>,</span><br><span class="line">  <span class="string">&quot;email&quot;</span> : <span class="string">&quot;qinlzhu@outlook.com&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>engines<br>指定项目运行的 NodeJS 版本范围</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;engines&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;node&quot;</span> : <span class="string">&quot;&gt;=0.10.3 &lt;0.12&quot;</span>,</span><br><span class="line">    <span class="string">&quot;npm&quot;</span> : <span class="string">&quot;~1.0.20&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>package.json 更多属性请查阅 <a target="_blank" rel="noopener" href="https://docs.npmjs.com/cli/v7/configuring-npm/package-json">NPM 官方文档</a></p>
 <h3 id="npm-search"><a href="#npm-search" class="headerlink" title="npm search"></a>npm search</h3><p>npm search 在 NPM 公开库搜索 Module</p>
@@ -395,7 +403,7 @@
 
 <h3 id="npm-uninstall"><a href="#npm-uninstall" class="headerlink" title="npm uninstall"></a>npm uninstall</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 删除 node_modules 目录内的所有包</span></span><br><span class="line">npm uninstall</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除 package.json dependencies 选项下的包必须使用该命令</span></span><br><span class="line">npm uninstall --save</span><br><span class="line"></span><br><span class="line"><span class="comment"># package.json devDependencies</span></span><br><span class="line">npm uninstall --save-dev</span><br></pre></td></tr></table></figure>
 
-<h3 id="npm-shrinkwrap"><a href="#npm-shrinkwrap" class="headerlink" title="npm shrinkwrap"></a>npm shrinkwrap</h3><p>锁定 dependencies 依赖，主要目的是为了防止用户随意更改包的依赖造成不必要的麻烦</p>
+<h3 id="npm-shrinkwrap"><a href="#npm-shrinkwrap" class="headerlink" title="npm shrinkwrap"></a>npm shrinkwrap</h3><p>锁定 dependencies 项目运行所依赖的模块，主要目的是为了防止用户随意更改包的依赖造成不必要的麻烦</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 执行该命令，系统会在目录下创建一个 npm-shrinkwrap.json 文件</span></span><br><span class="line"><span class="comment"># 当用户安装 dependencies 下不存在的包时会报错</span></span><br><span class="line">npm shrinkwrap</span><br></pre></td></tr></table></figure>
 
 <h3 id="npm-outdated"><a href="#npm-outdated" class="headerlink" title="npm outdated"></a>npm outdated</h3><p>检测 node_modules 目录内的包是否有可更新版本</p>
@@ -602,12 +610,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">79k</span>
+    <span title="站点总字数">80k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:12</span>
+    <span title="站点阅读时长">2:13</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
