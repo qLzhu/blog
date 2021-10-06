@@ -1,5 +1,5 @@
 ---
-title: GitBook Basic
+title: GitBook
 categories: gitbook
 tags:
   - gitbook

@@ -1,5 +1,5 @@
 ---
-title: commit时忘记设置全局用户名及其邮箱
+title: Commit 未设置 Author 和 Email
 abbrlink: 58535
 date: 2021-10-02 16:25:00
 categories: git

@@ -145,11 +145,18 @@ Outline 是 Jigsaw 团队开发的，而 Jigsaw 又是谷歌母公司 alphabet �
 - 服务端：Outline Manager
 - 客户端：Outline
 
-第一步跟配置Shadowsocks一样，都是先在Vultr搭建服务器，然后使用ssh再登陆上去
+第一步跟配置 Shadowsocks 一样，都是先在 Vultr 建服务器，然后使用 ssh 再登陆上去
 
-### 部署 Docker 容器
+```bash
+ssh root@remote_host
+```
 
-登陆成功后在终端分别执行下述命令
+### 部署方案
+
+{% tabs Outline 服务器部署方案 %}
+  <!-- tab Docker方式部署 -->
+
+ssh 成功登陆 VPS 实例后，请分别执行下述指令
 
 ```bash
 apt update
@@ -161,7 +168,8 @@ apt-cache policy docker-ce
 apt install docker-ce
 ```
 
-完成后用`systemctl status docker`命令检测，如出现以下类似界面，说明 Docker 部署已成功
+上述指令执行完成后，使用 `systemctl status docker` 进行检测
+出现下述信息，说明 Docker 部署已成功
 
 ```bash
 docker.service - Docker Application Container Engine
@@ -175,28 +183,93 @@ docker.service - Docker Application Container Engine
            └─10113 docker-containerd --config /var/run/docker/containerd/containerd.toml
 ```
 
-### 配置 Outline Manager
-
-到 [Outline](https://getoutline.org/en/home) 官网选择系统相对应的版本，分别下载下 outline Manager 和 Outline。完成后先打开 Outline Manager 服务端软件，进入软件后点击界面右下脚的“**随时随地安装 outline**”选项，然后**复制第一段提示你安装 shadowsocks 服务的代码，粘贴到服务器内进行安装**，即下述代码
+VPS 实例端服务器 Docker 部署完成后，我们到 [Outline](https://getoutline.org/en/home) 官网下载并安装 Outline Manager.app。打开 app 点击界面右下脚的“**随时随地安装 outline**”选项，然后**复制第一段提示你安装 shadowsocks 服务的代码，粘贴到 VPS 实例服务器内进行安装**，即下述代码
 
 ```bash
 bash -c "$(wget -qO- https://raw.githubusercontent.com/Jigsaw-Code/outline-server/master/src/server_manager/install_scripts/install_server.sh)"
 ```
 
-安装完成后服务器终端提示信息内，会给出以”apiUrl”开头的一段字符串，复制该字符串粘贴到 Outline Manager 内（就是你复制服务器端安装shadowsocks的那块）
+在 VPS 实例服务器内执行完指令，终端会给出已 "apiUrl" 开通的密钥，复制该密钥粘贴到 Outline Manager.app 内（就是你复制服务器端安装 shadowsocks 的那块）
 
-```
+```bash
 {"apiUrl":"https://***.28.*1.**9:***69/*********mfPAusF9w",
 "certSha256":"FFFA7***************5B61976F57B4B1E12BB9***19772F6"}
 ```
+  <!-- endtab -->
+  <!-- tab 手动开启Firewall防火墙方式 -->
+连接到服务器后在终端执行安装 outline 服务的命令
+
+```bash
+sudo bash -c "$(wget -qO- https://raw.githubusercontent.com/Jigsaw-Code/outline-server/master/src/server_manager/install_scripts/install_server.sh)"
+```
+
+执行成功后会有下述提示
+
+{% asset_img 846459FAE33F2E2E514COFOESCI.png apiUrl值 %}
+
+上图绿色字符串 apiUrl 部分是 Outline Manager.app 所需要的密钥，把该字符串粘贴到该 app 内即可
+
+注意：
+
+- Management port 32135, for TCP
+- Access key port 60302, for TCP and UDP
+
+这两句话的意思是开启防火墙的话，需要我们开启 32135 的 TCP、60302 的 TCP 和 60302 UDP 端口
+除了 32135 和 60302 端口外，我们还需要开启 ssh 连接服务器的 22 端口
+这三个端口是我们手动开启 Firewall 防火墙的关键
+
+实际操作
+回到 vultr 服务器管理界面
+
+{% asset_img home.jpg 服务器管理界面 %}
+
+进到该实例管理界面，依次点击 Settings -> + -> Add Firewall Group -> Manage Firewall Group
+
+{% asset_img DServerInformation.jpg Firewall管理界面 %}
+{% asset_img AddFirewallGroup.jpg Add Firewall Group管理界面 %}
+{% asset_img ManageFirewallGroup.jpg Manage Firewall Group管理界面 %}
+
+分别在 IPv4 Rules 和 IPv6 Rules 添加下述规则
+
+- Protocol：SSH / Port(or range)：22
+- Protocol：TCP / Port(or range)：32135
+- Protocol：TCP / Port(or range)：60302
+- Protocol：UDP / Port(or range)：32135
+
+最后点 Linked Instances 把这些规则连接到实例上，在绑定实例时注意查看IP是否是我们刚创建的实例IP
+
+{% asset_img LinkedInstances.jpg Linked Instances管理界面 %}
+
+然后我们回到该实例管理界面，依次点击 Settings -> Firewall
+
+{% asset_img ServerFirewall.jpg 防火墙管理界面 %}
+{% asset_img UpdateFirewallGroup.jpg 防火墙应用界面 %}
+
+至此防火墙配置完成
+重新使用 ssh 命令连接到该实例，安装谷歌BBR加速器
+
+```bash
+wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && ./bbr.sh
+```
+
+重启 VPS，检测 BBR 是否开启
+
+```bash
+lsmod | grep bbr
+```
+
+出现 tcp_bbr 即说明 BBR 已经启动
+  <!-- endtab -->
+{% endtabs %}
+
 
 ### 配置 outline
 
-完成 Outline Manager 服务端的配置后，进入该服务的管理界面，在该界面内选择“添加新密钥”，然后把新创建的密钥共享给 outline App 使用。注意使用的主要是以 ss 开头的字符串哦！操作还有迷糊的地方，可点击该文章 [“Outline 的部署和使用”](https://oracleblog.org/its-my-life/how-to-deploy-outline-by-jigsaw/) 看图文进行操作
+完成 Outline Manager.app 服务端管理软件的配置后，我们再下载 [Outline.app](https://getoutline.org/en/home) 作为平常使用， 打开该 app 在该界面内选择“添加新密钥”，然后把新创建的密钥共享给 outline.app 使用。注意使用的主要是以 ss 开头的字符串哦！操作还有迷糊的地方，可点击该文章 [“Outline 的部署和使用”](https://oracleblog.org/its-my-life/how-to-deploy-outline-by-jigsaw/) 看图文进行操作！
 
 ## 使用总结
 
-长城防火墙封锁比较严重时或者不想付费的使用lantern。不严重使用shadowsocks或者outline。shadowsocks配置稍复杂些，严查期间封锁shadowsocks也要比outline严重。短时间使用那就选ssh端口映射。
+长城防火墙封锁比较严重时或者不想付费的使用 lantern。不严重使用 shadowsocks 或者 outline。shadowsocks 配置稍复杂些，严查期间封锁 shadowsocks 也要比 outline 严重。短时间使用那就选 ssh 端口映射。
 
 同时要提醒大家的是：
 <p style="color: #f2777a;text-align: center;">科学上网别信谣、别传谣、别造谣、别看不该看的东西、让我们做个守法的好公民！</p>

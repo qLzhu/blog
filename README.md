@@ -3,7 +3,7 @@ NoiiApple
 ---
 记录下技能知识及其工作或日常遇到的问题，喜欢的可以 star！blog 使用 hexo 静态生成器搭建并采用的NexT主题，Travis CI 自动化部署到 Github Pages
 
-[![Build Status](https://travis-ci.com/qLzhu/blog.svg?branch=master)](https://travis-ci.com/qLzhu/blog)
+[![deploying Hexo project to GitHub pages](https://github.com/qLzhu/blog/actions/workflows/hexo-deploy.yml/badge.svg)](https://github.com/qLzhu/blog/actions/workflows/hexo-deploy.yml)
 [![](https://img.shields.io/badge/node->=13.12.0-brightgreen?style=flat&logo=node.js)](https://nodejs.org/en/)
 [![](https://img.shields.io/badge/hexo->=4.0.0-blue?style=flat&logo=hexo)](https://hexo.io/zh-cn/)
 [![](https://img.shields.io/badge/NexT->=7.8.0-lightgrey?style=flat)](https://github.com/theme-next/hexo-theme-next)
@@ -31,7 +31,7 @@ NoiiApple
 - [部署博客到 Github Pages](https://qlzhu.github.io/blog/51941/)
 - [Travis CI 自动化部署静态博客](https://qlzhu.github.io/blog/65246/)
 - [SEO Google 搜索引擎收录设置](https://qlzhu.github.io/blog/10730/)
-- [更改 Travis 长期 Token](https://qlzhu.github.io/blog/19620/)
+- [Github Action 部署 blog](https://qlzhu.github.io/blog/19620/)
 
 #### HomeBrew
 - [HomeBrew基础知识](https://qlzhu.github.io/blog/42669/)
@@ -39,14 +39,14 @@ NoiiApple
 #### Git
 - [GIT基础知识](https://qlzhu.github.io/blog/39939/)
 - [GIT子模块添加hexo-theme-next](https://qlzhu.github.io/blog/46430/)
-- [SSH连接远程仓库无权限问题](https://qlzhu.github.io/blog/53774/)
-- [commit时忘记设置全局用户名及其邮箱](https://qlzhu.github.io/blog/58535/)
+- [SSH连接Github提示Permission denied](https://qlzhu.github.io/blog/53774/)
+- [Commit 未设置 Author 和 Email](https://qlzhu.github.io/blog/58535/)
 
 #### Github
 - [API获取Github ID](https://qlzhu.github.io/blog/8621/)
 - [Github复原删除的仓库](https://qlzhu.github.io/blog/9273/)
 - [Github Actions CI工作流程](https://qlzhu.github.io/blog/40311/)
-- [GitBook基础知识](https://qlzhu.github.io/blog/19654/)
+- [GitBook 入门知识](https://qlzhu.github.io/blog/19654/)
 
 #### VPN
 - [如何搭建VPN服务](https://qlzhu.github.io/blog/64387/)
