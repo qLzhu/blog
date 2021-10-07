@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/blog/images/safari-pinned-tab.svg" color="#222">
+  <meta name="google-site-verification" content="59As2-XGZdaAcrgZLs_zyEmo7T1UlJ0ayrAGw_7APD0">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"qlzhu.github.io","root":"/blog/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="目前大多数情况下，我们会使用 NVM 或者 N 管理工具，管理 NodeJS 版本！ 实例场景：              我们正在开发5个项目，每个项目的需求都不相同，不同项目依赖不同的 NodeJS 版本，如果没有合适的管理器，那么这个问题是很棘手的，在本地安装 5 个版本的 Node 那也是不现实的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NVM">
+<meta property="og:url" content="https://qlzhu.github.io/blog/20614/index.html">
+<meta property="og:site_name" content="NoiiApple">
+<meta property="og:description" content="目前大多数情况下，我们会使用 NVM 或者 N 管理工具，管理 NodeJS 版本！ 实例场景：              我们正在开发5个项目，每个项目的需求都不相同，不同项目依赖不同的 NodeJS 版本，如果没有合适的管理器，那么这个问题是很棘手的，在本地安装 5 个版本的 Node 那也是不现实的">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-07T18:02:24.000Z">
+<meta property="article:modified_time" content="2021-10-07T11:13:04.052Z">
+<meta property="article:author" content="qinlzhu">
+<meta property="article:tag" content="node">
+<meta property="article:tag" content="nvm">
+<meta property="article:tag" content="n">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://qlzhu.github.io/blog/20614/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"><style>
+#needsharebutton-float {
+  bottom: 88px;
+  cursor: pointer;
+  left: -8px;
+  position: fixed;
+  z-index: 9999;
+}
+#needsharebutton-float .btn {
+  border: 1px solid $btn-default-border-color;
+  border-radius: 4px;
+  padding: 0 10px 0 14px;
+}
+</style><link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+
+  <title>NVM | NoiiApple</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-165976554-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/blog/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">NoiiApple</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">欢迎来到我的blog，我的名字叫秦雷柱，当前坐标北京！</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>全部文章</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/blog/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>404界面</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/qLzhu" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://qlzhu.github.io/blog/20614/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/avatar.jpg">
+      <meta itemprop="name" content="qinlzhu">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="NoiiApple">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          NVM
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-10-07 18:02:24 / 修改时间：11:13:04" itemprop="dateCreated datePublished" datetime="2021-10-07T18:02:24+00:00">2021-10-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/nvm/" itemprop="url" rel="index"><span itemprop="name">nvm</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>目前大多数情况下，我们会使用 <a target="_blank" rel="noopener" href="https://github.com/nvm-sh/nvm">NVM</a> 或者 N 管理工具，管理 <a target="_blank" rel="noopener" href="https://nodejs.org/en/download/">NodeJS</a> 版本！</p>
+<p>实例场景：</p>
+<div class="note ">
+            <p>我们正在开发5个项目，每个项目的需求都不相同，不同项目依赖不同的 NodeJS 版本，如果没有合适的管理器，那么这个问题是很棘手的，在本地安装 5 个版本的 Node 那也是不现实的</p>
+          </div>
+<span id="more"></span>
+
+<h2 id="安装-NVM"><a href="#安装-NVM" class="headerlink" title="安装 NVM"></a>安装 NVM</h2><p>MacOS 下通常使用 <a target="_blank" rel="noopener" href="https://brew.sh/index_zh-cn">Homebrew</a> 进行安装，使用 <a target="_blank" rel="noopener" href="https://brew.sh/index_zh-cn">Homebrew</a> 安装主要是为了方便日后的管理</p>
+<ol>
+<li>安装 Homebrew</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/bin/bash -c <span class="string">&quot;<span class="subst">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)</span>&quot;</span></span><br><span class="line"></span><br><span class="line">brew install nvm</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>通过 Homebrew 安装的 NVM 通常会缺失 nvm.sh 执行脚本文件，所以我们需要在当前系统下的环境配置文件内追加下述语句</li>
+</ol>
+<figure class="highlight bash"><figcaption><span>~/.bash_profile</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> NVM_DIR=<span class="string">&quot;<span class="subst">$([ -z <span class="string">&quot;<span class="variable">$&#123;XDG_CONFIG_HOME-&#125;</span>&quot;</span> ] &amp;&amp; printf %s <span class="string">&quot;<span class="variable">$&#123;HOME&#125;</span>/.nvm&quot;</span> || printf %s <span class="string">&quot;<span class="variable">$&#123;XDG_CONFIG_HOME&#125;</span>/nvm&quot;</span>)</span>&quot;</span></span><br><span class="line">[ -s <span class="string">&quot;<span class="variable">$NVM_DIR</span>/nvm.sh&quot;</span> ] &amp;&amp; \. <span class="string">&quot;<span class="variable">$NVM_DIR</span>/nvm.sh&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>重启环境配置文件</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bash_profile</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装-NodeJS"><a href="#安装-NodeJS" class="headerlink" title="安装 NodeJS"></a>安装 NodeJS</h2><p><code>stable</code> 命令可以使 NVM 安装当前最新的 LTS 版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvm install stable</span><br></pre></td></tr></table></figure>
+
+<p>也可以安装指定的版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvm install v12.19.1</span><br></pre></td></tr></table></figure>
+
+<p>如果你不知道 NodeJS 有哪些版本，我们可以使用 <code>ls-remote</code> 命令进行查看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">nvm ls-remote</span><br><span class="line"></span><br><span class="line"><span class="comment"># v15.13.0</span></span><br><span class="line"><span class="comment"># v15.14.0</span></span><br><span class="line"><span class="comment"># v16.0.0</span></span><br><span class="line"><span class="comment"># v16.1.0</span></span><br><span class="line"><span class="comment"># v16.2.0</span></span><br><span class="line"><span class="comment"># v16.3.0</span></span><br><span class="line"><span class="comment"># v16.4.0</span></span><br><span class="line"><span class="comment"># v16.4.1</span></span><br><span class="line"><span class="comment"># v16.4.2</span></span><br><span class="line"><span class="comment"># v16.5.0</span></span><br><span class="line"><span class="comment"># v16.6.0</span></span><br><span class="line"><span class="comment"># v16.6.1</span></span><br><span class="line"><span class="comment"># v16.6.2</span></span><br><span class="line"><span class="comment"># v16.7.0</span></span><br><span class="line"><span class="comment"># v16.8.0</span></span><br><span class="line"><span class="comment"># v16.9.0</span></span><br><span class="line"><span class="comment"># v16.9.1</span></span><br><span class="line"><span class="comment"># v16.10.0</span></span><br></pre></td></tr></table></figure>
+
+<p>我们还可以使用 <code>--lts</code> 参数筛选出稳定版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">nvm ls-remote --lts</span><br><span class="line"></span><br><span class="line"><span class="comment"># v14.15.2   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.15.3   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.15.4   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.15.5   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.16.0   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.16.1   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.17.0   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.17.1   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.17.2   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.17.3   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.17.4   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.17.5   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.17.6   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.18.0   (Latest LTS: Fermium</span></span><br></pre></td></tr></table></figure>
+
+<p>NodeJS 安装完成后，我们需要通过 <code>nvm alias default stable</code> 命令将此版本设置为默认的版本</p>
+<h2 id="NVM-命令"><a href="#NVM-命令" class="headerlink" title="NVM 命令"></a>NVM 命令</h2><h3 id="help"><a href="#help" class="headerlink" title="help"></a>help</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nvm --<span class="built_in">help</span>     <span class="comment">#显示命令行帮助信息</span></span><br><span class="line">nvm --version  <span class="comment">#打印输出已安装的 NVM 版本号</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="which"><a href="#which" class="headerlink" title="which"></a>which</h3><p>通过该命令可以查看 NodeJS 的安装位置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">which</span> node</span><br><span class="line"><span class="comment"># /Users/xx/.nvm/versions/node/v15.12.0/bin/node</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="nvm-current"><a href="#nvm-current" class="headerlink" title="nvm current"></a>nvm current</h3><p>查看当前使用的 NodeJS 版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nvm current</span><br><span class="line"><span class="comment"># v15.12.0</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="nvm-ls"><a href="#nvm-ls" class="headerlink" title="nvm ls"></a>nvm ls</h3><p>查看当前安装的 NodeJS 都有哪些</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">nvm ls</span><br><span class="line"></span><br><span class="line"><span class="comment">#       v15.12.0</span></span><br><span class="line"><span class="comment"># default -&gt; stable (-&gt; v15.12.0)</span></span><br><span class="line"><span class="comment"># node -&gt; stable (-&gt; v15.12.0) (default)</span></span><br><span class="line"><span class="comment"># stable -&gt; 15.12 (-&gt; v15.12.0) (default)</span></span><br><span class="line"><span class="comment"># iojs -&gt; N/A (default)</span></span><br><span class="line"><span class="comment"># unstable -&gt; N/A (default)</span></span><br><span class="line"><span class="comment"># lts/* -&gt; lts/fermium (-&gt; N/A)</span></span><br><span class="line"><span class="comment"># lts/argon -&gt; v4.9.1 (-&gt; N/A)</span></span><br><span class="line"><span class="comment"># lts/boron -&gt; v6.17.1 (-&gt; N/A)</span></span><br><span class="line"><span class="comment"># lts/carbon -&gt; v8.17.0 (-&gt; N/A)</span></span><br><span class="line"><span class="comment"># lts/dubnium -&gt; v10.24.1 (-&gt; N/A)</span></span><br><span class="line"><span class="comment"># lts/erbium -&gt; v12.22.6 (-&gt; N/A)</span></span><br><span class="line"><span class="comment"># lts/fermium -&gt; v14.18.0 (-&gt; N/A</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="nvm-use"><a href="#nvm-use" class="headerlink" title="nvm use"></a>nvm use</h3><p>切换 NodeJS 版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nvm use v12.19.1</span><br><span class="line">nvm use v12.19.1 ./index.js</span><br></pre></td></tr></table></figure>
+
+<h3 id="nvm-install"><a href="#nvm-install" class="headerlink" title="nvm install"></a>nvm install</h3><p>安装 NodeJS 指定版本及其重新安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nvm install v12.19.1</span><br><span class="line">nvm reinstall-packages     <span class="comment">#重新安装当前的版本</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="nvm-uninstall"><a href="#nvm-uninstall" class="headerlink" title="nvm uninstall"></a>nvm uninstall</h3><p>卸载 NodeJS</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvm uninstall v12.19.1</span><br></pre></td></tr></table></figure>
+
+<p>注意：如果本地安装的 NodeJS 只有一个版本且使用过 <code>nvm alias default stable</code> 命令指定过，那么是卸载不了的，需要先解除当前版本的绑定</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nvm deactivate</span><br><span class="line">nvm uninstall v12.19.1</span><br></pre></td></tr></table></figure>
+
+<h3 id="nvm-alias"><a href="#nvm-alias" class="headerlink" title="nvm alias"></a>nvm alias</h3><p>我们可以使用 命令给不同版本的 NodeJS 定义别名，方便日后的使用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nvm <span class="built_in">alias</span> &lt;name&gt; &lt;version&gt;</span><br><span class="line">nvm <span class="built_in">unalias</span> &lt;name&gt;         <span class="comment">#删除已定义的别名</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="nvm-cache"><a href="#nvm-cache" class="headerlink" title="nvm cache"></a>nvm cache</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nvm cache dir              <span class="comment">#显示 NVM 的缓存目录</span></span><br><span class="line">nvm cache clear            <span class="comment">#清除 NVM 的缓存目录</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="拓展阅读"><a href="#拓展阅读" class="headerlink" title="拓展阅读"></a>拓展阅读</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/nvm-sh/nvm">NVM</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>qinlzhu
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://qlzhu.github.io/blog/20614/" title="NVM">https://qlzhu.github.io/blog/20614/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blog/tags/node/" rel="tag"># node</a>
+              <a href="/blog/tags/nvm/" rel="tag"># nvm</a>
+              <a href="/blog/tags/n/" rel="tag"># n</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/31307/" rel="prev" title="GIT 合并分支并提交">
+      <i class="fa fa-chevron-left"></i> GIT 合并分支并提交
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-NVM"><span class="nav-number">1.</span> <span class="nav-text">安装 NVM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-NodeJS"><span class="nav-number">2.</span> <span class="nav-text">安装 NodeJS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NVM-%E5%91%BD%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">NVM 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#help"><span class="nav-number">3.1.</span> <span class="nav-text">help</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#which"><span class="nav-number">3.2.</span> <span class="nav-text">which</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nvm-current"><span class="nav-number">3.3.</span> <span class="nav-text">nvm current</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nvm-ls"><span class="nav-number">3.4.</span> <span class="nav-text">nvm ls</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nvm-use"><span class="nav-number">3.5.</span> <span class="nav-text">nvm use</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nvm-install"><span class="nav-number">3.6.</span> <span class="nav-text">nvm install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nvm-uninstall"><span class="nav-number">3.7.</span> <span class="nav-text">nvm uninstall</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nvm-alias"><span class="nav-number">3.8.</span> <span class="nav-text">nvm alias</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nvm-cache"><span class="nav-number">3.9.</span> <span class="nav-text">nvm cache</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%93%E5%B1%95%E9%98%85%E8%AF%BB"><span class="nav-number">4.</span> <span class="nav-text">拓展阅读</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qinlzhu"
+      src="/blog/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qinlzhu</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/blog/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/blog/tags/">
+          
+        <span class="site-state-item-count">64</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/qLzhu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;qLzhu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:qinlzhu@outlook.com" title="E-Mail → mailto:qinlzhu@outlook.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qinlzhu</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">81k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:16</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/blog/js/utils.js"></script>
+
+<script src="/blog/js/motion.js"></script>
+
+
+<script src="/blog/js/schemes/pisces.js"></script>
+
+
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/blog/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+<div id="needsharebutton-float">
+      <span class="btn">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </span>
+    </div>
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+      flOptions = {};
+        flOptions.iconStyle = "box";
+        flOptions.boxForm = "horizontal";
+        flOptions.position = "middleRight";
+        flOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      new needShareButton('#needsharebutton-float', flOptions);
+  </script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'ad50278e20047a600e1e',
+      clientSecret: '4fda32088322cc0152567a86cd419d499d8d2c3e',
+      repo        : 'blog-comments',
+      owner       : 'qlzhu',
+      admin       : ['qlzhu'],
+      id          : '7e09f6348fb7a0d9b483d231c8b61316',
+        language: 'zh-CN',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

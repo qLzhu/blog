@@ -50,10 +50,49 @@
       </tags>
   </entry>
   <entry>
+    <title>GIT 合并分支并提交</title>
+    <url>/blog/31307/</url>
+    <content><![CDATA[<p>在 <code>git rebase -i HEAD~23</code> 合并多个 commit 后，使用 <code>git push origin HEAD:master</code> 强制提交时报</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> ! [rejected]        HEAD -&gt; master (non-fast-forward)</span><br><span class="line">error: 推送一些引用到 <span class="string">&#x27;git@github.com:qLzhu/blog.git&#x27;</span> 失败</span><br><span class="line">提示：更新被拒绝，因为推送的一个分支的最新提交落后于其对应的远程分支。</span><br><span class="line">提示：检出该分支并整合远程变更（如 <span class="string">&#x27;git pull ...&#x27;</span>），然后再推送。详见</span><br><span class="line">提示：<span class="string">&#x27;git push --help&#x27;</span> 中的 <span class="string">&#x27;Note about fast-forwards&#x27;</span> 小节。</span><br></pre></td></tr></table></figure>
+
+<p>原因是我们合并多个附注后，GIT 为我们创建了一个分支，此分支跟远程仓库并没有保持同步，所以报错</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 当前处于叉劈的 418e85d 分支上</span></span><br><span class="line"><span class="variable">$blog</span> [418e85d] git push origin HEAD:master --force</span><br></pre></td></tr></table></figure>
+
+<p>此时我们可以通过下述命令进行解决</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git checkout master</span><br><span class="line">git merge 418e85d</span><br><span class="line">git push origin HEAD:master --force</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+        <tag>git merge</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>设置 GIT 默认编辑器</title>
+    <url>/blog/5731/</url>
+    <content><![CDATA[<p>当我 <code>git commit --amend</code> 修改完附注后，发现 <code>:wq</code> 没法退出，报</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">E45: <span class="string">&#x27;readonly&#x27;</span> option is <span class="built_in">set</span> (add ! to override)</span><br></pre></td></tr></table></figure>
+
+<p>原因是没有修改 GIT 的默认编辑器</p>
+<p>执行下述命令即可解决</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global core.editor <span class="string">&quot;vim&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>CONFIG 更多命令请参考 <a href="https://www.atlassian.com/git/tutorials/setting-up-a-repository/git-config">git config</a></p>
+]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+        <tag>git config --global core.editor &quot;vim&quot;</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>GitBook</title>
     <url>/blog/19654/</url>
     <content><![CDATA[<p><a href="https://github.com/GitbookIO/gitbook">GitBook</a>是一个使用GIT、Github和Markdown语法来构建书籍的工具，并且能够将你构建出来的书籍输出为pdf、epub、mobi等格式。它可以让程序猿像编代码一样编辑自己的书籍或者笔记，并且托管服务是完全免费的跟Github一样</p>
-<h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><p>GitBook依赖Node环境，所以需要先安装Node再全局安装GitBook，Node安装请查阅<a href="/blog/21969/" title="Mac 卸载 App 残留、Node 和 NPM">Mac 卸载 App 残留、Node 和 NPM</a></p>
+<h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><p>GitBook依赖Node环境，所以需要先安装Node再全局安装GitBook，Node安装请查阅<a href="/blog/21969/" title="MacOS Mdfind Command">MacOS Mdfind Command</a></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g gitbook-cli</span><br></pre></td></tr></table></figure>
 <span id="more"></span>
 
@@ -910,9 +949,9 @@
       </tags>
   </entry>
   <entry>
-    <title>Mac 卸载 App 残留、Node 和 NPM</title>
+    <title>MacOS Mdfind Command</title>
     <url>/blog/21969/</url>
-    <content><![CDATA[<p>Mac上我们不借助第三方应用删除App的话，通常是直接移除到垃圾篓，或者按住<code>⌥option</code>删除<span class="text-gray">（App Store 下载的 App）</span>，时间长了系统会帮我们自动清理一些App残留。但是有些文件系统是不删除的，这时我们可以借助<code>mdfind</code>命令进行查询下跟App有关的文件，例如我们删除CleanMyMac</p>
+    <content><![CDATA[<p>Mac 上我们不借助第三方应用删除 App 的话，通常是直接移除到垃圾篓，或者按住 <code>⌥option</code> 删除<span class="text-gray">（App Store 下载的 App）</span>，时间长了系统会帮我们自动清理一些App残留。但是有些文件系统是不删除的，这时我们可以借助 <code>mdfind</code> 命令进行查询下跟 App 有关的文件，例如我们删除 CleanMyMac</p>
 <div class="note ">
             <p>mdfind 其实就是 Mac 的 Spotlight。如果你的 Spotlight 的工作不正确，也可以 <code>mdutil -E</code> 强制重建索引数据库</p>
           </div>
@@ -922,21 +961,8 @@
 <p>还可以使用 -onlyin 参数，指定搜索的目录。例如：<code>mdfind -onlyin ~/downloads CleanMyMac</code></p>
 <span id="more"></span>
 
-<h2 id="Uninstall-Node-PKG"><a href="#Uninstall-Node-PKG" class="headerlink" title="Uninstall Node PKG"></a>Uninstall Node PKG</h2><p>卸载从官网下载的安装，使用如下命令。如果未正常卸载的使用<code>which</code>命令查看下，安装的位置是不是自己更改了</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo rm -rf /usr/<span class="built_in">local</span>/&#123;bin/&#123;node,npm&#125;,lib/node_modules/npm,lib/node,share/man/*/node.*&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="Install-NVM"><a href="#Install-NVM" class="headerlink" title="Install NVM"></a>Install NVM</h2><p>这里再说下 <a href="https://nodejs.org/en/">Node</a> 版本管理的问题！当你开发项目时，该项目对 Node 的版本有要求，且跟你安装的版本不同（过高和者低了），这时你怎么办？卸载当前版本再安装项目所需的版本？如果多个项目每个项目要求的版本都不同那，总不能每个项目都是卸载再安装吧，那多麻烦！所以我们可以借助 <a href="https://github.com/nvm-sh/nvm">nvm</a> 管理 Node。通过 <a href="https://brew.sh/index_zh-cn">HomeBrew</a> 安装 nvm，然后再通过 nvm 安装 Node，这样一级管理一级，方便卸载和安装</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 已安装HomeBrew的请跳过</span></span><br><span class="line">/bin/bash -c <span class="string">&quot;<span class="subst">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)</span>&quot;</span></span><br><span class="line"></span><br><span class="line">brew install nvm</span><br></pre></td></tr></table></figure>
-
-<p>安装完成后还不能直接使用，因为通过 HomeBrew 安装的 nvm，<a href="https://stackoverflow.com/questions/27651892/homebrew-installs-nvm-but-nvm-cant-be-found-afterwards">缺少 nvm.sh</a> 执行脚本文件，执行时总会报 <code>command not found: nvm</code> 错误，所以需要在 <code>~/.bash_profile</code>、<code>~/.bashrc</code> 或 <code>~/.zshrc</code> 添加如下内容</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> NVM_DIR=~/.nvm</span><br><span class="line"><span class="built_in">source</span> $(brew --prefix nvm)/nvm.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># MacOS Big Sur 版本请添加</span></span><br><span class="line"><span class="built_in">export</span> NVM_DIR=<span class="string">&quot;<span class="subst">$([ -z <span class="string">&quot;<span class="variable">$&#123;XDG_CONFIG_HOME-&#125;</span>&quot;</span> ] &amp;&amp; printf %s <span class="string">&quot;<span class="variable">$&#123;HOME&#125;</span>/.nvm&quot;</span> || printf %s <span class="string">&quot;<span class="variable">$&#123;XDG_CONFIG_HOME&#125;</span>/nvm&quot;</span>)</span>&quot;</span></span><br><span class="line">[ -s <span class="string">&quot;<span class="variable">$NVM_DIR</span>/nvm.sh&quot;</span> ] &amp;&amp; \. <span class="string">&quot;<span class="variable">$NVM_DIR</span>/nvm.sh&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>配置完成后，<code>source</code>命令重启下相应的配置文件</p>
-<h2 id="Install-Node"><a href="#Install-Node" class="headerlink" title="Install Node"></a>Install Node</h2><p>上述步骤都设置好后，我们就可以使用nvm安装Node了</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nvm install stable       <span class="comment">#安装最新的稳定版本</span></span><br><span class="line">nvm <span class="built_in">alias</span> default stable <span class="comment">#将此版本设置为默认版本</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="nvm-basic-commands"><a href="#nvm-basic-commands" class="headerlink" title="nvm basic commands"></a>nvm basic commands</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nvm --<span class="built_in">help</span>                  显示命令行帮助信息</span><br><span class="line">nvm --version               打印输出已安装的nvm版本号</span><br><span class="line"></span><br><span class="line">nvm ls-remote               列出远程仓库内所有可安装的版本</span><br><span class="line">nvm install &lt;version&gt;       安装指定的版本</span><br><span class="line">nvm reinstall-packages      重新安装当前版本的Node</span><br><span class="line">nvm ls                      列出所有安装的Node版本</span><br><span class="line">nvm uninstall &lt;version&gt;     卸载指定的版本</span><br><span class="line"></span><br><span class="line">nvm current                 显示当前的Node版本</span><br><span class="line">nvm use &lt;version&gt;           切换指定版本</span><br><span class="line"></span><br><span class="line">nvm <span class="built_in">alias</span> &lt;name&gt; &lt;version&gt;  给不同的版本号添加别名</span><br><span class="line">nvm <span class="built_in">unalias</span> &lt;name&gt;          删除已定义的别名</span><br><span class="line">nvm <span class="built_in">alias</span> default &lt;version&gt; 设置默认 node 版本</span><br><span class="line"><span class="comment"># nvm 默认是不能删除被设定为 default 版本的 node</span></span><br><span class="line"><span class="comment"># 特别是只安装了一个 node 的时候，这个时候我们需要先解除当前版本绑定，然后再使用 nvm uninstall 删除</span></span><br><span class="line">nvm deactivate              解除当前版本绑定</span><br><span class="line"></span><br><span class="line">nvm cache dir               显示nvm的缓存目录</span><br><span class="line">nvm cache clear             清楚nvm的缓存目录</span><br><span class="line"></span><br><span class="line"><span class="comment"># 阅读拓展</span></span><br><span class="line"><span class="comment"># https://github.com/nvm-sh/nvm</span></span><br><span class="line"><span class="comment"># http://www.srcmini.com/1433.html</span></span><br></pre></td></tr></table></figure>
-]]></content>
+<p>卸载 NodeJS 从官网下载的安装<br>如果未正常卸载的使用 <code>which</code> 命令查看下，安装的位置是不是自己更改过</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo rm -rf /usr/<span class="built_in">local</span>/&#123;bin/&#123;node,npm&#125;,lib/node_modules/npm,lib/node,share/man/*/node.*&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>mac</category>
       </categories>
@@ -1209,6 +1235,86 @@
       </categories>
       <tags>
         <tag>npm</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>NVM</title>
+    <url>/blog/20614/</url>
+    <content><![CDATA[<p>目前大多数情况下，我们会使用 <a href="https://github.com/nvm-sh/nvm">NVM</a> 或者 N 管理工具，管理 <a href="https://nodejs.org/en/download/">NodeJS</a> 版本！</p>
+<p>实例场景：</p>
+<div class="note ">
+            <p>我们正在开发5个项目，每个项目的需求都不相同，不同项目依赖不同的 NodeJS 版本，如果没有合适的管理器，那么这个问题是很棘手的，在本地安装 5 个版本的 Node 那也是不现实的</p>
+          </div>
+<span id="more"></span>
+
+<h2 id="安装-NVM"><a href="#安装-NVM" class="headerlink" title="安装 NVM"></a>安装 NVM</h2><p>MacOS 下通常使用 <a href="https://brew.sh/index_zh-cn">Homebrew</a> 进行安装，使用 <a href="https://brew.sh/index_zh-cn">Homebrew</a> 安装主要是为了方便日后的管理</p>
+<ol>
+<li>安装 Homebrew</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/bin/bash -c <span class="string">&quot;<span class="subst">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)</span>&quot;</span></span><br><span class="line"></span><br><span class="line">brew install nvm</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>通过 Homebrew 安装的 NVM 通常会缺失 nvm.sh 执行脚本文件，所以我们需要在当前系统下的环境配置文件内追加下述语句</li>
+</ol>
+<figure class="highlight bash"><figcaption><span>~/.bash_profile</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> NVM_DIR=<span class="string">&quot;<span class="subst">$([ -z <span class="string">&quot;<span class="variable">$&#123;XDG_CONFIG_HOME-&#125;</span>&quot;</span> ] &amp;&amp; printf %s <span class="string">&quot;<span class="variable">$&#123;HOME&#125;</span>/.nvm&quot;</span> || printf %s <span class="string">&quot;<span class="variable">$&#123;XDG_CONFIG_HOME&#125;</span>/nvm&quot;</span>)</span>&quot;</span></span><br><span class="line">[ -s <span class="string">&quot;<span class="variable">$NVM_DIR</span>/nvm.sh&quot;</span> ] &amp;&amp; \. <span class="string">&quot;<span class="variable">$NVM_DIR</span>/nvm.sh&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>重启环境配置文件</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bash_profile</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装-NodeJS"><a href="#安装-NodeJS" class="headerlink" title="安装 NodeJS"></a>安装 NodeJS</h2><p><code>stable</code> 命令可以使 NVM 安装当前最新的 LTS 版本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nvm install stable</span><br></pre></td></tr></table></figure>
+
+<p>也可以安装指定的版本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nvm install v12.19.1</span><br></pre></td></tr></table></figure>
+
+<p>如果你不知道 NodeJS 有哪些版本，我们可以使用 <code>ls-remote</code> 命令进行查看</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nvm ls-remote</span><br><span class="line"></span><br><span class="line"><span class="comment"># v15.13.0</span></span><br><span class="line"><span class="comment"># v15.14.0</span></span><br><span class="line"><span class="comment"># v16.0.0</span></span><br><span class="line"><span class="comment"># v16.1.0</span></span><br><span class="line"><span class="comment"># v16.2.0</span></span><br><span class="line"><span class="comment"># v16.3.0</span></span><br><span class="line"><span class="comment"># v16.4.0</span></span><br><span class="line"><span class="comment"># v16.4.1</span></span><br><span class="line"><span class="comment"># v16.4.2</span></span><br><span class="line"><span class="comment"># v16.5.0</span></span><br><span class="line"><span class="comment"># v16.6.0</span></span><br><span class="line"><span class="comment"># v16.6.1</span></span><br><span class="line"><span class="comment"># v16.6.2</span></span><br><span class="line"><span class="comment"># v16.7.0</span></span><br><span class="line"><span class="comment"># v16.8.0</span></span><br><span class="line"><span class="comment"># v16.9.0</span></span><br><span class="line"><span class="comment"># v16.9.1</span></span><br><span class="line"><span class="comment"># v16.10.0</span></span><br></pre></td></tr></table></figure>
+
+<p>我们还可以使用 <code>--lts</code> 参数筛选出稳定版本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nvm ls-remote --lts</span><br><span class="line"></span><br><span class="line"><span class="comment"># v14.15.2   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.15.3   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.15.4   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.15.5   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.16.0   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.16.1   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.17.0   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.17.1   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.17.2   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.17.3   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.17.4   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.17.5   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.17.6   (LTS: Fermium)</span></span><br><span class="line"><span class="comment"># v14.18.0   (Latest LTS: Fermium</span></span><br></pre></td></tr></table></figure>
+
+<p>NodeJS 安装完成后，我们需要通过 <code>nvm alias default stable</code> 命令将此版本设置为默认的版本</p>
+<h2 id="NVM-命令"><a href="#NVM-命令" class="headerlink" title="NVM 命令"></a>NVM 命令</h2><h3 id="help"><a href="#help" class="headerlink" title="help"></a>help</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nvm --<span class="built_in">help</span>     <span class="comment">#显示命令行帮助信息</span></span><br><span class="line">nvm --version  <span class="comment">#打印输出已安装的 NVM 版本号</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="which"><a href="#which" class="headerlink" title="which"></a>which</h3><p>通过该命令可以查看 NodeJS 的安装位置</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">which</span> node</span><br><span class="line"><span class="comment"># /Users/xx/.nvm/versions/node/v15.12.0/bin/node</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="nvm-current"><a href="#nvm-current" class="headerlink" title="nvm current"></a>nvm current</h3><p>查看当前使用的 NodeJS 版本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nvm current</span><br><span class="line"><span class="comment"># v15.12.0</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="nvm-ls"><a href="#nvm-ls" class="headerlink" title="nvm ls"></a>nvm ls</h3><p>查看当前安装的 NodeJS 都有哪些</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nvm ls</span><br><span class="line"></span><br><span class="line"><span class="comment">#       v15.12.0</span></span><br><span class="line"><span class="comment"># default -&gt; stable (-&gt; v15.12.0)</span></span><br><span class="line"><span class="comment"># node -&gt; stable (-&gt; v15.12.0) (default)</span></span><br><span class="line"><span class="comment"># stable -&gt; 15.12 (-&gt; v15.12.0) (default)</span></span><br><span class="line"><span class="comment"># iojs -&gt; N/A (default)</span></span><br><span class="line"><span class="comment"># unstable -&gt; N/A (default)</span></span><br><span class="line"><span class="comment"># lts/* -&gt; lts/fermium (-&gt; N/A)</span></span><br><span class="line"><span class="comment"># lts/argon -&gt; v4.9.1 (-&gt; N/A)</span></span><br><span class="line"><span class="comment"># lts/boron -&gt; v6.17.1 (-&gt; N/A)</span></span><br><span class="line"><span class="comment"># lts/carbon -&gt; v8.17.0 (-&gt; N/A)</span></span><br><span class="line"><span class="comment"># lts/dubnium -&gt; v10.24.1 (-&gt; N/A)</span></span><br><span class="line"><span class="comment"># lts/erbium -&gt; v12.22.6 (-&gt; N/A)</span></span><br><span class="line"><span class="comment"># lts/fermium -&gt; v14.18.0 (-&gt; N/A</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="nvm-use"><a href="#nvm-use" class="headerlink" title="nvm use"></a>nvm use</h3><p>切换 NodeJS 版本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nvm use v12.19.1</span><br><span class="line">nvm use v12.19.1 ./index.js</span><br></pre></td></tr></table></figure>
+
+<h3 id="nvm-install"><a href="#nvm-install" class="headerlink" title="nvm install"></a>nvm install</h3><p>安装 NodeJS 指定版本及其重新安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nvm install v12.19.1</span><br><span class="line">nvm reinstall-packages     <span class="comment">#重新安装当前的版本</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="nvm-uninstall"><a href="#nvm-uninstall" class="headerlink" title="nvm uninstall"></a>nvm uninstall</h3><p>卸载 NodeJS</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nvm uninstall v12.19.1</span><br></pre></td></tr></table></figure>
+
+<p>注意：如果本地安装的 NodeJS 只有一个版本且使用过 <code>nvm alias default stable</code> 命令指定过，那么是卸载不了的，需要先解除当前版本的绑定</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nvm deactivate</span><br><span class="line">nvm uninstall v12.19.1</span><br></pre></td></tr></table></figure>
+
+<h3 id="nvm-alias"><a href="#nvm-alias" class="headerlink" title="nvm alias"></a>nvm alias</h3><p>我们可以使用 命令给不同版本的 NodeJS 定义别名，方便日后的使用</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nvm <span class="built_in">alias</span> &lt;name&gt; &lt;version&gt;</span><br><span class="line">nvm <span class="built_in">unalias</span> &lt;name&gt;         <span class="comment">#删除已定义的别名</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="nvm-cache"><a href="#nvm-cache" class="headerlink" title="nvm cache"></a>nvm cache</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">nvm cache dir              <span class="comment">#显示 NVM 的缓存目录</span></span><br><span class="line">nvm cache clear            <span class="comment">#清除 NVM 的缓存目录</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="拓展阅读"><a href="#拓展阅读" class="headerlink" title="拓展阅读"></a>拓展阅读</h2><ul>
+<li><a href="https://github.com/nvm-sh/nvm">NVM</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>nvm</category>
+      </categories>
+      <tags>
+        <tag>node</tag>
+        <tag>nvm</tag>
+        <tag>n</tag>
       </tags>
   </entry>
   <entry>
