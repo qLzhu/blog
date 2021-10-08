@@ -50,22 +50,38 @@
       </tags>
   </entry>
   <entry>
-    <title>GIT 合并分支并提交</title>
+    <title>Git Rebase Branch</title>
     <url>/blog/31307/</url>
-    <content><![CDATA[<p>在 <code>git rebase -i HEAD~23</code> 合并多个 commit 后，使用 <code>git push origin HEAD:master</code> 强制提交时报</p>
+    <content><![CDATA[<p>在测试 CI 自动化部署时，我们提交了很多测试附注，为了保持线上 LOG 的清洁，我们需要把这些信息合并成一个 COMMIT 进行提交，首先通过 LOG 命令查看我们都需要合并哪些 COMMIT 附注。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">log</span> --oneline</span><br></pre></td></tr></table></figure>
+
+<p>通过查看 LOG 得知我需要合并 23 条 COMMIT</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git rebase -i HEAD~23</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<p>执行后，GIT 会自动使用默认的编辑器帮我们打开此附注，让我们重新编辑，把需要合并的 COMMIT 信息前的 pick 改成 s，:wq! 保存退出即可</p>
+<p>附注”<br>如果在终端模式下使用 :wq! 无法退出编辑模式的话<br>那是你没有设置 GIT 默认编辑器的原因<br>请查阅我之前写的 <a href="/blog/5731/" title="《设置 GIT 默认编辑器》">《设置 GIT 默认编辑器》</a> 一文</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pick 2231360 some old commit</span><br><span class="line">s ee2adc2 Adds new feature</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Rebase 2cf755d..ee2adc2 onto 2cf755d (9 commands)</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Commands:</span></span><br><span class="line"><span class="comment"># p, pick = use commit</span></span><br><span class="line"><span class="comment"># r, reword = use commit, but edit the commit message</span></span><br><span class="line"><span class="comment"># e, edit = use commit, but stop for amending</span></span><br><span class="line"><span class="comment"># s, squash = use commit, but meld into previous commit</span></span><br><span class="line"><span class="comment"># f, fixup = like &quot;squash&quot;, but discard this commit&#x27;s log message</span></span><br><span class="line"><span class="comment"># x, exec = run command (the rest of the line) using shell</span></span><br><span class="line"><span class="comment"># d, drop = remove commit</span></span><br></pre></td></tr></table></figure>
+
+<p>然后执行 <code>git push</code> 命令提交到远程仓库。可是，到这里我出错了，终端给出的提示是</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"> ! [rejected]        HEAD -&gt; master (non-fast-forward)</span><br><span class="line">error: 推送一些引用到 <span class="string">&#x27;git@github.com:qLzhu/blog.git&#x27;</span> 失败</span><br><span class="line">提示：更新被拒绝，因为推送的一个分支的最新提交落后于其对应的远程分支。</span><br><span class="line">提示：检出该分支并整合远程变更（如 <span class="string">&#x27;git pull ...&#x27;</span>），然后再推送。详见</span><br><span class="line">提示：<span class="string">&#x27;git push --help&#x27;</span> 中的 <span class="string">&#x27;Note about fast-forwards&#x27;</span> 小节。</span><br></pre></td></tr></table></figure>
 
-<p>原因是我们合并多个附注后，GIT 为我们创建了一个分支，此分支跟远程仓库并没有保持同步，所以报错</p>
+<p>原因是：</p>
+<p>我们合并多个附注后，GIT 为我们自动创建了一个 418e85d 分支，此分支跟远程仓库并没有保持同步，所以报错</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 当前处于叉劈的 418e85d 分支上</span></span><br><span class="line"><span class="variable">$blog</span> [418e85d] git push origin HEAD:master --force</span><br></pre></td></tr></table></figure>
 
-<p>此时我们可以通过下述命令进行解决</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git checkout master</span><br><span class="line">git merge 418e85d</span><br><span class="line">git push origin HEAD:master --force</span><br></pre></td></tr></table></figure>]]></content>
+<p>这时我们就需要使用 Merge 命令，把劈叉的 418e85d 分支合并到 master 上了</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git checkout master</span><br><span class="line">git merge 418e85d</span><br><span class="line">git push origin HEAD:master --force</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase">https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase</a></p>
+]]></content>
       <categories>
         <category>git</category>
       </categories>
       <tags>
         <tag>git</tag>
         <tag>git merge</tag>
+        <tag>git rebase</tag>
       </tags>
   </entry>
   <entry>
@@ -320,7 +336,7 @@
       </tags>
   </entry>
   <entry>
-    <title>git子模块添加hexo-theme-next</title>
+    <title>Git Submodule</title>
     <url>/blog/46430/</url>
     <content><![CDATA[<p>博客重构执行 <code>git add</code> 时报如下错误</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git add .</span><br><span class="line"></span><br><span class="line">warning: adding embedded git repository: themes/next</span><br><span class="line">hint: You&#x27;ve added another git repository inside your current repository.</span><br><span class="line">hint: Clones of the outer repository will not contain the contents of</span><br><span class="line">hint: the embedded repository and will not know how to obtain it.</span><br><span class="line">hint: If you meant to add a submodule, use:</span><br><span class="line">hint:</span><br><span class="line">hint:   git submodule add &lt;url&gt; themes/next</span><br><span class="line">hint:</span><br><span class="line">hint: If you added this path by mistake, you can remove it from the</span><br><span class="line">hint: index with:</span><br><span class="line">hint:</span><br><span class="line">hint:   git rm --cached themes/next</span><br><span class="line">hint:</span><br><span class="line">hint: See &quot;git help submodule&quot; for more information.</span><br></pre></td></tr></table></figure>
@@ -344,7 +360,10 @@
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git add .</span><br><span class="line">git reset -- themes/</span><br></pre></td></tr></table></figure>
 
 <p>注意：以后更新 hexo-theme-next 子模块的话，需要使用 <code>git submodule update</code> 命令。以下列几个常用的命令，更多请查阅 GIT-SCM 官网 <a href="https://git-scm.com/docs/git-submodule">https://git-scm.com/docs/git-submodule</a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git submodule                                             <span class="comment">#查看子模块</span></span><br><span class="line">git submodule add [<span class="string">&quot;remote repo&quot;</span>]                         <span class="comment">#添加子模块</span></span><br><span class="line">git submodule add [<span class="string">&quot;remote repo&quot;</span>] [<span class="string">&quot;path\submodule name&quot;</span>]</span><br><span class="line">git submodule init                                        <span class="comment">#初始化本地配置文件</span></span><br><span class="line">git submodule update --remote                             <span class="comment">#更新子模块为远程项目的最新版本</span></span><br><span class="line">git submodule update [<span class="string">&quot;path\submodule name&quot;</span>]</span><br><span class="line">git <span class="built_in">clone</span> --recursive [<span class="string">&quot;remote repo&quot;</span>]                     <span class="comment">#克隆包含子模块的仓库</span></span><br><span class="line">git rm [<span class="string">&quot;path\submodule name&quot;</span>]                            <span class="comment">#删除子模块</span></span><br><span class="line">git submodule foreach [<span class="string">&quot;command&quot;</span>]                         <span class="comment">#遍历子模块执行同样的命令</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git submodule                                             <span class="comment">#查看子模块</span></span><br><span class="line">git submodule add [<span class="string">&quot;remote repo&quot;</span>]                         <span class="comment">#添加子模块</span></span><br><span class="line">git submodule add [<span class="string">&quot;remote repo&quot;</span>] [<span class="string">&quot;path\submodule name&quot;</span>]</span><br><span class="line">git submodule init                                        <span class="comment">#初始化本地配置文件</span></span><br><span class="line">git submodule update --remote                             <span class="comment">#更新子模块为远程项目的最新版本</span></span><br><span class="line">git submodule update [<span class="string">&quot;path\submodule name&quot;</span>]              <span class="comment">#更新子模块的指定路径</span></span><br><span class="line">git <span class="built_in">clone</span> --recursive [<span class="string">&quot;remote repo&quot;</span>]                     <span class="comment">#克隆包含子模块的仓库</span></span><br><span class="line">git rm [<span class="string">&quot;path\submodule name&quot;</span>]                            <span class="comment">#删除子模块</span></span><br><span class="line">git submodule foreach [<span class="string">&quot;command&quot;</span>]                         <span class="comment">#遍历子模块执行同样的命令</span></span><br></pre></td></tr></table></figure>
+
+<p>如果本地已存在 .gitsubmodule 文件，请执行下述命令将子模块下载下来</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git submodule update --init --recursive</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>git</category>
@@ -1006,6 +1025,19 @@
       </tags>
   </entry>
   <entry>
+    <title>NPM Cannot Find Module</title>
+    <url>/blog/21517/</url>
+    <content><![CDATA[<p>执行 <code>npm install</code> 时终端提示 Cannot find module ‘../lib/utils/unsupported.js’ 错误，解决方案就是删除 /usr/local/lib/node_modules/npm 目录！</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo rm -rf /usr/<span class="built_in">local</span>/lib/node_modules/npm</span><br><span class="line"></span><br><span class="line">brew reinstall node</span><br><span class="line">nvm reinstall-packages <span class="comment">#使用nvm管理Node的使用此命令</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>npm</category>
+      </categories>
+      <tags>
+        <tag>npm</tag>
+        <tag>Cannot find module</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Mac 配置 VSCode Remote-SSH</title>
     <url>/blog/15892/</url>
     <content><![CDATA[<p>微软2019年05月03日，在PyCon 2019大会上推出了三个非常实用的功能性插件。它们可以帮助开发者在容器、物理机器或虚拟机，以及Windows Subsystem for Linux (WSL)中实现无缝的远程开发</p>
@@ -1063,19 +1095,6 @@
       <tags>
         <tag>VSCode</tag>
         <tag>remote-ssh</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>NPM Cannot Find Module</title>
-    <url>/blog/21517/</url>
-    <content><![CDATA[<p>执行 <code>npm install</code> 时终端提示 Cannot find module ‘../lib/utils/unsupported.js’ 错误，解决方案就是删除 /usr/local/lib/node_modules/npm 目录！</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo rm -rf /usr/<span class="built_in">local</span>/lib/node_modules/npm</span><br><span class="line"></span><br><span class="line">brew reinstall node</span><br><span class="line">nvm reinstall-packages <span class="comment">#使用nvm管理Node的使用此命令</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>npm</category>
-      </categories>
-      <tags>
-        <tag>npm</tag>
-        <tag>Cannot find module</tag>
       </tags>
   </entry>
   <entry>
@@ -1240,7 +1259,8 @@
   <entry>
     <title>NVM</title>
     <url>/blog/20614/</url>
-    <content><![CDATA[<p>目前大多数情况下，我们会使用 <a href="https://github.com/nvm-sh/nvm">NVM</a> 或者 N 管理工具，管理 <a href="https://nodejs.org/en/download/">NodeJS</a> 版本！</p>
+    <content><![CDATA[<p>目前大多数情况下，我们会使用 <a href="https://github.com/nvm-sh/nvm">NVM</a> 或者 N 管理工具，管理 <a href="https://nodejs.org/en/download/">NodeJS</a> 版本！<br>注意区分 NVM 和 NPM 的区别，NVM 是管理 NodeJS 管理器，NPM 是管理 NodeJS Modules 的管理器</p>
+<p>即：<br>NPM -&gt; NodeJS -&gt; NPM</p>
 <p>实例场景：</p>
 <div class="note ">
             <p>我们正在开发5个项目，每个项目的需求都不相同，不同项目依赖不同的 NodeJS 版本，如果没有合适的管理器，那么这个问题是很棘手的，在本地安装 5 个版本的 Node 那也是不现实的</p>
