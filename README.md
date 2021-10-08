@@ -1,7 +1,7 @@
 
 NoiiApple
 ---
-记录下技能知识及其工作或日常遇到的问题，喜欢的可以 star！blog 使用 hexo 静态生成器搭建并采用的NexT主题，Travis CI 自动化部署到 Github Pages
+记录下技能知识及其工作或日常遇到的问题，喜欢的可以 star！blog 使用 hexo 静态生成器搭建并采用的 NexT 主题，Git Action 自动化部署到 Github Pages
 
 [![deploying Hexo project to GitHub pages](https://github.com/qLzhu/blog/actions/workflows/hexo-deploy.yml/badge.svg)](https://github.com/qLzhu/blog/actions/workflows/hexo-deploy.yml)
 [![](https://img.shields.io/badge/node->=13.12.0-brightgreen?style=flat&logo=node.js)](https://nodejs.org/en/)
@@ -11,11 +11,12 @@ NoiiApple
 ### 目录
 
 #### Git
-- [GIT 基础知识](https://qlzhu.github.io/blog/39939/)
-- [GIT 子模块添加 hexo-theme-next](https://qlzhu.github.io/blog/46430/)
+- [GIT](https://qlzhu.github.io/blog/39939/)
+- [Git Submodule](https://qlzhu.github.io/blog/46430/)
 - [SSH Permission denied](https://qlzhu.github.io/blog/53774/)
 - [Commit 未设置 Author 和 Email](https://qlzhu.github.io/blog/58535/)
 - [设置 GIT 默认编辑器](https://qlzhu.github.io/blog/5731/)
+- [Git Rebase Branch](https://qlzhu.github.io/blog/31307/)
 
 #### Github
 - [API获取Github ID](https://qlzhu.github.io/blog/8621/)

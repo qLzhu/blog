@@ -53,6 +53,19 @@ back2top:
   sidebar: false      #在三条杠的侧边栏内显示回到顶部
   scrollpercent: true #是否显示百分比
 
+reading_progress:
+  enable: true
+  start_at: left
+  position: top
+  reversed: false
+  color: "#37c6c0"
+  height: 2px
+
+bookmark:
+  enable: true
+  color: "#222"
+  save: auto
+
 # -----------------------------------------------------
 # 右侧概览模块
 # -----------------------------------------------------

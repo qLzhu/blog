@@ -1,5 +1,5 @@
 ---
-title: git子模块添加hexo-theme-next
+title: Git Submodule
 categories: git
 tags:
   - NexT
@@ -68,8 +68,14 @@ git submodule add ["remote repo"]                         #添加子模块
 git submodule add ["remote repo"] ["path\submodule name"]
 git submodule init                                        #初始化本地配置文件
 git submodule update --remote                             #更新子模块为远程项目的最新版本
-git submodule update ["path\submodule name"]
+git submodule update ["path\submodule name"]              #更新子模块的指定路径
 git clone --recursive ["remote repo"]                     #克隆包含子模块的仓库
 git rm ["path\submodule name"]                            #删除子模块
 git submodule foreach ["command"]                         #遍历子模块执行同样的命令
+```
+
+如果本地已存在 .gitsubmodule 文件，请执行下述命令将子模块下载下来
+
+```bash
+git submodule update --init --recursive
 ```
