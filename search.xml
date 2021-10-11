@@ -914,22 +914,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Line too long in config file</title>
-    <url>/blog/29248/</url>
-    <content><![CDATA[<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Line too long <span class="keyword">in</span> config file</span><br><span class="line">unable to make sense of the file /private/etc/man.conf</span><br></pre></td></tr></table></figure>
-
-<p>打开终端报上述信息！解决该问题只需在 /etc/man.conf 文件末尾加一行空白即可</p>
-]]></content>
-      <categories>
-        <category>mac</category>
-      </categories>
-      <tags>
-        <tag>man</tag>
-        <tag>Line too long in config file</tag>
-        <tag>unable to make sense of the file /private/etc/man.conf</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Mac启动WEB服务的方法</title>
     <url>/blog/3450/</url>
     <content><![CDATA[<p>MAC默认集成了Python2<span class="text-gray">（使用python3需要升级）</span>和PHP的开发环境，所以启动WEB服务时无需单独安装。命令方式进到要开启服务的目录，再使用对应的命令开启。访问时在浏览器地址栏中输入 <a href="https://localhost:8000">https://localhost:8000</a> ，共享给同事时localhost改成你的IP即可</p>
@@ -948,6 +932,22 @@
       <tags>
         <tag>mac</tag>
         <tag>web server</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Line too long in config file</title>
+    <url>/blog/29248/</url>
+    <content><![CDATA[<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Line too long <span class="keyword">in</span> config file</span><br><span class="line">unable to make sense of the file /private/etc/man.conf</span><br></pre></td></tr></table></figure>
+
+<p>打开终端报上述信息！解决该问题只需在 /etc/man.conf 文件末尾加一行空白即可</p>
+]]></content>
+      <categories>
+        <category>mac</category>
+      </categories>
+      <tags>
+        <tag>man</tag>
+        <tag>Line too long in config file</tag>
+        <tag>unable to make sense of the file /private/etc/man.conf</tag>
       </tags>
   </entry>
   <entry>
@@ -1025,19 +1025,6 @@
       </tags>
   </entry>
   <entry>
-    <title>NPM Cannot Find Module</title>
-    <url>/blog/21517/</url>
-    <content><![CDATA[<p>执行 <code>npm install</code> 时终端提示 Cannot find module ‘../lib/utils/unsupported.js’ 错误，解决方案就是删除 /usr/local/lib/node_modules/npm 目录！</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo rm -rf /usr/<span class="built_in">local</span>/lib/node_modules/npm</span><br><span class="line"></span><br><span class="line">brew reinstall node</span><br><span class="line">nvm reinstall-packages <span class="comment">#使用nvm管理Node的使用此命令</span></span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>npm</category>
-      </categories>
-      <tags>
-        <tag>npm</tag>
-        <tag>Cannot find module</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Mac 配置 VSCode Remote-SSH</title>
     <url>/blog/15892/</url>
     <content><![CDATA[<p>微软2019年05月03日，在PyCon 2019大会上推出了三个非常实用的功能性插件。它们可以帮助开发者在容器、物理机器或虚拟机，以及Windows Subsystem for Linux (WSL)中实现无缝的远程开发</p>
@@ -1098,10 +1085,28 @@
       </tags>
   </entry>
   <entry>
+    <title>NPM Cannot Find Module</title>
+    <url>/blog/21517/</url>
+    <content><![CDATA[<p>执行 <code>npm install</code> 时终端提示 Cannot find module ‘../lib/utils/unsupported.js’ 错误，解决方案就是删除 /usr/local/lib/node_modules/npm 目录！</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo rm -rf /usr/<span class="built_in">local</span>/lib/node_modules/npm</span><br><span class="line"></span><br><span class="line">brew reinstall node</span><br><span class="line">nvm reinstall-packages <span class="comment">#使用nvm管理Node的使用此命令</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>npm</category>
+      </categories>
+      <tags>
+        <tag>npm</tag>
+        <tag>Cannot find module</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>NPM EAUDITNOPJSON 错误</title>
     <url>/blog/2777/</url>
-    <content><![CDATA[<p>执行 <code>npm audit fix</code> 时报npm ERR! code EAUDITNOPJSON错误，这是因为项目下没有package.json文件造成的，执行 <code>npm init -y</code> 即可解决！ <a href="https://docs.npmjs.com/auditing-package-dependencies-for-security-vulnerabilities">https://docs.npmjs.com/auditing-package-dependencies-for-security-vulnerabilities</a></p>
-<p>如果你还报EAUDITNOLOCK错误的话，请执行 <code>npm i --package-lock-only</code></p>
+    <content><![CDATA[<p>执行 npm 命令时报 <code>npm ERR! code EAUDITNOPJSON</code> 错误，是因为项目下没有 package.json 文件造成的，执行 <code>npm init -y</code></p>
+<p>如果报的是 EAUDITNOLOCK 错误，请执行 <code>npm i --package-lock-only</code>，EAUDITNOLOCK 错误一般是本地没有 package-lock.json 或者 package-lock.json 起冲突造成的</p>
+<p>拓展阅读：</p>
+<ul>
+<li><a href="https://docs.npmjs.com/auditing-package-dependencies-for-security-vulnerabilities">EAUDITNOPJSON</a></li>
+<li><a href="https://blog.lishunyang.com/2021/01/how-to-use-package-lock-correctly.html">EAUDITNOLOCK</a></li>
+</ul>
 ]]></content>
       <categories>
         <category>npm</category>
@@ -1114,104 +1119,117 @@
   <entry>
     <title>NPM</title>
     <url>/blog/27424/</url>
-    <content><![CDATA[<p><a href="https://docs.npmjs.com/about-npm">NPM</a> 是 <a href="https://nodejs.org/en/download/">NodeJS</a> 下的包（Module 模块）管理工具。在 NodeJS v0.6.x 之后的版本中，嵌套于 NodeJS 系统中，随 NodeJS 一起发布。通过 NPM 可以协助开发者安装、卸载、删除、更新 NodeJS 套件，并且可以通过 NPM 发布自己的插件。</p>
-<h2 id="安装-NPM"><a href="#安装-NPM" class="headerlink" title="安装 NPM"></a>安装 NPM</h2><ol>
-<li>通过 <a href="https://nodejs.org/en/download/">NodeJS</a> 官网直接下载 LTS 稳定版本的 PKG 包安装</li>
-<li>通过 NVM 管理 <a href="https://nodejs.org/en/download/">NodeJS</a> 安装，适用于复杂的项目</li>
+    <content><![CDATA[<p><a href="https://docs.npmjs.com/about-npm">npm</a> 是 JavaScript 世界的包管理工具，且是 <a href="https://nodejs.org/en/download/">Node.JS</a> （npm 在 Node.JS 0.6 之后的版本，随着 Node.JS 一起发布）平台的默认包管理器，也是世界上最大的软件注册表，里面包含了 100w+ 个包，能够使您轻松跟踪依赖项和版本。</p>
+<p>npm 由三部分组成：</p>
+<ul>
+<li><a href="https://www.npmjs.com/">网站</a></li>
+<li>CLI 命令行工具</li>
+<li>registry 注册表</li>
+</ul>
+<p>npm 网站也就是 npmjs.com 可以视为一个物流集散中心，该中心从开发者那里接收包，并将这些包分发给使用者。为了效率的提升，物流集散中心雇佣了很多 CLI，分配给每个用户作为私人助理，根据使用者 dependencies 的要求对快递进行管理。</p>
+<span id="more"></span>
+
+<h2 id="package-和-package-lock"><a href="#package-和-package-lock" class="headerlink" title="package 和 package-lock"></a>package 和 package-lock</h2><p>我们开发者并不会读取 package-lock.json，通常由 <code>npm install</code> 命令生成，由 CLI 工具读取，以确保使用 npm 命令复制项目的构建环境。</p>
+<h3 id="package-json"><a href="#package-json" class="headerlink" title="package.json"></a>package.json</h3><p>每个 JavaScript 都可以视为 npm 的软件包，并且通过 package.json 描述项目或包的信息，简单理解可以视为我们平时发快递时快递单上的信息。当我们使用 <code>npm init</code> 初始化 JavaScript 项目时，npm 将自动在此目录下创建一个 package.json 文件，文件的内容由开发者提供：</p>
+<ul>
+<li>name：JavaScript 项目或库的名称，通过 <code>require()</code> 引用</li>
+<li>author：固定格式：作者 &lt;邮箱&gt;</li>
+<li>maintainers：维护者数组：作者 &lt;邮箱&gt; (网址)</li>
+<li>contributors：贡献者数组：作者 &lt;邮箱&gt; (网址)</li>
+<li>main：入口文件，当 <code>require()</code> 引用该模块时该文件会被执行，通常默认的是 index.js 文件</li>
+<li>version：项目版本</li>
+<li>keywords：关键字数组，通常用于搜索</li>
+<li>description：项目描述</li>
+<li>license：项目许可证</li>
+<li>homepage：项目网址</li>
+<li>repository：项目仓库地址</li>
+<li>private：true || false，设置该包是否是私有</li>
+</ul>
+<p>author、version、license 可通过 <code>npm config set</code> 命令对其提前设置，下次 <code>init</code> 时系统会自动为我们填充相关信息</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm config <span class="built_in">set</span> init.author.email <span class="string">&quot;qinlzhu@outlook.com&quot;</span></span><br><span class="line">npm config <span class="built_in">set</span> init.author.name <span class="string">&quot;qinlzhu&quot;</span></span><br><span class="line">npm config <span class="built_in">set</span> init.author.url <span class="string">&quot;https://github.com/qLzhu&quot;</span></span><br><span class="line">npm config <span class="built_in">set</span> init.license <span class="string">&quot;MIT&quot;</span></span><br><span class="line">npm config <span class="built_in">set</span> init.version <span class="string">&quot;1.0.0&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>dependencies<br>项目运行所依赖的模块（键值对），执行 <code>npm install</code> 时安装的包会注册到此属性下</p>
+</li>
+<li><p>devDependencies<br>项目开发所需要的模块（键值对），执行 <code>npm install --save-dev</code> 时安装的包会注册到此属性下</p>
+</li>
+<li><p>bin<br>用来指定各个内部命令对应的可执行文件的位置</p>
+</li>
 </ol>
-<p>NVM 安装 NodeJS 之前需要先安装 <a href="https://brew.sh/index_zh-cn">HomeBrew</a></p>
+<figure class="highlight bash"><figcaption><span>./bin/cli.js</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment"># 注意脚本文件的开头必须按照下述内容指定解释器</span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line"><span class="comment"># !usr/bin/env node</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;bin&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;cli&quot;</span>: <span class="string">&quot;./bin/cli.js&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>案例解读：<br>上面的 cli 命令对应的可执行文件在当前目录下的 bin 内，npm 会自动寻找到该文件并在 node_modules/.bin/ 下创建该命令的符号链接（node_modules/.bin/cli）。node_modules/.bin/ 目录会在运行时加入系统的 PATH 变量，因此在运行 npm 时，就可以不带路径，直接通过命令来调用这些脚本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">  <span class="string">&quot;build&quot;</span>: &#123;<span class="string">&quot;./node_modules/bin/cli.js&quot;</span>&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 简写为</span></span><br><span class="line"><span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">  <span class="string">&quot;build&quot;</span>: &#123;<span class="string">&quot;cli&quot;</span>&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 所有 node_modules/.bin/ 目录下的命令，都可以用 npm run [command] 的格式运行</span></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><p>scripts<br>定义代码块的地方，当我在终端执行 <code>npm run build</code> 时 cli 命令会被执行，单纯的只执行 <code>npm run</code> 不加任何参数，系统会列出 scripts 下所有可执行的命令</p>
+</li>
+<li><p>bugs<br>设置使用者提交 bug 的网址及其邮箱</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;url&quot;</span> : <span class="string">&quot;https://github.com/owner/project/issues&quot;</span>,</span><br><span class="line">  <span class="string">&quot;email&quot;</span> : <span class="string">&quot;qinlzhu@outlook.com&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>engines<br>指定项目运行的 Node.JS 版本范围</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;engines&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;node&quot;</span> : <span class="string">&quot;&gt;=0.10.3 &lt;0.12&quot;</span>,</span><br><span class="line">    <span class="string">&quot;npm&quot;</span> : <span class="string">&quot;~1.0.20&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>package.json 更多属性请查阅 <a href="https://docs.npmjs.com/cli/v7/configuring-npm/package-json">npm package-json</a></p>
+<h3 id="package-lock-json"><a href="#package-lock-json" class="headerlink" title="package-lock.json"></a>package-lock.json</h3><p>package-lock.json 描述了项目中使用的各种依赖项的确切版本，大家可以理解为某个食品的具体配方表。</p>
+<h2 id="安装npm"><a href="#安装npm" class="headerlink" title="安装npm"></a>安装npm</h2><ol>
+<li>通过 <a href="https://nodejs.org/en/download/">Node.JS</a> 官网直接下载 LTS 稳定版本的 PKG 包安装</li>
+<li>通过 nvm 管理 <a href="https://nodejs.org/en/download/">Node.JS</a> 安装，适用于复杂的项目</li>
+</ol>
+<p>nvm 安装 Node.JS 之前需要先安装 <a href="https://brew.sh/index_zh-cn">HomeBrew</a></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/bin/bash -c <span class="string">&quot;<span class="subst">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)</span>&quot;</span></span><br><span class="line"></span><br><span class="line">brew install nvm</span><br></pre></td></tr></table></figure>
 
-<p>通过 HomeBrew 安装的 NVM，缺少 nvm.sh 执行脚本文件，还需要配置 <code>~/.bash_profile</code>、<code>~/.bashrc</code> 或 <code>~/.zshrc</code> 开发环境</p>
+<p>通过 HomeBrew 安装的 nvm，缺少 nvm.sh 执行脚本文件，还需要配置 <code>~/.bash_profile</code>、<code>~/.bashrc</code> 或 <code>~/.zshrc</code> 开发环境</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> NVM_DIR=~/.nvm</span><br><span class="line"><span class="built_in">source</span> $(brew --prefix nvm)/nvm.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># MacOS Big Sur 版本请添加</span></span><br><span class="line"><span class="built_in">export</span> NVM_DIR=<span class="string">&quot;<span class="subst">$([ -z <span class="string">&quot;<span class="variable">$&#123;XDG_CONFIG_HOME-&#125;</span>&quot;</span> ] &amp;&amp; printf %s <span class="string">&quot;<span class="variable">$&#123;HOME&#125;</span>/.nvm&quot;</span> || printf %s <span class="string">&quot;<span class="variable">$&#123;XDG_CONFIG_HOME&#125;</span>/nvm&quot;</span>)</span>&quot;</span></span><br><span class="line">[ -s <span class="string">&quot;<span class="variable">$NVM_DIR</span>/nvm.sh&quot;</span> ] &amp;&amp; \. <span class="string">&quot;<span class="variable">$NVM_DIR</span>/nvm.sh&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p>配置完成后，<code>source</code> 命令重启下相应的环境配置文件</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bash_profile</span><br><span class="line"></span><br><span class="line">nvm install stable       <span class="comment"># 安装最新的 NodeJS 版本</span></span><br><span class="line">nvm <span class="built_in">alias</span> default stable <span class="comment"># 将此版本设置为默认版本</span></span><br></pre></td></tr></table></figure>
-<span id="more"></span>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bash_profile</span><br><span class="line"></span><br><span class="line">nvm install stable       <span class="comment"># 安装最新的 Node.JS 版本</span></span><br><span class="line">nvm <span class="built_in">alias</span> default stable <span class="comment"># 将此版本设置为默认版本</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="查看-NPM-版本"><a href="#查看-NPM-版本" class="headerlink" title="查看 NPM 版本"></a>查看 NPM 版本</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm -v</span><br><span class="line">npm --version</span><br></pre></td></tr></table></figure>
+<h2 id="npm帮助"><a href="#npm帮助" class="headerlink" title="npm帮助"></a>npm帮助</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm <span class="built_in">help</span> npm</span><br></pre></td></tr></table></figure>
 
-<h2 id="更新-NPM-版本"><a href="#更新-NPM-版本" class="headerlink" title="更新 NPM 版本"></a>更新 NPM 版本</h2><p>NPM 版本要比 NodeJS 的更新的要快，有时我们安装的不一定是最新版本，大家可通过下述命令单独更新 NPM</p>
+<h2 id="查看npm版本"><a href="#查看npm版本" class="headerlink" title="查看npm版本"></a>查看npm版本</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm -v</span><br><span class="line">npm --version</span><br></pre></td></tr></table></figure>
+
+<h2 id="更新npm版本"><a href="#更新npm版本" class="headerlink" title="更新npm版本"></a>更新npm版本</h2><p>npm 版本要比 Node.JS 的更新的要快，有时我们安装的不一定是最新版本，大家可通过下述命令单独更新 npm</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install npm@latest -g</span><br></pre></td></tr></table></figure>
 
-<p>由于国内政策可能存在网速过慢问题，推荐大家使用<a href="https://npm.taobao.org/mirrors/node">淘宝的CNPM</a>进行解决</p>
+<p>由于国内政策可能存在网速过慢问题，推荐大家使用<a href="https://npm.taobao.org/mirrors/node">淘宝的 cnpm</a>进行解决</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 临时使用</span></span><br><span class="line">npm install express --registry https://registry.npm.taobao.org</span><br><span class="line"></span><br><span class="line"><span class="comment"># 全局使用</span></span><br><span class="line">npm config <span class="built_in">set</span> registry https://registry.npm.taobao.org</span><br><span class="line">npm config get registry</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 cnpm</span></span><br><span class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
 
-<h2 id="更改-NPM-安装目录"><a href="#更改-NPM-安装目录" class="headerlink" title="更改 NPM 安装目录"></a>更改 NPM 安装目录</h2><p>NPM 默认安装在 /usr/local 目录下，通过命令可获悉安装位置</p>
+<h2 id="更改npm安装目录"><a href="#更改npm安装目录" class="headerlink" title="更改npm安装目录"></a>更改npm安装目录</h2><p>npm 默认安装在 /usr/local 目录下，通过命令可获悉安装位置</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm config get prefix <span class="comment">#/usr/local</span></span><br></pre></td></tr></table></figure>
 
 <p>如果我们想更改它的安装位置，可以使用 <code>npm config set prefix</code> 命令对其修改</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># LOCAL_PATH_URL 要更改的目录位置</span></span><br><span class="line">npm config <span class="built_in">set</span> prefix=<span class="variable">$HOME</span>/LOCAL_PATH_URL</span><br></pre></td></tr></table></figure>
 
-<p>位置更改完成后，我们需要重新安装 NPM，并且需要更改当前的系统环境变量，即系统下的 <code>.profile</code>、<code>.bash_profile</code> 或 <code>.bashrc</code> 文件</p>
+<p>位置更改完成后，我们需要重新安装 npm，并且需要更改当前的系统环境变量，即系统下的 <code>.profile</code>、<code>.bash_profile</code> 或 <code>.bashrc</code> 文件</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install npm -g</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 VIM 编辑器在 .bashrc 文件最后追加</span></span><br><span class="line"><span class="comment"># export PATH=&quot;$HOME/LOCAL_PATH_URL/bin:$PATH</span></span><br><span class="line"><span class="comment"># 英文状态下输入 :wq 保存退出</span></span><br><span class="line">vim ~/.bashrc</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启环境变量文件</span></span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
 
-<h2 id="NPM-命令"><a href="#NPM-命令" class="headerlink" title="NPM 命令"></a>NPM 命令</h2><h3 id="npm-init"><a href="#npm-init" class="headerlink" title="npm init"></a>npm init</h3><p>使用 NPM 安装 Modules 之前，需要先将本地目录 <code>init</code>，会自动创建下述文件及其文件夹：</p>
+<h2 id="npm命令"><a href="#npm命令" class="headerlink" title="npm命令"></a>npm命令</h2><h3 id="npm-init"><a href="#npm-init" class="headerlink" title="npm init"></a>npm init</h3><p>使用 NPM 安装包之前，需要先将本地目录 <code>init</code>，会自动创建下述文件及其文件夹：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm init</span><br><span class="line">npm init -y</span><br><span class="line">npm init --yes</span><br></pre></td></tr></table></figure>
 
-<div class="note ">
-            <p>node_modules：保存各种 Modules 的文件夹<br>package.json：Modules 管理文件<br>package-lock.json：Modules 与 Modules 之间依赖关系管理文件</p>
-          </div>
-
-<p>package.json 文件实例</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;npms&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;version&quot;</span>: <span class="string">&quot;1.0.0&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;description&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;main&quot;</span>: <span class="string">&quot;index.js&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;test&quot;</span>: <span class="string">&quot;gulp&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;dependencies&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;lodash&quot;</span>: <span class="string">&quot;^4.17.15&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;devDependencies&quot;</span>: &#123;&#125;,</span><br><span class="line">  <span class="attr">&quot;author&quot;</span>: <span class="string">&quot;qinlzhu &lt;qinlzhu@outlook.com&gt;&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;license&quot;</span>: <span class="string">&quot;MIT&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>package.json 基本属性</p>
 <ul>
-<li>name：Modules 名称，其它子模块可以通过 require() 引用该模块</li>
-<li>author：固定格式：作者 &lt;邮箱&gt;</li>
-<li>maintainers：贡献者固定格式：作者 &lt;邮箱&gt; (网址)</li>
-<li>version</li>
-<li>description</li>
-<li>license：授权方式</li>
-<li>homepage：项目网址</li>
-<li>repository：项目仓库地址</li>
+<li>node_modules：保存包的目录</li>
+<li>package.json：项目描述文件</li>
+<li>package-lock.json：包依赖关系详细文件</li>
 </ul>
-<p>author、version、license 这三个属性，可通过 <code>npm config set</code> 命令对其提前设置，下次 init 时系统会自动为我们填充相关信息</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm config <span class="built_in">set</span> init.author.email <span class="string">&quot;qinlzhu@outlook.com&quot;</span></span><br><span class="line">npm config <span class="built_in">set</span> init.author.name <span class="string">&quot;qinlzhu&quot;</span></span><br><span class="line">npm config <span class="built_in">set</span> init.author.url <span class="string">&quot;https://github.com/qLzhu&quot;</span></span><br><span class="line">npm config <span class="built_in">set</span> init.license <span class="string">&quot;MIT&quot;</span></span><br><span class="line">npm config <span class="built_in">set</span> init.version <span class="string">&quot;1.0.0&quot;</span></span><br></pre></td></tr></table></figure>
-
-<ol>
-<li><p>main。<br>指定入口文件，当 require() 引用该模块时该文件会被执行</p>
-</li>
-<li><p>scripts<br>例如：上面的 test，当我在终端执行 <code>npm run test</code> 时 gulp 命令会被执行，单纯的只执行 <code>npm run</code> 不加任何参数，系统会列出 scripts 下所有可执行的命令</p>
-</li>
-<li><p>dependencies<br>项目运行所依赖的模块，执行 <code>npm install</code> 时安装的包会注册到此属性下</p>
-</li>
-<li><p>devDependencies<br>项目开发所需要的模块，执行 <code>npm install --save-dev</code> 时安装的包会注册到此属性下</p>
-</li>
-<li><p>bin<br>用来指定各个内部命令对应的可执行文件的位置</p>
-</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 注意脚本文件的开头必须指定解释器</span></span><br><span class="line"><span class="comment"># 即./bin/cli.js</span></span><br><span class="line"><span class="comment"># !usr/bin/env node</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;bin&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;cli&quot;</span>: <span class="string">&quot;./bin/cli.js&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>上面的例子是，cli 命令对应的可执行文件在当前路径下的 bin 内，NPM 会自动寻找到该文件并在 node_modules/.bin/ 下创建该命令的符号链接（node_modules/.bin/cli）。node_modules/.bin/ 目录会在运行时加入系统的PATH变量，因此在运行 npm 时，就可以不带路径，直接通过命令来调用这些脚本</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">  <span class="string">&quot;build&quot;</span>: &#123;<span class="string">&quot;./node_modules/bin/cli.js&quot;</span>&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 简写为</span></span><br><span class="line"><span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">  <span class="string">&quot;build&quot;</span>: &#123;<span class="string">&quot;cli&quot;</span>&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 所有 node_modules/.bin/ 目录下的命令，都可以用 npm run [command] 的格式运行</span></span><br></pre></td></tr></table></figure>
-
-<ol start="6">
-<li>bugs<br>设置使用者提交 bug 的网址及其邮箱</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;url&quot;</span> : <span class="string">&quot;https://github.com/owner/project/issues&quot;</span>,</span><br><span class="line">  <span class="string">&quot;email&quot;</span> : <span class="string">&quot;qinlzhu@outlook.com&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ol start="7">
-<li>engines<br>指定项目运行的 NodeJS 版本范围</li>
-</ol>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;engines&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;node&quot;</span> : <span class="string">&quot;&gt;=0.10.3 &lt;0.12&quot;</span>,</span><br><span class="line">    <span class="string">&quot;npm&quot;</span> : <span class="string">&quot;~1.0.20&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>package.json 更多属性请查阅 <a href="https://docs.npmjs.com/cli/v7/configuring-npm/package-json">NPM 官方文档</a></p>
-<h3 id="npm-search"><a href="#npm-search" class="headerlink" title="npm search"></a>npm search</h3><p>npm search 在 NPM 公开库搜索 Module</p>
+<h3 id="npm-search"><a href="#npm-search" class="headerlink" title="npm search"></a>npm search</h3><p><code>npm search</code> 在 npm 资源库搜索别人的包</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm search Loadsh</span><br><span class="line"></span><br><span class="line"><span class="comment"># NAME                   | DESCRIPTION         | AUTHOR          | DATE       | VERSION  | KEYWORDS</span></span><br><span class="line"><span class="comment"># loadsh                 | Lodash modular…     | =atool          | 2019-03-12 | 0.0.4    | modules stdlib util</span></span><br><span class="line"><span class="comment"># loadsh-get             | 访问嵌套对象         | =allen(lisong)  | 2020-02-01 | 1.0.1    | lodash get</span></span><br><span class="line"><span class="comment"># eskom-loadshedding-api | Exposing the Eskom… | =polarizedions  | 2020-01-09 | 0.1.4    | eskom loadshedding api</span></span><br><span class="line"><span class="comment"># madoka                 | A json generator    | =allenice       | 2016-02-17 | 1.1.2    | json generator faker ohana loadsh</span></span><br><span class="line"><span class="comment"># e-loadsh               | 前端常用函数工具库    | =alexjia        | 2019-09-30 | 1.0.3    | javascript util</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="npm-install"><a href="#npm-install" class="headerlink" title="npm install"></a>npm install</h3><p>标准格式命令</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install Lodash</span><br></pre></td></tr></table></figure>
 
-<p>Lodash Modules 会安装到本地目录下的 node_modules 内，使用该 Modules 时只需要通过 require(‘Lodash’) 方式引用</p>
+<p>Lodash 包会安装到本地目录下的 node_modules 内，使用该插件时只需要通过 <code>require(&#39;Lodash&#39;)</code> 方式引用</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">const bt = require(<span class="string">&#x27;Lodash&#x27;</span>);</span><br></pre></td></tr></table></figure>
 
 <p>安装 package.json 内配置好的模块</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure>
 
-<p>npm install 命令其它参数</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 默认自带 --save-prod 参数</span></span><br><span class="line"><span class="comment"># 放在 ./node_modules 下，当前目录没有则新建</span></span><br><span class="line">npm i Lodash</span><br><span class="line">npm install Lodash</span><br><span class="line">npm install Lodash --save</span><br><span class="line">npm install Lodash --save-prod</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试或开发环境下安装依赖的 Modules</span></span><br><span class="line"><span class="comment"># 保存在 package.json 的 devDependencies 下</span></span><br><span class="line">npm install Lodash --save-dev</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装 Modules 指定版本</span></span><br><span class="line">npm install Lodash@4.17.00</span><br><span class="line">npm install Lodash@latest</span><br><span class="line"></span><br><span class="line"><span class="comment"># 全局安装</span></span><br><span class="line"><span class="comment"># 下载的 Loadsh 放在 /usr/local 下或者你 NodeJS 的安装目录</span></span><br><span class="line">npm i Loadsh -g</span><br><span class="line">npm install Lodash --global</span><br></pre></td></tr></table></figure>
+<p><code>npm install</code> 命令其它参数</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 默认自带 --save-prod 参数</span></span><br><span class="line"><span class="comment"># 放在 ./node_modules 下，当前目录没有则新建</span></span><br><span class="line">npm i Lodash</span><br><span class="line">npm install Lodash</span><br><span class="line">npm install Lodash --save</span><br><span class="line">npm install Lodash --save-prod</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试或开发环境下安装依赖的包</span></span><br><span class="line"><span class="comment"># 保存在 package.json 的 devDependencies 下</span></span><br><span class="line">npm install Lodash --save-dev</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装指定包的版本</span></span><br><span class="line">npm install Lodash@4.17.00</span><br><span class="line">npm install Lodash@latest</span><br><span class="line"></span><br><span class="line"><span class="comment"># 全局安装</span></span><br><span class="line"><span class="comment"># 下载的 Loadsh 放在 /usr/local 下或者你 Node.JS 的安装目录</span></span><br><span class="line">npm i Loadsh -g</span><br><span class="line">npm install Lodash --global</span><br></pre></td></tr></table></figure>
 
 <h3 id="npm-uninstall"><a href="#npm-uninstall" class="headerlink" title="npm uninstall"></a>npm uninstall</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 删除 node_modules 目录内的所有包</span></span><br><span class="line">npm uninstall</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除 package.json dependencies 选项下的包必须使用该命令</span></span><br><span class="line">npm uninstall --save</span><br><span class="line"></span><br><span class="line"><span class="comment"># package.json devDependencies</span></span><br><span class="line">npm uninstall --save-dev</span><br></pre></td></tr></table></figure>
 
@@ -1224,20 +1242,20 @@
 <p>指定递归层级</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm outdated -g --depth=0</span><br></pre></td></tr></table></figure>
 
-<h3 id="npm-update"><a href="#npm-update" class="headerlink" title="npm update"></a>npm update</h3><p>NPM 指定包更新到最新版本</p>
+<h3 id="npm-update"><a href="#npm-update" class="headerlink" title="npm update"></a>npm update</h3><p>npm 指定包更新到最新版本</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm update Loadsh</span><br></pre></td></tr></table></figure>
 
 <p>全部升级到最新版本</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm update</span><br></pre></td></tr></table></figure>
 
-<h3 id="npm-list"><a href="#npm-list" class="headerlink" title="npm list"></a>npm list</h3><p>枚列当前安装的所有 Modules 的版本</p>
+<h3 id="npm-list"><a href="#npm-list" class="headerlink" title="npm list"></a>npm list</h3><p>枚列当前安装的所有包的版本</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm ls</span><br><span class="line">npm list</span><br><span class="line">npm list --global</span><br><span class="line"><span class="comment"># /usr/local/lib</span></span><br><span class="line"><span class="comment"># ├─┬ cnpm@6.1.1</span></span><br><span class="line"><span class="comment"># │ ├─┬ commander@2.10.0</span></span><br><span class="line"><span class="comment"># │ │ └── graceful-readlink@1.0.1</span></span><br><span class="line"><span class="comment"># │ ├─┬ cross-spawn@0.2.9</span></span><br><span class="line"><span class="comment"># │ │ └── lru-cache@2.7.3</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 --depth=“n” 参数来指定递归的深度</span></span><br><span class="line">npm list -g --depth=1</span><br><span class="line"><span class="comment"># ├─┬ cnpm@6.1.1</span></span><br><span class="line"><span class="comment"># │ ├── commander@2.10.0</span></span><br><span class="line"><span class="comment"># │ ├── cross-spawn@0.2.9</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="npm-audit"><a href="#npm-audit" class="headerlink" title="npm audit"></a>npm audit</h3><p>使用此命令检测包是否有安全问题，有的使用 <code>npm audit fix</code> 修复</p>
 <h3 id="npm-cache"><a href="#npm-cache" class="headerlink" title="npm cache"></a>npm cache</h3><p>每当你通过 npm 安装一个软件包时，npm 会自动在你系统用户根目录下创建一个副本，并保存到 <code>.npm</code> 目录内，之所以你安装相同的软件包时，速度会更快，那是因为它不需要再访问网络安装了，所以我们需要定期清理</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls ~/.npm</span><br><span class="line"></span><br><span class="line">npm cache clean --force</span><br></pre></td></tr></table></figure>
 
-<h2 id="发布自己-Modules"><a href="#发布自己-Modules" class="headerlink" title="发布自己 Modules"></a>发布自己 Modules</h2><h3 id="npm-init-1"><a href="#npm-init-1" class="headerlink" title="npm init"></a>npm init</h3><p>首先在包目录下初始化，然后根据系统提示依次输入必要的信息，最后生成 package.json。或者执行 <code>npm init -y</code> 直接生成 package.json 跳过提示</p>
+<h2 id="发布自己包"><a href="#发布自己包" class="headerlink" title="发布自己包"></a>发布自己包</h2><h3 id="npm-init-1"><a href="#npm-init-1" class="headerlink" title="npm init"></a>npm init</h3><p>首先在包目录下初始化，然后根据系统提示依次输入必要的信息，最后生成 package.json。或者执行 <code>npm init -y</code> 直接生成 package.json 跳过提示</p>
 <h3 id="npm-adduser"><a href="#npm-adduser" class="headerlink" title="npm adduser"></a>npm adduser</h3><p>注册 npm 资源库账户</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm adduser</span><br><span class="line"><span class="comment"># npm notice Log in on https://registry.npmjs.org/</span></span><br><span class="line"><span class="comment"># Username: qinlzhu</span></span><br><span class="line"><span class="comment"># Password: </span></span><br><span class="line"><span class="comment"># Email: (this IS public) qinlzhu@outlook.com</span></span><br></pre></td></tr></table></figure>
 
@@ -1247,7 +1265,7 @@
 <h2 id="常见错误"><a href="#常见错误" class="headerlink" title="常见错误"></a>常见错误</h2><p>执行 <code>npm install</code> 安装插件时报下述错误！这是 npm 对 node_modules 没有读写的权限造成的，执行时须在开头添加 <code>sudo</code>。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm WARN checkPermissions Missing write access to /usr/<span class="built_in">local</span>/lib/node_modules</span><br><span class="line">npm ERR! code EACCES</span><br><span class="line">npm ERR! syscall access</span><br><span class="line">npm ERR! path /usr/<span class="built_in">local</span>/lib/node_modules</span><br><span class="line">npm ERR! errno -13</span><br><span class="line">npm ERR! Error: EACCES: permission denied, access <span class="string">&#x27;/usr/local/lib/node_modules&#x27;</span></span><br><span class="line">npm ERR!  [Error: EACCES: permission denied, access <span class="string">&#x27;/usr/local/lib/node_modules&#x27;</span>] &#123;</span><br><span class="line">npm ERR!   errno: -13,</span><br><span class="line">npm ERR!   code: <span class="string">&#x27;EACCES&#x27;</span>,</span><br><span class="line">npm ERR!   syscall: <span class="string">&#x27;access&#x27;</span>,</span><br><span class="line">npm ERR!   path: <span class="string">&#x27;/usr/local/lib/node_modules&#x27;</span></span><br><span class="line">npm ERR! &#125;</span><br><span class="line">npm ERR! </span><br><span class="line">npm ERR! The operation was rejected by your operating system.</span><br><span class="line">npm ERR! It is likely you <span class="keyword">do</span> not have the permissions to access this file as the current user</span><br><span class="line">npm ERR! </span><br><span class="line">npm ERR! If you believe this might be a permissions issue, please double-check the</span><br><span class="line">npm ERR! permissions of the file and its containing directories, or try running</span><br><span class="line">npm ERR! the <span class="built_in">command</span> again as root/Administrator.</span><br><span class="line"></span><br><span class="line">npm ERR! A complete <span class="built_in">log</span> of this run can be found <span class="keyword">in</span>:</span><br><span class="line">npm ERR!     /Users/**/.npm/_logs/2020-11-20T05_26_26_608Z-debug.log</span><br></pre></td></tr></table></figure>
 
-<p><a href="https://npm.comptechs.cn/">https://npm.comptechs.cn/</a><br><a href="http://caibaojian.com/npm/">http://caibaojian.com/npm/</a><br><a href="https://cloud.tencent.com/developer/doc/1282">https://cloud.tencent.com/developer/doc/1282</a></p>
+<p><a href="https://npm.comptechs.cn/">https://npm.comptechs.cn/</a><br><a href="http://caibaojian.com/npm/">http://caibaojian.com/npm/</a><br><a href="https://cloud.tencent.com/developer/doc/1282">https://cloud.tencent.com/developer/doc/1282</a><br><a href="https://chinese.freecodecamp.org/news/what-is-npm-a-node-package-manager-tutorial-for-beginners/">https://chinese.freecodecamp.org/news/what-is-npm-a-node-package-manager-tutorial-for-beginners/</a></p>
 ]]></content>
       <categories>
         <category>npm</category>
@@ -1259,7 +1277,7 @@
   <entry>
     <title>NVM</title>
     <url>/blog/20614/</url>
-    <content><![CDATA[<p>目前大多数情况下，我们会使用 <a href="https://github.com/nvm-sh/nvm">NVM</a> 或者 N 管理工具，管理 <a href="https://nodejs.org/en/download/">NodeJS</a> 版本！<br>注意区分 NVM 和 NPM 的区别，NVM 是管理 NodeJS 管理器，NPM 是管理 NodeJS Modules 的管理器</p>
+    <content><![CDATA[<p>目前大多数情况下，我们会使用 <a href="https://github.com/nvm-sh/nvm">NVM</a> 或者 <a href="https://github.com/tj/n">N</a> 管理工具，管理 <a href="https://nodejs.org/en/download/">NodeJS</a> 版本！<br>注意区分 NVM 和 NPM 的区别，NVM 是管理 NodeJS 管理器，NPM 是管理 NodeJS Modules 的管理器</p>
 <p>即：<br>NPM -&gt; NodeJS -&gt; NPM</p>
 <p>实例场景：</p>
 <div class="note ">
