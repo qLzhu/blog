@@ -6,7 +6,7 @@ categories: nvm
 tags: [nvm, node, n]
 ---
 
-目前大多数情况下，我们会使用 [NVM](https://github.com/nvm-sh/nvm) 或者 N 管理工具，管理 [NodeJS](https://nodejs.org/en/download/) 版本！
+目前大多数情况下，我们会使用 [NVM](https://github.com/nvm-sh/nvm) 或者 [N](https://github.com/tj/n) 管理工具，管理 [NodeJS](https://nodejs.org/en/download/) 版本！
 注意区分 NVM 和 NPM 的区别，NVM 是管理 NodeJS 管理器，NPM 是管理 NodeJS Modules 的管理器
 
 即：
