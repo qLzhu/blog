@@ -85,7 +85,7 @@ npm config set init.version "1.0.0"
 ```
 
 4. scripts
-定义代码块的地方，当我在终端执行 `npm run build` 时 cli 命令会被执行，单纯的只执行 `npm run` 不加任何参数，系统会列出 scripts 下所有可执行的命令
+自定义的脚本，当我在终端执行 `npm run build` 时 cli 命令会被执行，单纯的只执行 `npm run` 不加任何参数，系统会列出 scripts 下所有可执行的命令
 
 5. bugs
 设置使用者提交 bug 的网址及其邮箱

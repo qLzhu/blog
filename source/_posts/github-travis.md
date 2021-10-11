@@ -41,7 +41,7 @@ Github Action 使用的是 YAML 语法来定义的，执行文件需要保存到
 执行文件名称可随便定义
 
 ```bash
-mkdir .github/workflows && cd $_
+mkdir -p .github/workflows && cd $_
 touch hexo-deploy.yml
 ```
 

@@ -43,6 +43,7 @@ NoiiApple
 - [NPM](https://qlzhu.github.io/blog/27424/)
 - [NPM Cannot Find Module](https://qlzhu.github.io/blog/21517/)
 - [NPM EAUDITNOPJSON 错误](https://qlzhu.github.io/blog/2777/)
+- [npx 跟 npm 有什么区别](https://qlzhu.github.io/blog/27748/)
 
 #### Hexo
 - [Hexo 配置进阶](https://qlzhu.github.io/blog/49139/)
