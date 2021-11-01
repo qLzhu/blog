@@ -1,5 +1,5 @@
 ---
-title: HomeBrew Basic
+title: HomeBrew
 abbrlink: 42669
 date: 2020-04-18 18:22:38
 categories: HomeBrew
@@ -190,3 +190,7 @@ sudo chown -R $(whoami) $(brew --prefix)/*
 brew install <name>
 brew link <name>
 ```
+
+## 拓展阅读
+
+- [关于 tap（仓库）](https://urz.one/cn/2020-06-11/homebrew/10039)
