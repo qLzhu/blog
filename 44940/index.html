@@ -21,15 +21,15 @@
     var CONFIG = {"hostname":"qlzhu.github.io","root":"/blog/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="InstallHomeBrew的使用及其安装，请查阅 HomeBrew Basiccpan(类似npm)是perl的软件包管理器，Mac系统集成了perl无需单独安装 12345678910111213141516171819brew install graphvizcpan# cpan shell -- CPAN exploration and modules installation (v2.">
+  <meta name="description" content="InstallHomeBrew的使用及其安装，请查阅 HomeBrewcpan(类似npm)是perl的软件包管理器，Mac系统集成了perl无需单独安装 12345678910111213141516171819brew install graphvizcpan# cpan shell -- CPAN exploration and modules installation (v2.00)# E">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Graph:Easy绘制ASCII码（字符集）流程图">
 <meta property="og:url" content="https://qlzhu.github.io/blog/44940/index.html">
 <meta property="og:site_name" content="NoiiApple">
-<meta property="og:description" content="InstallHomeBrew的使用及其安装，请查阅 HomeBrew Basiccpan(类似npm)是perl的软件包管理器，Mac系统集成了perl无需单独安装 12345678910111213141516171819brew install graphvizcpan# cpan shell -- CPAN exploration and modules installation (v2.">
+<meta property="og:description" content="InstallHomeBrew的使用及其安装，请查阅 HomeBrewcpan(类似npm)是perl的软件包管理器，Mac系统集成了perl无需单独安装 12345678910111213141516171819brew install graphvizcpan# cpan shell -- CPAN exploration and modules installation (v2.00)# E">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-04-28T21:12:11.000Z">
-<meta property="article:modified_time" content="2021-10-11T11:26:36.523Z">
+<meta property="article:modified_time" content="2021-11-01T13:54:41.613Z">
 <meta property="article:author" content="qinlzhu">
 <meta property="article:tag" content="ASCII码">
 <meta property="article:tag" content="Graph Easy">
@@ -263,7 +263,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-10-11 11:26:36" itemprop="dateModified" datetime="2021-10-11T11:26:36+00:00">2021-10-11</time>
+                <time title="修改时间：2021-11-01 13:54:41" itemprop="dateModified" datetime="2021-11-01T13:54:41+00:00">2021-11-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -307,7 +307,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><p>HomeBrew的使用及其安装，请查阅 <a href="/blog/42669/" title="HomeBrew Basic">HomeBrew Basic</a><br>cpan<span class="label info">(类似npm)</span>是perl的软件包管理器，Mac系统集成了perl无需单独安装</p>
+        <h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><p>HomeBrew的使用及其安装，请查阅 <a href="/blog/42669/" title="HomeBrew">HomeBrew</a><br>cpan<span class="label info">(类似npm)</span>是perl的软件包管理器，Mac系统集成了perl无需单独安装</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">brew install graphviz</span><br><span class="line">cpan</span><br><span class="line"><span class="comment"># cpan shell -- CPAN exploration and modules installation (v2.00)</span></span><br><span class="line"><span class="comment"># Enter &#x27;h&#x27; for help.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># cpan[1]&gt;</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># cpan 时一路 Next 安装就行</span></span><br><span class="line"><span class="comment"># 直到终端出现 cpan[1]&gt; 字样，输入 exit 退出，再执行下述命令</span></span><br><span class="line"></span><br><span class="line">sudo cpan Graph:Easy</span><br><span class="line"><span class="comment"># 问题：</span></span><br><span class="line"><span class="comment"># 初次 sudo cpan Graph:Easy 时未能成功</span></span><br><span class="line"><span class="comment"># 后来开启了 VPN 才安装了下来，大家可以试试，也有可能是我网络的问题</span></span><br><span class="line"></span><br><span class="line">graph-easy --version</span><br><span class="line"><span class="comment"># Graph::Easy v0.76  (c) by Tels 2004-2008.  Released under the GPL 2.0 or later.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Running under Perl v5.018004.</span></span><br></pre></td></tr></table></figure>
 <span id="more"></span>
 
@@ -514,20 +514,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/blog/archives/">
         
-          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-count">33</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/blog/categories/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/blog/tags/">
           
-        <span class="site-state-item-count">66</span>
+        <span class="site-state-item-count">68</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -574,12 +574,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">83k</span>
+    <span title="站点总字数">87k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2:19</span>
+    <span title="站点阅读时长">2:24</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>

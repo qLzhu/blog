@@ -650,7 +650,7 @@
       </tags>
   </entry>
   <entry>
-    <title>HomeBrew Basic</title>
+    <title>HomeBrew</title>
     <url>/blog/42669/</url>
     <content><![CDATA[<p><a href="https://brew.sh/index_zh-cn">Homebrew</a> 是 Mac 上一款比较出色的软件包管理器，BSD 开源由 Max Howell 开发。类似 Linux 系统的 apt-get、yum。简单来说就是用来管理你软件的！</p>
 <p>打开终端执行下述命令，安装Homebrew</p>
@@ -715,6 +715,10 @@
 
 <p>安装时也报权限不够的错误时，请再执行下述命令</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew install &lt;name&gt;</span><br><span class="line">brew link &lt;name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="拓展阅读"><a href="#拓展阅读" class="headerlink" title="拓展阅读"></a>拓展阅读</h2><ul>
+<li><a href="https://urz.one/cn/2020-06-11/homebrew/10039">关于 tap（仓库）</a></li>
+</ul>
 ]]></content>
       <categories>
         <category>HomeBrew</category>
@@ -815,7 +819,7 @@
   <entry>
     <title>Graph:Easy绘制ASCII码（字符集）流程图</title>
     <url>/blog/44940/</url>
-    <content><![CDATA[<h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><p>HomeBrew的使用及其安装，请查阅 <a href="/blog/42669/" title="HomeBrew Basic">HomeBrew Basic</a><br>cpan<span class="label info">(类似npm)</span>是perl的软件包管理器，Mac系统集成了perl无需单独安装</p>
+    <content><![CDATA[<h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><p>HomeBrew的使用及其安装，请查阅 <a href="/blog/42669/" title="HomeBrew">HomeBrew</a><br>cpan<span class="label info">(类似npm)</span>是perl的软件包管理器，Mac系统集成了perl无需单独安装</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew install graphviz</span><br><span class="line">cpan</span><br><span class="line"><span class="comment"># cpan shell -- CPAN exploration and modules installation (v2.00)</span></span><br><span class="line"><span class="comment"># Enter &#x27;h&#x27; for help.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># cpan[1]&gt;</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># cpan 时一路 Next 安装就行</span></span><br><span class="line"><span class="comment"># 直到终端出现 cpan[1]&gt; 字样，输入 exit 退出，再执行下述命令</span></span><br><span class="line"></span><br><span class="line">sudo cpan Graph:Easy</span><br><span class="line"><span class="comment"># 问题：</span></span><br><span class="line"><span class="comment"># 初次 sudo cpan Graph:Easy 时未能成功</span></span><br><span class="line"><span class="comment"># 后来开启了 VPN 才安装了下来，大家可以试试，也有可能是我网络的问题</span></span><br><span class="line"></span><br><span class="line">graph-easy --version</span><br><span class="line"><span class="comment"># Graph::Easy v0.76  (c) by Tels 2004-2008.  Released under the GPL 2.0 or later.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Running under Perl v5.018004.</span></span><br></pre></td></tr></table></figure>
 <span id="more"></span>
 
@@ -1399,6 +1403,92 @@
         <tag>node</tag>
         <tag>nvm</tag>
         <tag>n</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python</title>
+    <url>/blog/51872/</url>
+    <content><![CDATA[<p>Apple 在 MacOS 机器上预装的是 <a href="https://www.python.org/">python 2.7.16</a> 版本，目前已废弃。现在 python 社区使用的是 python 3.x，python 4.x 也即将推出，将会完全向后兼容。如果你在终端下运行 python，将会收到不推荐使用 Python 2.7 的警告：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$: python </span><br><span class="line"></span><br><span class="line">WARNING: Python 2.7 is not recommended. </span><br><span class="line">This version is included <span class="keyword">in</span> macOS <span class="keyword">for</span> compatibility with legacy software. </span><br><span class="line">Future versions of macOS will not include Python 2.7. </span><br><span class="line">Instead, it is recommended that you transition to using <span class="string">&#x27;python3&#x27;</span> from within Terminal.</span><br><span class="line"></span><br><span class="line">Python 2.7.16 (default, Aug 30 2021, 14:43:11) </span><br><span class="line">[GCC Apple LLVM 12.0.5 (clang-1205.0.19.59.6) [+internal-os, ptrauth-isa=deploy on darwin</span><br><span class="line">Type <span class="string">&quot;help&quot;</span>, <span class="string">&quot;copyright&quot;</span>, <span class="string">&quot;credits&quot;</span> or <span class="string">&quot;license&quot;</span> <span class="keyword">for</span> more information.</span><br></pre></td></tr></table></figure>
+<span id="more"></span>
+
+<p>如果你想使用 python 3 及其以上版本，你就不得不去另行安装，你可以通过以下方式安装</p>
+<ul>
+<li>官网下载安装包</li>
+<li>HomeBrew 直接安装</li>
+<li>HomeBrew + pyenv 方式安装</li>
+</ul>
+<p>本实例采用第三种方案安装，这种方案主要是便于后期管理</p>
+<h2 id="工具的安装"><a href="#工具的安装" class="headerlink" title="工具的安装"></a>工具的安装</h2><h3 id="Xcode-CommandLineTools"><a href="#Xcode-CommandLineTools" class="headerlink" title="Xcode CommandLineTools"></a>Xcode CommandLineTools</h3><p>这是 Apple 为开发者提供的集成开发工具，里面内置了很多开发时所需的库及其语言</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo xcode-select --install</span><br></pre></td></tr></table></figure>
+
+<p>如果之前安装过请删除重新安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo rm -rf /Library/Developer/CommandLineTools</span><br><span class="line">sudo xcode-select --install</span><br></pre></td></tr></table></figure>
+
+<h3 id="Homebrew"><a href="#Homebrew" class="headerlink" title="Homebrew"></a>Homebrew</h3><p>这里我们需要使用 Homebrew 安装 pyenv，如果你还不知道它是什么！请查阅 <a href="/blog/42669/" title="HomeBrew">HomeBrew</a></p>
+<p>安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/bin/bash -c <span class="string">&quot;<span class="subst">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>安装完成后，我们还需要 Homebrew 浅层克隆的问题</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git -C /usr/<span class="built_in">local</span>/Homebrew/Library/Taps/homebrew/homebrew-cask fetch --unshallow</span><br></pre></td></tr></table></figure>
+
+<p>否则会报 No formulae found in taps 错误</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">Error: No previously deleted formula found.</span><br><span class="line">==&gt; Searching taps on GitHub...</span><br><span class="line">Error: No formulae found <span class="keyword">in</span> taps.</span><br><span class="line">Error: </span><br><span class="line">  homebrew-core is a shallow <span class="built_in">clone</span>.</span><br><span class="line">To `brew update`, first run:</span><br><span class="line">  git -C /usr/<span class="built_in">local</span>/Homebrew/Library/Taps/homebrew/homebrew-core fetch --unshallow</span><br></pre></td></tr></table></figure>
+
+<h2 id="pyenv-工作原理"><a href="#pyenv-工作原理" class="headerlink" title="pyenv 工作原理"></a>pyenv 工作原理</h2><p>当我们执行 <code>ls</code> 之类的命令时，shell 解释器会从一个名为 PATH 的环境变量值中，从左向右进行搜索 ls 可执行文件。有则执行，没有则报 <code>command no found</code> 错误。PATH 值是一个目录列表，目录用冒号分隔</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/bin:/usr/bin:/bin</span><br></pre></td></tr></table></figure>
+
+<p>此示例：<br>shell 解释器会先搜索 /usr/local/bin 目录，然后再搜索 /usr/bin，然后是 /bin。所以我们只要控制 PATH 变量，就能够做到 python 版本的切换。pyenv 则是通过在 PATH 的头部插入 Shim 目录，架空后面的系统路径。以此实现对 python 版本的切换。简单理解，把 Shim 想象成一个变量，切换版本时 Shim 的值会更改就可以了</p>
+<h2 id="安装-pyenv"><a href="#安装-pyenv" class="headerlink" title="安装 pyenv"></a>安装 pyenv</h2><p>Homebrew 安装 python 构建环境相关依赖及其 pyenv</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">brew install openssl readline sqlite3 xz zlib pyenv</span><br></pre></td></tr></table></figure>
+
+<p>如果报 Permission denied 错误</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">==&gt; Pouring readline-8.1.1.big_sur.bottle.tar.gz</span><br><span class="line">cp: setattrlist: /usr/<span class="built_in">local</span>/Cellar/readline/.: Permission denied</span><br><span class="line">cp: chmod: /usr/<span class="built_in">local</span>/Cellar/readline/.: Operation not permitted</span><br><span class="line">Error: Failure <span class="keyword">while</span> executing; `cp -pR /private/tmp/d20211025-97971-19184wv/readline/. /usr/<span class="built_in">local</span>/Cellar/readline` </span><br><span class="line">exited with 1. Here<span class="string">&#x27;s the output:</span></span><br><span class="line"><span class="string">cp: setattrlist: /usr/local/Cellar/readline/.: Permission denied</span></span><br><span class="line"><span class="string">cp: chmod: /usr/local/Cellar/readline/.: Operation not permitted</span></span><br></pre></td></tr></table></figure>
+
+<p>请执行 <code>sudo chown -R $(whoami) $(brew --prefix)/*</code> 指令后再安装，这是由于权限不够造成的</p>
+<h2 id="设置-PATH"><a href="#设置-PATH" class="headerlink" title="设置 PATH"></a>设置 PATH</h2><p>请分别执行下述指令，这里我使用的是 <a href="https://github.com/ohmyzsh/ohmyzsh">zsh</a></p>
+<ul>
+<li>PYENV_ROOT：pyenv 目录位置</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export PYENV_ROOT=&quot;$HOME/.pyenv&quot;&#x27;</span> &gt;&gt; ~/.zshrc</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export PATH=&quot;$PYENV_ROOT/bin:$PATH&quot;&#x27;</span> &gt;&gt; ~/.zshrc</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;eval &quot;$(pyenv init --path)&quot;&#x27;</span> &gt;&gt; ~/.zshrc</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;eval &quot;$(pyenv init -)&quot;&#x27;</span> &gt;&gt; ~/.zshrc</span><br><span class="line"><span class="built_in">source</span> ~/.zshrc</span><br><span class="line">reset</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装-python"><a href="#安装-python" class="headerlink" title="安装 python"></a>安装 python</h2><p>查看可安装的版本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pyenv install --list</span><br><span class="line"></span><br><span class="line"><span class="comment">#Available versions:</span></span><br><span class="line"><span class="comment">#  2.1.3</span></span><br><span class="line"><span class="comment">#  2.2.3</span></span><br><span class="line"><span class="comment">#  2.3.7</span></span><br><span class="line"><span class="comment">#  2.4.0</span></span><br></pre></td></tr></table></figure>
+
+<p>安装指定的版本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pyenv install 3.10.0</span><br></pre></td></tr></table></figure>
+
+<p>设置系统默认版本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pyenv global 3.10.0</span><br><span class="line">pyenv versions</span><br><span class="line"></span><br><span class="line"><span class="comment">#system</span></span><br><span class="line"><span class="comment">#* 3.10.0 (set by /Users/qinlzhu/.pyenv/version)</span></span><br></pre></td></tr></table></figure>
+
+<p>也可以使用 local 设置当前目录所使用的版本</p>
+<p>注意：<br>有时设置了 pyenv.local 版本后，再设置 global 会发现没有生效，可以使用 <code>pyenv local --unset</code> 解除</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pyenv <span class="built_in">local</span> 3.8.0</span><br></pre></td></tr></table></figure>
+
+<p>恢复系统默认的版本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pyenv global system</span><br></pre></td></tr></table></figure>
+
+<p>升级</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> $(pyenv root)</span><br><span class="line">git pull</span><br></pre></td></tr></table></figure>
+
+<h2 id="相关命令"><a href="#相关命令" class="headerlink" title="相关命令"></a>相关命令</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pyenv commands <span class="comment">#列出所有命令</span></span><br></pre></td></tr></table></figure>
+
+<p>如果你想让不同的项目拥有自己独立的运行环境，避免相互干扰，可以使用 <a href="https://github.com/pyenv/pyenv-virtualenv">pyenv-virtualenv</a> 创建虚拟环境</p>
+<h2 id="拓展阅读"><a href="#拓展阅读" class="headerlink" title="拓展阅读"></a>拓展阅读</h2><ul>
+<li><a href="https://www.python.org/downloads/">python</a></li>
+<li><a href="https://github.com/pyenv/pyenv">pyenv</a></li>
+<li><a href="https://github.com/pyenv/pyenv/wiki#suggested-build-environment">Suggested build environment</a></li>
+<li><a href="https://chinese.freecodecamp.org/news/python-version-on-mac-update/">如何在 Mac 上安装 Python 3</a></li>
+<li><a href="https://developer.apple.com/download/more/">Xcode CommandLineTools</a></li>
+<li><a href="https://www.mkdocs.org/getting-started/">mkdocs</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>pip</tag>
       </tags>
   </entry>
   <entry>
